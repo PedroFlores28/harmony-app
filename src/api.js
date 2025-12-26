@@ -4,7 +4,9 @@ import axios from "axios";
 const getBaseURL = () => {
   // Si hay una variable de entorno específica, usarla
   if (process.env.VUE_APP_SERVER) {
-    return process.env.VUE_APP_SERVER + "/api";
+    // Normalizar la URL para evitar dobles slashes
+    const baseUrl = process.env.VUE_APP_SERVER.replace(/\/+$/, ''); // Remover trailing slashes
+    return baseUrl + "/api";
   }
   
   // Si no, usar la configuración por defecto según el entorno

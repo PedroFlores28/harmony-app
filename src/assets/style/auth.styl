@@ -1,0 +1,768 @@
+// Prevenir scroll en móvil solo para páginas de autenticación
+@media (max-width: 768px)
+  .auth html, .auth body
+    height 100vh !important
+    max-height 100vh !important
+    overflow hidden !important
+    position fixed !important
+    width 100% !important
+
+.auth
+  // _grid()
+  height 100vh
+  max-height 100vh
+  overflow hidden
+  padding 0
+  display flex
+  align-items stretch
+  // justify-content center
+
+  &::before
+    content ''
+    position absolute
+    top 0
+    right 0
+    width 50%
+    height 100vh
+    background url('assets/img/logo/Group 1.svg') no-repeat center center / cover
+    z-index 1
+
+  >section
+    position relative
+    z-index 2
+    width 50%
+
+  // Responsive design
+  @media (max-width: 1024px)
+    &::before
+      width 100%
+      opacity 0.3
+      
+    >section
+      width 100%
+      background rgba(255, 255, 255, 0.95)
+      backdrop-filter blur(10px)
+      
+  @media (max-width: 768px)
+    flex-direction column !important
+    height 100vh !important
+    min-height 100vh !important
+    max-height 100vh !important
+    overflow hidden !important
+    position fixed !important
+    top 0 !important
+    left 0 !important
+    right 0 !important
+    bottom 0 !important
+    
+    &::before
+      position absolute !important
+      top 0 !important
+      left 0 !important
+      width 100% !important
+      height 40vh !important
+      opacity 1 !important
+      background-size cover !important
+      background-position center center !important
+      z-index 1 !important
+      
+    &::after
+      content ''
+      position absolute !important
+      top 10% !important
+      left 50% !important
+      transform translate(-50%, -50%) !important
+      width 120px !important
+      height 120px !important
+      background-image url("data:image/svg+xml,%3Csvg width='229' height='229' viewBox='0 0 229 229' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M138.56 1.37492C137.185 8.20625 135.853 11.1278 133.404 12.7175C132.674 13.1901 130.698 13.9635 129.065 14.3502C123.394 15.8109 122.448 16.0687 122.448 16.3695C122.448 16.7562 124.296 17.4436 128.249 18.5177C134.435 20.1503 135.939 21.6971 137.701 28.6143C138.775 32.653 139.333 33.9419 139.849 33.4693C139.978 33.3404 140.622 31.1063 141.267 28.4854C143.071 21.3533 144.317 20.0644 150.805 18.4318C155.101 17.4006 156.39 16.8851 156.39 16.3695C156.39 15.9398 153.039 14.8228 150.59 14.4361C146.079 13.7916 143.071 11.2567 141.997 7.34697C140.15 0.386742 139.119 -1.3748 138.56 1.37492Z' fill='white'/%3E%3Cpath d='M159.999 23.8453C159.312 26.595 157.164 28.9581 154.586 29.7314C152.566 30.3329 152.523 30.7626 154.371 31.1063C156.476 31.493 158.882 33.6841 159.398 35.7035C159.741 36.9065 160.085 37.3791 160.687 37.3791C161.288 37.3791 161.632 36.9065 161.976 35.7035C162.491 33.7701 164.811 31.5789 166.788 31.1492C168.463 30.7626 168.291 30.3329 166.272 29.6455C164.253 28.9581 162.878 27.5832 161.417 24.7046L160.343 22.5564L159.999 23.8453Z' fill='white'/%3E%3Cpath d='M160.687 44.1245C160.687 44.5541 160.859 46.0579 161.073 47.4757C162.362 55.8967 163.007 68.2275 162.663 79.0545C162.534 84.1243 162.319 88.8504 162.233 89.5808C162.147 90.2682 161.933 92.2016 161.804 93.8772C159.999 113.426 154.929 135.338 148.571 151.235C136.412 181.439 118.453 203.307 93.3615 218.474C89.9674 220.536 87.2176 222.384 87.2176 222.641C87.2176 222.942 87.7762 222.985 88.7214 222.856C90.5689 222.555 99.2477 218.732 99.2477 218.216C99.2477 218.001 99.3766 217.872 99.5914 217.915C99.7632 217.958 100.365 217.743 100.966 217.4C102.556 216.497 104.919 215.166 107.153 214.006C108.227 213.404 109.129 212.803 109.129 212.588C109.129 212.416 109.344 212.244 109.645 212.244C110.032 212.244 114.113 209.709 116.648 207.862C120.042 205.37 128.549 198.324 131.041 195.875C149.817 177.486 161.933 153.469 166.659 125.198C169.365 109.087 169.881 91.729 168.162 75.3166C167.518 68.8719 164.983 53.7915 163.909 49.8387C162.663 45.4134 160.687 41.8474 160.687 44.1245Z' fill='white'/%3E%3Cpath d='M140.923 49.1942C140.622 49.538 140.493 50.2683 140.622 50.7839C141.052 52.3736 140.107 64.5755 139.162 69.4734C135.123 90.9986 123.007 106.552 105.349 112.996C100.88 114.629 97.7439 115.316 90.1822 116.433C82.7493 117.508 80.0426 118.152 75.7891 119.914C69.1296 122.706 64.4895 126.788 62.0835 132.03C60.279 135.982 59.5486 139.548 59.8923 142.771C60.9235 152.738 69.8171 156.906 81.4604 152.867C84.5968 151.793 87.3895 149.86 89.4518 147.282C92.8889 143.071 91.5141 142.255 86.3154 145.434C82.7064 147.626 78.4529 148.872 76.0899 148.442C71.063 147.497 68.8719 143.157 71.4497 139.248C73.8128 135.724 78.7966 133.447 85.9717 132.631C92.7171 131.858 99.2477 133.533 104.189 137.271C110.289 141.911 114.887 150.332 115.445 157.937C115.918 164.339 114.07 171.127 109.129 181.095C101.74 196.089 91.0415 208.893 74.4143 222.555C70.5904 225.735 67.6259 228.484 67.7977 228.656C68.2704 229.129 72.6098 228.184 72.6098 227.625C72.6098 227.367 72.7386 227.281 72.9105 227.41C73.0394 227.582 73.8128 227.281 74.6291 226.809C75.4024 226.336 76.0469 226.036 76.0469 226.207C76.0469 226.336 77.2069 225.864 78.6248 225.09C80.0426 224.36 81.2026 223.544 81.2026 223.329C81.2026 223.114 81.3745 223.028 81.5893 223.157C81.8041 223.286 82.1908 223.114 82.4916 222.77C82.7923 222.427 83.179 222.255 83.3938 222.384C83.6086 222.512 83.7805 222.384 83.7805 222.169C83.7805 221.911 84.0383 221.696 84.339 221.696C84.5968 221.696 86.3154 220.751 88.1199 219.634C89.8814 218.517 92.2874 217.013 93.4475 216.326C94.6075 215.595 95.8535 214.736 96.1972 214.392C96.5839 214.048 97.4431 213.49 98.0447 213.146C98.6891 212.803 99.7632 212.029 100.408 211.428C101.052 210.783 102.384 209.752 103.329 209.065C105.95 207.174 107.153 206.057 112.996 200.214C132.115 181.052 144.102 155.531 147.969 125.843C150.934 103.329 149.602 78.2382 144.274 55.2093C142.771 48.6357 142.212 47.6475 140.923 49.1942Z' fill='white'/%3E%3Cpath d='M100.494 71.8794C97.4002 73.1684 95.7676 74.3714 94.0919 76.4337C90.0963 81.5464 89.5807 88.5496 92.846 94.3928C94.3927 97.0995 96.5409 99.0329 99.6773 100.494C101.74 101.439 102.599 101.611 106.337 101.611C110.075 101.611 110.934 101.439 112.996 100.494C116.004 99.0759 118.668 96.3261 120.386 92.846C121.589 90.483 121.761 89.7096 121.761 86.6162C121.761 84.0384 121.503 82.4916 120.773 80.6871C119.57 77.5937 116.39 74.0706 113.34 72.395C111.364 71.3209 110.547 71.1061 106.981 71.0201C103.458 70.8913 102.556 71.0202 100.494 71.8794Z' fill='white'/%3E%3C/svg%3E") !important
+      background-size contain !important
+      background-repeat no-repeat !important
+      z-index 2 !important
+      opacity 0.9 !important
+      
+    >section
+      position absolute !important
+      bottom 0 !important
+      left 0 !important
+      width 100% !important
+      height 70vh !important
+      background white !important
+      backdrop-filter none !important
+      z-index 2 !important
+      overflow hidden !important
+      border-radius 50px 50px 0 0 !important
+      
+  // Estilos específicos para la página de registro en móvil
+  @media (max-width: 768px)
+    &.register-page
+      &::before
+        height 20vh !important
+        
+      &::after
+        top 5% !important
+        left 25% !important
+        width 60px !important
+        height 60px !important
+        
+      >section
+        height 85vh !important
+        top 15vh !important
+        border-radius 40px 40px 0 0 !important
+        padding-top 60px !important
+        
+      // Mostrar pestañas solo en registro móvil
+      .auth-tabs
+        display flex !important
+        position absolute !important
+        top 19vh !important
+        left 50% !important
+        transform translateX(-50%) !important
+        z-index 1001 !important
+        background-color transparent !important
+        box-shadow none !important
+        
+        .tab
+          width 120px !important
+          height 40px !important
+          padding 8px 0 !important
+          font-size 14px !important
+          font-weight 600 !important
+          color #666 !important
+          background-color transparent !important
+          border none !important
+          border-bottom 2px solid #ddd !important
+          transition all 0.3s ease !important
+          
+          &.active
+            color #9F00AD !important
+            border-bottom 2px solid #FFD900 !important
+            
+          &:hover
+            color #9F00AD !important
+  .welcome-title-form
+    text-align center
+    margin 25px 0 60px 0
+    
+    h1
+      font-size 32px
+      font-weight bold
+      color #3B3B3B
+      margin 0
+      font-family 'Open Sans', sans-serif
+      
+    // Responsive
+    @media (max-width: 768px)
+      margin 10px 0 15px 0
+      
+      h1
+        font-size 20px
+        
+    @media (max-width: 480px)
+      margin 8px 0 12px 0
+      
+      h1
+        font-size 18px
+        
+    @media (max-width: 375px)
+      margin 6px 0 10px 0
+      
+      h1
+        font-size 16px
+
+  .register-form-container
+    // Contenedor invisible que solo agrupa elementos sin afectar la visualización
+    
+  .register-title-form
+    text-align center
+    margin 25px 0 30px 0
+    
+    h1
+      font-size 32px
+      font-weight bold
+      color #3B3B3B
+      margin 0
+      font-family 'Open Sans', sans-serif
+      
+    // Responsive
+    @media (max-width: 768px)
+      display none !important
+        
+    @media (max-width: 480px)
+      display none !important
+
+  // Estilos para el nuevo formulario de registro
+  .form-field
+    position relative
+    margin-bottom 15px
+    
+    // Responsive
+    @media (max-width: 768px)
+      margin-bottom 10px
+      
+    @media (max-width: 480px)
+      margin-bottom 8px
+      
+    @media (max-width: 375px)
+      margin-bottom 6px
+    
+  .form-row
+    display flex
+    gap 15px
+    justify-content center
+    width 80%
+    max-width 509px
+    margin 0 auto
+    
+    &:first-of-type
+      margin-top -10px
+    
+    .form-field
+      flex 1
+      max-width 250px
+      
+      
+    .input-register-new
+      width 100%
+      max-width 250px
+      
+    // Responsive
+    @media (max-width: 768px)
+      width 90%
+      max-width 400px
+      gap 10px
+      
+      .form-field
+        max-width 180px
+        
+      .input-register-new
+        max-width 180px
+        border-radius 0
+        
+    @media (max-width: 480px)
+      flex-direction row
+      gap 8px
+      width 95%
+      max-width 350px
+      
+      .form-field
+        flex 1
+        max-width 48%
+        
+      .input-register-new
+        max-width 100%
+        border-radius 0
+        font-size 12px
+        padding 5px 6px
+        height 32px
+        
+    @media (max-width: 375px)
+      gap 6px
+      width 95%
+      max-width 300px
+      
+      .form-field
+        flex 1
+        max-width 47%
+        
+      .input-register-new
+        max-width 100%
+        border-radius 0
+        font-size 11px
+        padding 4px 5px
+        height 28px
+      
+  .input-register-new
+    width 80%
+    max-width 509px
+    padding 10px 16px
+    height 45px
+    border 2px solid #0476D9
+    border-radius 0
+    font-size 14px
+    font-family 'Open Sans', sans-serif
+    background white
+    color #89888D
+    transition all 0.3s ease
+    
+    &:focus
+      outline none
+      border-color #0476D9
+      box-shadow 0 0 0 3px rgba(4, 118, 217, 0.1)
+      
+    // Responsive
+    @media (max-width: 768px)
+      width 90%
+      max-width 400px
+      font-size 15px
+      padding 8px 10px
+      margin-bottom 12px
+      border-radius 0
+      height 42px
+      
+    @media (max-width: 480px)
+      width 95%
+      max-width 350px
+      padding 6px 8px
+      margin-bottom 4px
+      font-size 14px
+      border-radius 0
+      height 30px
+      
+    @media (max-width: 375px)
+      width 95%
+      max-width 320px
+      padding 4px 5px
+      margin-bottom 8px
+      font-size 12px
+      border-radius 0
+      height 30px
+      
+    &::placeholder
+      color #999
+      
+    &.error
+      border-color #e74c3c
+
+      
+  .select-field
+    appearance none
+    background-image url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2305AFF2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e")
+    background-repeat no-repeat
+    background-position right 12px center
+    background-size 16px
+    padding-right 40px
+    
+    
+  .checkbox-field
+    margin-top -16px
+    display flex
+    justify-content flex-start
+    width 80%
+    max-width 509px
+    margin-left auto
+    margin-right auto
+    
+    // Responsive
+    @media (max-width: 768px)
+      width 90%
+      max-width 400px
+      
+    @media (max-width: 480px)
+      width 95%
+      max-width 350px
+    
+  .terms-field
+
+    display flex
+    justify-content center
+    width 80%
+    max-width 509px
+    margin-left auto
+    margin-right auto
+    
+    // Responsive
+    @media (max-width: 768px)
+      width 90%
+      max-width 400px
+      
+    @media (max-width: 480px)
+      width 95%
+      max-width 350px
+    
+  .checkbox-label
+    display flex
+    align-items center
+    gap 8px
+    cursor pointer
+    
+  .checkbox-input
+    width 16px
+    height 16px
+    border 2px solid #0339A6
+    border-radius 3px
+    background white
+    cursor pointer
+    appearance none
+    -webkit-appearance none
+    -moz-appearance none
+    
+    &:checked
+      background-color #0339A6
+      border-color #0339A6
+      background-image url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-3.5-3.5a1 1 0 011.414-1.414L4.5 10.586l6.293-6.293a1 1 0 011.414 0z'/%3e%3c/svg%3e")
+      background-size 12px 12px
+      background-position center center
+      background-repeat no-repeat
+    
+  .checkbox-text
+    color #666C68
+    font-size 14px
+    font-family 'Open Sans', sans-serif
+    
+  .register-button
+    width 80%
+    max-width 509px
+    height 56px
+    padding 12px 15px 18px 15px
+    background #021F59
+    color #FFFFFF
+    border none
+    border-radius 0
+    font-size 21px
+    font-weight bold
+    font-family 'Open Sans', sans-serif
+    cursor pointer
+    transition all 0.3s ease
+    margin-bottom 20px
+    margin-left auto
+    margin-right auto
+    
+    // Responsive
+    @media (max-width: 768px)
+      width 90%
+      max-width 400px
+      height 42px
+      padding 10px
+      margin-bottom 12px
+      border-radius 25px !important
+      font-size 15px
+      
+    @media (max-width: 480px)
+      width 95%
+      max-width 350px
+      height 38px
+      font-size 14px
+      padding 8px
+      margin-bottom 10px
+      border-radius 20px !important
+      
+    @media (max-width: 375px)
+      width 95%
+      max-width 320px
+      height 35px
+      font-size 13px
+      padding 6px
+      margin-bottom 8px
+      border-radius 18px !important
+    
+    &:hover
+      background #033a8a
+      
+    &:disabled
+      background #ccc
+      cursor not-allowed
+      
+  .login-link
+    text-align center
+    margin-top 8px
+    
+    // Responsive
+    @media (max-width: 768px)
+      margin-bottom 12px
+      
+    @media (max-width: 480px)
+      margin-bottom 10px
+      
+    @media (max-width: 375px)
+      margin-bottom 8px
+    
+    small
+      color #666
+      font-size 14px
+      
+      // Responsive
+      @media (max-width: 768px)
+        font-size 13px
+        
+      @media (max-width: 480px)
+        font-size 12px
+        
+      @media (max-width: 375px)
+        font-size 11px
+      
+      a
+        color #0476D9
+        text-decoration none
+        
+        &:hover
+          text-decoration underline
+          
+  .social-icons
+    display flex
+    justify-content center
+    gap 10px
+    margin-top 15px
+    
+    // Responsive
+    @media (max-width: 768px)
+      margin-top 12px
+      gap 8px
+      
+    @media (max-width: 480px)
+      margin-top 10px
+      gap 6px
+      
+    @media (max-width: 375px)
+      margin-top 8px
+      gap 5px
+    
+  .social-icon
+    width 40px
+    height 40px
+    border-radius 50%
+    display flex
+    align-items center
+    justify-content center
+    text-decoration none
+    transition all 0.3s ease
+    box-shadow none
+    
+    // Responsive
+    @media (max-width: 768px)
+      width 35px
+      height 35px
+      
+    @media (max-width: 480px)
+      width 32px
+      height 32px
+      
+    @media (max-width: 375px)
+      width 30px
+      height 30px
+    
+    i
+      font-size 18px
+      color white
+      
+      // Responsive
+      @media (max-width: 768px)
+        font-size 16px
+        
+      @media (max-width: 480px)
+        font-size 14px
+        
+      @media (max-width: 375px)
+        font-size 12px
+      
+      
+    &:hover
+      transform translateY(-2px)
+
+
+  .social
+    // Margin top adicional para móvil en registro
+    @media (max-width: 768px)
+      margin-left: 15px;
+    
+    @media (max-width: 480px)
+      margin-left: 15px;
+      
+    @media (max-width: 375px)
+      margin-top -30px 
+      margin-left: 15px;
+    
+    a
+      padding 12px
+      Top 4.15px
+      Left 1.25px
+
+      // color c-main-light-green
+      // color c-main-purple
+      
+      color  #fff;
+
+  .social-icon-register {
+  
+  margin-right: 10px; /* Espaciado entre íconos */
+  display: inline-block; /* Asegura que los íconos se alineen correctamente */
+  width: 26px; /* Ajusta el tamaño según sea necesario */
+  height: 26px; /* Ajusta el tamaño según sea necesario */
+  border-radius: 8px; /* Bordes redondeados */
+  }
+
+  .social-icon {
+  margin-right: 25px; /* Espaciado entre íconos */
+  display: inline-block; /* Asegura que los íconos se alineen correctamente */
+  width: 40px; /* Ajusta el tamaño según sea necesario */
+  height: 40px; /* Ajusta el tamaño según sea necesario */
+  border-radius: 13px; /* Bordes redondeados */
+  
+  &:last-child {
+    margin-right: 0; /* Sin margen en el último icono */
+  }
+}
+
+  // >header
+  //   flex 1
+  //   text-align center
+  //   display none
+  //   .social
+  //     a
+  //       background c-main-golden
+  //       color c-main-red
+  //       font-size 20px
+  //       padding 12px
+  //       margin 8px
+  //       border-radius 50%
+  //       width 44px
+  //       height 44px
+
+  >section
+    // width 100%
+    // align-self center
+    width 50%
+    height 100vh
+    display flex
+    justify-content center
+    align-items center
+    padding 0
+
+
+    .content
+      max-width 100%
+      width 100%
+      margin 0
+
+
+      .form
+        // background c-ligh-gray
+        background white
+        border-radius 0
+        // border solid 1.5px c-main-blue
+        // border solid 2px c-main-golden
+        // border solid 2px c-main-light-green
+        // border solid 2px c-main-purple
+        padding 16px
+        margin-top -58px
+        Width 100%
+        Height 103vh
+        display flex
+        flex-direction column
+        justify-content center
+        overflow-y auto
+        header
+        section
+          text-align center
+      .links
+        _flex()
+        justify-content center
+        padding 0 4px
+
+.text-header
+  display flex 
+  align-items center  
+  gap 20px
+  padding 12px
+
+@media (min-width: d-break)
+  .text-header
+    display none
+
+@media (max-width: 1260px)
+  .auth
+    >section
+      .form
+        max-width 100%
+        max-height: 590px;
+@media (max-width: 1260px)
+  .auth
+    flex-direction column
+
+  // >footer
+  //   text-align right
+
+
+// @media (min-width: d-break)
+//   .auth
+//     >header
+//       display block
+//       flex 1
+//       text-align center
+//     >section
+//       .content
+//         margin initial
+
+// ============================================
+// ESTILOS MOBILE PARA REGISTRO (COMPLETAMENTE SEPARADOS DEL DESKTOP)
+// ============================================
+@media (max-width: 768px)
+  .auth.register-page
+    .register-form-container
+      // Contenedor mobile - reset completo
+      width 100%
+      padding 0 20px
+      margin 0
+      
+      .register-title-form
+        display block
+        margin 0 0 20px 0
+        text-align center
+        
+        h1
+          font-size 24px
+          margin 0
+      
+      .form-field
+        width 100%
+        margin-bottom 12px
+        
+        .input-container
+          width 100%
+          
+          .input-register-new
+            width 100%
+            max-width 100%
+            margin 0
+            
+      .form-row
+        flex-direction column
+        width 100%
+        gap 12px
+        margin 0
+        
+        .form-field
+          width 100%
+          margin-bottom 0
+          
+          .input-container
+            width 100%
+            
+            .input-register-new
+              width 100%
+              max-width 100%
+      
+      .checkbox-field
+        width 100%
+        margin 10px 0
+        
+      .terms-field
+        width 100%
+        margin 10px 0
+        
+      .alert-message
+        width 100%
+        max-width 100%
+        margin 10px 0
+        
+      .register-button
+        width 100%
+        max-width 100%
+        margin 15px 0
+        
+      .social
+        width 100%
+        margin 20px 0 10px 0
+        display flex
+        justify-content center
+        align-items center
+        gap 15px
+        
+        .social-icon
+          margin 0
+          
+      .login-link
+        width 100%
+        text-align center
+        margin 10px 0
+
+

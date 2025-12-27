@@ -1,10 +1,5 @@
 <template>
   <div class="auth" :class="{ 'register-page': $route.path.startsWith('/register') }">
-    <!-- Frase para móvil en el fondo fucsia -->
-    <div class="mobile-welcome-text">
-      <h1 class="mobile-welcome-title">BIENVENIDO</h1>
-      <p>"Tu momento de brillar es ahora."</p>
-    </div>
     
     <div class="auth-tabs" id="tabs">
       <router-link
@@ -51,14 +46,16 @@
       </div>
     </section>
     
-    <!-- Sección de texto en la mitad derecha -->
-    <section class="welcome-section">
-      <div class="welcome-content">
-        <h2 class="welcome-subtitle">Bienvenido a</h2>
-        <h1 class="welcome-title">SIFRAH</h1>
-        <p class="welcome-slogan">"Tu momento de brillar es ahora."</p>
+    <!-- Div con frase de bienvenida a la derecha (solo desktop) -->
+    <div class="welcome-text-right">
+      <h2 class="welcome-subtitle-right">Bienvenido a</h2>
+      <div class="welcome-title-container">
+        <h1 class="welcome-title-right">HARMONY</h1>
+        <span class="welcome-life">LIFE</span>
       </div>
-    </section>
+      <p class="welcome-corporation">CORPORATION</p>
+    </div>
+    
     <!-- <footer>
       <img class="logo--white" src="@/assets/img/logo/logo-white.png">
     </footer> -->
@@ -333,6 +330,148 @@ export default {
 @media (max-width: 1260px) {
   .welcome-section {
     display: none;
+  }
+}
+
+/* Estilos para el texto de bienvenida a la derecha (solo desktop) */
+.welcome-text-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-left: 8%;
+  padding-bottom: 10%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.welcome-subtitle-right {
+  font-size: 28px;
+  font-weight: 400;
+  margin: 0 0 15px 0;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 1px;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+}
+
+.welcome-title-container {
+  display: flex;
+  align-items: baseline;
+  margin: 0 0 8px 0;
+}
+
+.welcome-title-right {
+  font-size: 64px;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 3px;
+  line-height: 1.1;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+}
+
+.welcome-life {
+  font-size: 48px;
+  font-weight: 700;
+  margin-left: 5px;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 2px;
+  font-family: 'Moranga', serif;
+  text-transform: uppercase;
+}
+
+.welcome-corporation {
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.95);
+  font-style: normal;
+  letter-spacing: 2px;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+}
+
+/* Estilos para móvil - mostrar más pequeño en la parte superior */
+@media (max-width: 1024px) {
+  .welcome-text-right {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 350px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    z-index: 1000;
+    pointer-events: none;
+  }
+  
+  /* Ajuste para registro móvil - texto más arriba */
+  .auth.register-page .welcome-text-right {
+    top: 3vh;
+  }
+  
+  .welcome-subtitle-right {
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0 0 8px 0;
+    color: rgba(255, 255, 255, 0.95);
+    letter-spacing: 0.5px;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+  }
+  
+  .welcome-title-container {
+    display: flex;
+    align-items: baseline;
+    margin: 0 0 5px 0;
+  }
+  
+  .welcome-title-right {
+    font-size: 38px;
+    font-weight: 700;
+    margin: 0;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1.5px;
+    line-height: 1.1;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+  }
+  
+  .welcome-life {
+    font-size: 28px;
+    font-weight: 700;
+    margin-left: 4px;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+    font-family: 'Moranga', serif;
+    text-transform: uppercase;
+  }
+  
+  .welcome-corporation {
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.95);
+    font-style: normal;
+    letter-spacing: 1px;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
   }
 }
 </style>

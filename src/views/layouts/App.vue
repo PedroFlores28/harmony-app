@@ -28,21 +28,6 @@
           alt=""
           class="logo logo-desktop"
         />
-        <!-- Logo SVG para móvil -->
-        <svg
-          class="logo logo-mobile"
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M24.2028 0.240206C23.9626 1.43345 23.73 1.94377 23.3022 2.22144C23.1746 2.304 22.8294 2.43908 22.5442 2.50662C21.5536 2.76178 21.3885 2.80681 21.3885 2.85934C21.3885 2.92689 21.7112 3.04696 22.4016 3.23458C23.4823 3.51976 23.745 3.78992 24.0527 4.99818C24.2403 5.70362 24.3378 5.92876 24.4279 5.84621C24.4504 5.8237 24.563 5.43345 24.6756 4.97567C24.9908 3.72989 25.2084 3.50475 26.3416 3.21957C27.0921 3.03946 27.3172 2.9494 27.3172 2.85934C27.3172 2.7843 26.7318 2.58917 26.3041 2.52163C25.5161 2.40906 24.9908 1.96628 24.8031 1.28336C24.4804 0.067598 24.3003 -0.240094 24.2028 0.240206Z" fill="white"/>
-          <path d="M27.9476 4.16516C27.8275 4.64546 27.4523 5.05822 27.002 5.19331C26.6493 5.29837 26.6418 5.37342 26.9645 5.43346C27.3322 5.501 27.7525 5.88374 27.8425 6.23646C27.9026 6.44659 27.9626 6.52914 28.0677 6.52914C28.1727 6.52914 28.2328 6.44659 28.2928 6.23646C28.3829 5.89875 28.7881 5.51601 29.1333 5.44096C29.426 5.37342 29.396 5.29837 29.0433 5.1783C28.6906 5.05822 28.4504 4.81807 28.1953 4.31526L28.0076 3.94002L27.9476 4.16516Z" fill="white"/>
-          <path d="M28.0677 7.70738C28.0677 7.78242 28.0977 8.04509 28.1352 8.29274C28.3604 9.76366 28.4729 11.9175 28.4129 13.8087C28.3904 14.6942 28.3529 15.5198 28.3378 15.6473C28.3228 15.7674 28.2853 16.1051 28.2628 16.3978C27.9476 19.8124 27.0621 23.6398 25.9514 26.4166C23.8275 31.6924 20.6906 35.5123 16.3078 38.1614C15.715 38.5216 15.2347 38.8443 15.2347 38.8894C15.2347 38.9419 15.3322 38.9494 15.4973 38.9269C15.82 38.8744 17.336 38.2064 17.336 38.1164C17.336 38.0789 17.3585 38.0563 17.396 38.0638C17.426 38.0714 17.5311 38.0338 17.6362 37.9738C17.9138 37.8162 18.3266 37.5835 18.7168 37.3809C18.9045 37.2759 19.0621 37.1708 19.0621 37.1333C19.0621 37.1032 19.0996 37.0732 19.1521 37.0732C19.2196 37.0732 19.9326 36.6305 20.3754 36.3078C20.9682 35.8725 22.4542 34.6417 22.8894 34.2139C26.169 31.0019 28.2853 26.8068 29.1108 21.8687C29.5836 19.0545 29.6737 16.0226 29.3735 13.1558C29.2609 12.0301 28.8181 9.39593 28.6305 8.7055C28.4129 7.93252 28.0677 7.30963 28.0677 7.70738Z" fill="white"/>
-          <path d="M24.6155 8.59292C24.563 8.65296 24.5405 8.78054 24.563 8.8706C24.638 9.14827 24.4729 11.2796 24.3078 12.1351C23.6024 15.895 21.4861 18.6117 18.4016 19.7374C17.6211 20.0226 17.0733 20.1426 15.7525 20.3378C14.4542 20.5254 13.9814 20.638 13.2384 20.9456C12.0752 21.4335 11.2647 22.1464 10.8444 23.062C10.5292 23.7524 10.4016 24.3753 10.4617 24.9381C10.6418 26.6792 12.1953 27.4072 14.229 26.7017C14.7769 26.5141 15.2647 26.1764 15.6249 25.7261C16.2253 24.9907 15.9851 24.8481 15.0771 25.4034C14.4467 25.7862 13.7037 26.0038 13.2909 25.9288C12.4129 25.7637 12.0302 25.0057 12.4804 24.3228C12.8932 23.7074 13.7637 23.3096 15.017 23.167C16.1953 23.032 17.336 23.3246 18.199 23.9775C19.2647 24.788 20.0677 26.259 20.1652 27.5873C20.2478 28.7055 19.9251 29.8912 19.0621 31.6323C17.7712 34.2515 15.9026 36.4879 12.9983 38.8744C12.3303 39.4297 11.8125 39.91 11.8425 39.94C11.9251 40.0226 12.6831 39.8575 12.6831 39.7599C12.6831 39.7149 12.7056 39.6999 12.7356 39.7224C12.7581 39.7524 12.8932 39.6999 13.0358 39.6173C13.1709 39.5348 13.2834 39.4822 13.2834 39.5123C13.2834 39.5348 13.4861 39.4522 13.7337 39.3171C13.9814 39.1895 14.184 39.047 14.184 39.0094C14.184 38.9719 14.214 38.9569 14.2515 38.9794C14.2891 39.0019 14.3566 38.9719 14.4091 38.9119C14.4617 38.8518 14.5292 38.8218 14.5667 38.8443C14.6043 38.8668 14.6343 38.8443 14.6343 38.8068C14.6343 38.7618 14.6793 38.7243 14.7318 38.7243C14.7769 38.7243 15.0771 38.5592 15.3923 38.364C15.6999 38.1689 16.1202 37.9062 16.3228 37.7862C16.5255 37.6586 16.7431 37.5085 16.8031 37.4485C16.8707 37.3884 17.0208 37.2909 17.1258 37.2308C17.2384 37.1708 17.426 37.0357 17.5386 36.9306C17.6512 36.8181 17.8838 36.638 18.0489 36.5179C18.5067 36.1877 18.7168 35.9925 19.7375 34.9719C23.0771 31.6248 25.1709 27.167 25.8463 21.9813C26.3641 18.0488 26.1315 13.6661 25.2009 9.64358C24.9382 8.49537 24.8407 8.32276 24.6155 8.59292Z" fill="white"/>
-          <path d="M17.5536 12.5554C17.0133 12.7805 16.7281 12.9907 16.4354 13.3509C15.7375 14.244 15.6474 15.4672 16.2178 16.4879C16.4879 16.9607 16.8632 17.2984 17.411 17.5535C17.7712 17.7186 17.9213 17.7487 18.5742 17.7487C19.2272 17.7487 19.3772 17.7186 19.7375 17.5535C20.2628 17.3059 20.7281 16.8256 21.0283 16.2177C21.2384 15.8049 21.2684 15.6699 21.2684 15.1295C21.2684 14.6792 21.2234 14.4091 21.0958 14.0939C20.8857 13.5535 20.3303 12.9381 19.7975 12.6455C19.4523 12.4578 19.3097 12.4203 18.6868 12.4053C18.0714 12.3828 17.9138 12.4053 17.5536 12.5554Z" fill="white"/>
-        </svg>
       </div>
       
       <div class="header-center" v-if="office_id == null">
@@ -51,17 +36,6 @@
           @mousedown="startDrag"
           @touchstart="startDrag"
         >
-          <button
-            v-if="token"
-            @click.stop="copy_token_code" 
-            class="header-code-button"
-            style="background: none; border: none; color: white; font-size: 14px; font-weight: 600; cursor: pointer; padding: 0; margin: 0; margin-right: 12px; white-space: nowrap; pointer-events: auto;"
-          >
-            Cód: {{ token }}
-            <span v-if="c_token_code" style="position: absolute; top: 100%; left: -10px; margin-top: 10px; white-space: nowrap; color: #4CAF50; font-size: 12px; font-weight: 600; z-index: 1000; display: flex; align-items: center; gap: 4px;">
-              Código copiado <i class="fas fa-check" style="color: #4CAF50;"></i>
-            </span>
-          </button>
           <div class="header-dni header-dni-mobile" v-if="dni">{{ dni }}</div>
         </div>
       </div>
@@ -172,12 +146,6 @@
           <a class="fab fa-youtube"         :href="yt" target="_blank" style="font-size: 18px;color: #ff0050;"></a>
         </div>-->
 
-        <img
-          src="../../assets/img/logo/logo-sifrah-BLANCO.png"
-          style="width: 100px; height: 100px; margin-bottom: 10px"
-          class="photo-logo"
-        />
-
         <a @click="handleInicioClick" v-if="office_id == null">
           <img src="@/assets/img/home-desktop-icon.svg" alt="Inicio" style="width: 16px; height: 16px; margin-right: 8px;"> INICIO
         </a>
@@ -191,7 +159,7 @@
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: activeProduct === 0 ? '#9f00ad' : '',
+            backgroundColor: activeProduct === 0 ? '#0476D9' : '',
           }"
         >
           <span> <img src="@/assets/img/products-desktop-icon.svg" alt="Productos" style="width: 16px; height: 16px; margin-right: 8px;"> PRODUCTOS </span>
@@ -216,7 +184,7 @@
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: activeProduct === 1 ? '#9f00ad' : '',
+            backgroundColor: activeProduct === 1 ? '#0476D9' : '',
           }"
         >
           <span> <i class="fa fa-users"></i> ORGANIZACIÓN </span>
@@ -241,7 +209,7 @@
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: activeProduct === 2 ? '#9f00ad' : '',
+            backgroundColor: activeProduct === 2 ? '#0476D9' : '',
           }"
         >
           <span> <img src="@/assets/img/commissions-desktop-icon.svg" alt="Comisiones" style="width: 16px; height: 16px; margin-right: 8px;"> COMISIONES </span>
@@ -269,7 +237,7 @@
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: activeProduct === 3 ? '#9f00ad' : '',
+            backgroundColor: activeProduct === 3 ? '#0476D9' : '',
           }"
         >
           <span> <img src="@/assets/img/summary-desktop-icon.svg" alt="Resumen" style="width: 16px; height: 16px; margin-right: 8px;"> RESUMEN </span>
@@ -287,31 +255,6 @@
           </router-link>
         </div>
 
-        <a
-          @click="actived(4)"
-          v-if="office_id == null && affiliated"
-          :style="{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            backgroundColor: activeProduct === 4 ? '#9f00ad' : '',
-          }"
-        >
-          <span> <i class="fas fa-tools"></i> HERRAMIENTAS </span>
-          <i class="fa fa-angle-down" style="margin-left: 16px"></i>
-        </a>
-        <div class="sub-menu" :class="{ active: education }">
-          <router-link to="/tools" @click.native="close">
-            <img src="@/assets/img/education-desktop-icon.svg" alt="Educación" style="width: 16px; height: 16px; margin-right: 8px;"> EDUCACIÓN
-          </router-link>
-          <router-link to="/flyer-editor" @click.native="close">
-            <i class="fas fa-image"></i> EDITOR DE FLYER
-          </router-link>
-          <router-link to="/whatsapp-link-generator" @click.native="close">
-            <i class="fab fa-whatsapp"></i> GENERADOR DE LINKS DE WHATSAPP
-          </router-link>
-        </div>
-
         <router-link
           to="/profile"
           @click.native="close"
@@ -321,7 +264,7 @@
         </router-link>
 
         <br />
-        <a @click="logout" style="background-color: #9f00ad">
+        <a @click="logout" style="background-color: #0476D9">
           <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
         </a>
       </div>
@@ -337,10 +280,12 @@
               margin-top: 25px;
               "
           >
+          <div class="red-header-text" v-if="$route.path === '/tree' || $route.path.startsWith('/tree/')">Red</div>
           <img class="logo" style="height: 50px" />
           <button class="share-button" @click="copy_affiliation_link">
-            <i class="fas fa-share-alt" style="margin-right: 8px"></i
-              >Compartir Afiliación
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px">
+              <path d="M17 22C16.1667 22 15.4583 21.7083 14.875 21.125C14.2917 20.5417 14 19.8333 14 19C14 18.9 14.025 18.6667 14.075 18.3L7.05 14.2C6.78333 14.45 6.475 14.646 6.125 14.788C5.775 14.93 5.4 15.0007 5 15C4.16667 15 3.45833 14.7083 2.875 14.125C2.29167 13.5417 2 12.8333 2 12C2 11.1667 2.29167 10.4583 2.875 9.875C3.45833 9.29167 4.16667 9 5 9C5.4 9 5.775 9.071 6.125 9.213C6.475 9.355 6.78333 9.55067 7.05 9.8L14.075 5.7C14.0417 5.58333 14.021 5.471 14.013 5.363C14.005 5.255 14.0007 5.134 14 5C14 4.16667 14.2917 3.45833 14.875 2.875C15.4583 2.29167 16.1667 2 17 2C17.8333 2 18.5417 2.29167 19.125 2.875C19.7083 3.45833 20 4.16667 20 5C20 5.83333 19.7083 6.54167 19.125 7.125C18.5417 7.70833 17.8333 8 17 8C16.6 8 16.225 7.929 15.875 7.787C15.525 7.645 15.2167 7.44933 14.95 7.2L7.925 11.3C7.95833 11.4167 7.97933 11.5293 7.988 11.638C7.99667 11.7467 8.00067 11.8673 8 12C7.99933 12.1327 7.99533 12.2537 7.988 12.363C7.98067 12.4723 7.95967 12.5847 7.925 12.7L14.95 16.8C15.2167 16.55 15.525 16.3543 15.875 16.213C16.225 16.0717 16.6 16.0007 17 16C17.8333 16 18.5417 16.2917 19.125 16.875C19.7083 17.4583 20 18.1667 20 19C20 19.8333 19.7083 20.5417 19.125 21.125C18.5417 21.7083 17.8333 22 17 22Z" fill="white"/>
+            </svg>Compartir Afiliación
               <input
               readonly
               id="link-global"
@@ -414,28 +359,27 @@
       @click="closeMobileTabsMenu"
     >
       <div class="mobile-tabs-menu" @click.stop>
-        <div class="mobile-tabs-header">
-          <div class="mobile-menu-user-info" v-if="office_id == null">
-            <label v-if="office_id == null">
-              <img v-if="photoState == 'default'" class="mobile-menu-photo" :src="photo" />
-              <img v-if="photoState == 'changed'" class="mobile-menu-photo" :src="newPhoto" />
-            </label>
-            <div>
-              <p class="mobile-menu-name">{{ name }} {{ lastName }}</p>
-              <p class="mobile-menu-email">{{ email }}</p>
-            </div>
-          </div>
-          <i class="fas fa-times" @click="closeMobileTabsMenu"></i>
-        </div>
-        
         <div class="mobile-tabs-content">
+          <div class="mobile-tabs-header-inner">
+            <div class="mobile-menu-user-info" v-if="office_id == null">
+              <label v-if="office_id == null">
+                <img v-if="photoState == 'default'" class="mobile-menu-photo" :src="photo" />
+                <img v-if="photoState == 'changed'" class="mobile-menu-photo" :src="newPhoto" />
+              </label>
+              <div>
+                <p class="mobile-menu-name">{{ name }} {{ lastName }}</p>
+                <p class="mobile-menu-email">{{ email }}</p>
+              </div>
+            </div>
+            <i class="fas fa-times" @click="closeMobileTabsMenu"></i>
+          </div>
 
           <a @click="handleInicioClickAndClose" v-if="office_id == null" class="mobile-menu-item">
             <img src="@/assets/img/home-desktop-icon.svg" alt="Inicio" style="width: 20px; height: 20px; margin-right: 12px;">
             <span>INICIO</span>
           </a>
 
-          <a @click.stop="toggleMobileSubmenu(0)" class="mobile-menu-item mobile-menu-item-with-submenu">
+          <a @click.stop="toggleMobileSubmenu(0)" class="mobile-menu-item mobile-menu-item-with-submenu" :class="{ 'active-submenu': mobileSubmenus[0] }">
             <span style="display: flex; align-items: center;">
               <img src="@/assets/img/products-desktop-icon.svg" alt="Productos" style="width: 20px; height: 20px; margin-right: 12px;">
               PRODUCTOS
@@ -457,7 +401,7 @@
             </router-link>
           </div>
 
-          <a @click.stop="toggleMobileSubmenu(1)" v-if="tree" class="mobile-menu-item mobile-menu-item-with-submenu">
+          <a @click.stop="toggleMobileSubmenu(1)" v-if="tree" class="mobile-menu-item mobile-menu-item-with-submenu" :class="{ 'active-submenu': mobileSubmenus[1] }">
             <span style="display: flex; align-items: center;">
               <i class="fa fa-users" style="width: 20px; margin-right: 12px;"></i>
               ORGANIZACIÓN
@@ -475,7 +419,7 @@
             </router-link>
           </div>
 
-          <a @click.stop="toggleMobileSubmenu(2)" v-if="tree" class="mobile-menu-item mobile-menu-item-with-submenu">
+          <a @click.stop="toggleMobileSubmenu(2)" v-if="tree" class="mobile-menu-item mobile-menu-item-with-submenu" :class="{ 'active-submenu': mobileSubmenus[2] }">
             <span style="display: flex; align-items: center;">
               <img src="@/assets/img/commissions-desktop-icon.svg" alt="Comisiones" style="width: 20px; height: 20px; margin-right: 12px;">
               COMISIONES
@@ -497,7 +441,7 @@
             </router-link>
           </div>
 
-          <a @click.stop="toggleMobileSubmenu(3)" v-if="tree && office_id == null" class="mobile-menu-item mobile-menu-item-with-submenu">
+          <a @click.stop="toggleMobileSubmenu(3)" v-if="tree && office_id == null" class="mobile-menu-item mobile-menu-item-with-submenu" :class="{ 'active-submenu': mobileSubmenus[3] }">
             <span style="display: flex; align-items: center;">
               <img src="@/assets/img/summary-desktop-icon.svg" alt="Resumen" style="width: 20px; height: 20px; margin-right: 12px;">
               RESUMEN
@@ -518,34 +462,6 @@
               <span>CIERRES</span>
             </router-link>
           </div>
-
-          <a @click.stop="toggleMobileSubmenu(4)" v-if="office_id == null && affiliated" class="mobile-menu-item mobile-menu-item-with-submenu">
-            <span style="display: flex; align-items: center;">
-              <i class="fas fa-tools" style="width: 20px; margin-right: 12px;"></i>
-              HERRAMIENTAS
-            </span>
-            <i class="fa fa-angle-down" :class="{ 'rotated': mobileSubmenus[4] }"></i>
-          </a>
-          <div class="mobile-submenu" :class="{ 'active': mobileSubmenus[4] }" v-if="office_id == null && affiliated">
-            <router-link to="/flyer-editor" @click.native="handleNavigationClickAndClose" class="mobile-submenu-item">
-              <i class="fas fa-image"></i>
-              <span>EDITOR DE FLYER</span>
-            </router-link>
-            <router-link to="/whatsapp-link-generator" @click.native="handleNavigationClickAndClose" class="mobile-submenu-item">
-              <i class="fab fa-whatsapp"></i>
-              <span>GENERADOR DE LINKS DE WHATSAPP</span>
-            </router-link>
-          </div>
-
-          <router-link
-            to="/tools"
-            @click.native="handleNavigationClickAndClose"
-            v-if="office_id == null && affiliated"
-            class="mobile-menu-item"
-          >
-            <img src="@/assets/img/education-desktop-icon.svg" alt="Educación" style="width: 20px; height: 20px; margin-right: 12px;">
-            <span>EDUCACIÓN</span>
-          </router-link>
 
           <router-link
             to="/profile"
@@ -616,7 +532,6 @@ export default {
       photoState: "default",
       photoFile: null,
       c_affiliation_link: false,
-      c_token_code: false,
       activeProduct: false,
       startX: 0,
       endX: 0,
@@ -1005,19 +920,6 @@ export default {
         setTimeout(() => (this.c_affiliation_link = false), 4000);
       }
     },
-    copy_token_code() {
-      const tokenInput = document.querySelector('.header-code-button');
-      if (tokenInput && this.token) {
-        const tempInput = document.createElement('input');
-        tempInput.value = this.token;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
-        this.c_token_code = true;
-        setTimeout(() => (this.c_token_code = false), 4000);
-      }
-    },
     startTouch(event) {
       this.startX = event.touches[0].clientX; // Guardar la posición inicial del toque
     },
@@ -1281,14 +1183,14 @@ export default {
   padding-top: 0;
 }
 
-.mobile-tabs-header {
+.mobile-tabs-header-inner {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 28px 20px 12px 20px;
+  padding: 28px 0 20px 0;
   border-bottom: none;
-  background: #D209B6;
   position: relative;
+  margin-bottom: 8px;
 }
 
 .mobile-menu-user-info {
@@ -1325,24 +1227,25 @@ export default {
   margin-top: 2px;
 }
 
-.mobile-tabs-header i {
+.mobile-tabs-header-inner i {
   color: white;
   font-size: 24px;
   cursor: pointer;
   padding: 8px;
   position: absolute;
   top: 28px;
-  right: 20px;
+  right: 0;
   z-index: 10;
   transition: opacity 0.3s ease;
 }
 
 .mobile-tabs-content {
   flex: 1;
-  padding: 20px;
+  padding: 0 20px 20px 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  background: linear-gradient(135deg, #021F59 0%, #0339A6 50%, #021F59 100%);
 }
 
 .mobile-menu-item {
@@ -1350,7 +1253,7 @@ export default {
   align-items: center;
   gap: 16px;
   padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.1);
+  background: #021F59;
   border-radius: 10px;
   color: white;
   font-size: 16px;
@@ -1364,8 +1267,8 @@ export default {
 
 .mobile-menu-item:hover,
 .mobile-menu-item.router-link-active {
-  background: rgba(159, 0, 173, 0.5);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: #0476D9;
+  border-radius: 12px;
 }
 
 .mobile-menu-item-with-submenu i.fa-angle-down {
@@ -1375,6 +1278,11 @@ export default {
 
 .mobile-menu-item-with-submenu i.fa-angle-down.rotated {
   transform: rotate(180deg);
+}
+
+.mobile-menu-item-with-submenu.active-submenu {
+  background: #0476D9;
+  border-radius: 12px;
 }
 
 .mobile-menu-item-logout {
@@ -1399,7 +1307,7 @@ export default {
   align-items: center;
   gap: 12px;
   padding: 12px 20px;
-  background: rgba(255, 255, 255, 0.05);
+  background: #021F59;
   border-radius: 8px;
   color: white;
   font-size: 14px;
@@ -1410,7 +1318,7 @@ export default {
 
 .mobile-submenu-item:hover,
 .mobile-submenu-item.router-link-active {
-  background: rgba(159, 0, 173, 0.4);
+  background: #0476D9;
 }
 
 .mobile-submenu-item i {
@@ -1454,10 +1362,6 @@ export default {
 }
 
 /* Logo responsive */
-.logo-mobile {
-  display: none;
-}
-
 .logo-desktop {
   display: block;
 }
@@ -1490,10 +1394,6 @@ export default {
 
 /* Estilos para móvil */
 @media (max-width: 767px) {
-  .logo-mobile {
-    display: block;
-  }
-
   .logo-desktop {
     display: none;
   }
@@ -1572,9 +1472,6 @@ export default {
     padding: 0;
   }
 
-  .header-code-button {
-    position: relative;
-  }
 }
 
 </style>

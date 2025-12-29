@@ -155,7 +155,7 @@ body, .app
         align-items center
         justify-content: space-between;
         color #9f00ad
-        border-bottom: 2px solid #00796b;
+        border-bottom: 2px solid #0339A6;
         .social
           font-size 20px
           margin-left 20px
@@ -169,8 +169,16 @@ body, .app
     .app >section .content >header 
       display none
 
+  .red-header-text
+    display: none;
+    font-size: 24px;
+    font-weight: 500;
+    color: #021F59;
+    font-family: 'Inter', sans-serif;
+    margin-right: auto;
+  
   .share-button
-    background-color: #D209B6;
+    background-color: #021F59;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -200,7 +208,7 @@ body, .app
     display: flex;
     justify-content: space-around;
     border-top: solid 1px;
-    background #D209B6
+    background linear-gradient(to right, #021F59 0%, #0339A6 50%, #021F59 100%)
 
     a 
       display flex  
@@ -221,11 +229,20 @@ body, .app
 // Cuando hay un modal de producto abierto, resetear el transform del content
 // Solo aplicar en móvil donde el transform afecta (menor a 768px)
 @media (max-width: 767px)
+  .app > header
+    background linear-gradient(to right, #021F59 0%, #0339A6 50%, #021F59 100%)
   body.product-modal-open .app > section .content
     transform none !important
     transition none !important
 
 @media (min-width: d-break)
+  .content > header
+    position: relative;
+  .red-header-text
+    display: block;
+    position: absolute;
+    left: 40px;
+    order: -1;
   .app
     >header
       display none
@@ -254,13 +271,23 @@ body, .app
   min-width 40%
   //height auto // Asegura que el sidebar ocupe toda la altura de la vista
   transform translate(-100%, 0)
+  font-family 'Inter', sans-serif
 
-  background #d209b6;
+  background linear-gradient(180deg, #021F59 0%, #0339A6 50%, #021F59 100%)
+  box-shadow 4px 2px 11.2px 0px rgba(114, 55, 2, 0.25)
+  
+  .text-header
+    font-family 'Inter', sans-serif
+  
+  .text-header + a
+    margin-top 150px
+  
   a
-    background  #d209b633
+    background  #021F59
     display block
     color white
     font-size 14px
+    font-family 'Inter', sans-serif
     padding 16px
     border: 1px solid transparent // Borde transparente por defecto
     margin-bottom: 20px
@@ -272,12 +299,12 @@ body, .app
       margin-right 10px
 
     &:hover
-      background: #9f00ad
+      background: #0476D9
       border-radius: 12px;
       align-items: center;
 
     &.router-link-active
-      background: #9f00ad
+      background: #0476D9
       border-radius: 12px;
       align-items: center;
       
@@ -290,15 +317,17 @@ body, .app
 
 .sub-menu
   display none
+  font-family 'Inter', sans-serif
   a
     font-size 10px
+    font-family 'Inter', sans-serif
     padding 12px
     padding-left 32px
-    background: #d209b6
+    background: #021F59
     transition: background-color 0.3s ease
 
     &:hover
-      background: #9f00ad
+      background: #0476D9
 
     i
       width 12.5px

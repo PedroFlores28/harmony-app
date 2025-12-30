@@ -271,7 +271,7 @@
 
       <div class="content">
         <header>
-          <p style="font-weight: bold; font-size: 20px">{{ title }}</p>
+          <p style="font-weight: bold; font-size: 20px; color: #021F59;">{{ title }}</p>
           <div
           style="
               display: flex;
@@ -1190,7 +1190,7 @@ export default {
   padding: 28px 0 20px 0;
   border-bottom: none;
   position: relative;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .mobile-menu-user-info {
@@ -1244,7 +1244,7 @@ export default {
   padding: 0 20px 20px 20px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   background: linear-gradient(135deg, #021F59 0%, #0339A6 50%, #021F59 100%);
 }
 
@@ -1252,7 +1252,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 16px 20px;
+  padding: 12px 16px;
   background: #021F59;
   border-radius: 10px;
   color: white;
@@ -1286,7 +1286,7 @@ export default {
 }
 
 .mobile-menu-item-logout {
-  background: rgba(159, 0, 173, 0.8) !important;
+  background: #0476D9 !important;
   margin-top: 8px;
 }
 
@@ -1296,6 +1296,10 @@ export default {
   transition: max-height 0.3s ease;
   margin-left: 20px;
   margin-bottom: 0;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .mobile-submenu.active {
@@ -1306,7 +1310,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 20px;
+  padding: 10px 16px;
   background: #021F59;
   border-radius: 8px;
   color: white;

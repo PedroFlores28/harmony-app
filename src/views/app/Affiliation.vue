@@ -902,7 +902,7 @@ export default {
         });
     },
     title() {
-      return "Productos";
+      return "Tienda Harmony";
     },
     total() {
       if (!this.products) return 0;

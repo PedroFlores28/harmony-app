@@ -22,16 +22,6 @@
       
       <!-- Contenido principal (siempre visible, pero opaco durante carga) -->
       <div class="tienda-sifrah-container" :class="{ 'content-loading': loading || !products || products.length === 0 }">
-        <!-- Header con título y barra de puntos -->
-        <div class="store-header">
-          <!-- Título principal de la tienda -->
-          <h1 class="store-title">Tienda Sifrah</h1>
-
-          <!-- Barra de puntos del usuario -->
-          <div class="points-bar">
-            <span class="points-icon">💎</span> Puntos: <b>{{ current_points }}</b>
-          </div>
-        </div>
         
         <!-- Sistema de banners con Grid - Izquierda separada, Derecha con centro integrado -->
         <div class="banners-grid-wrapper">
@@ -564,7 +554,7 @@ export default {
       );
     },
     title() {
-      return "Productos";
+      return "Tienda Harmony";
     },
     points() {
       return this.products.reduce((a, b) => a + b.points * b.total, 0);

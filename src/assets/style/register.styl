@@ -18,7 +18,7 @@ input[type="checkbox"]:checked
   font-size 21px
 
   &:hover
-    background #033a8a // Color de fondo al hacer hover
+    background #0476D9 // Color de fondo al hacer hover
 
 .tab-login
   font-size 15px
@@ -26,10 +26,14 @@ input[type="checkbox"]:checked
   text-decoration none
   padding 10px 20px
   border-bottom solid 2px rgba(137, 136, 141, 1)
+  transition all 0.3s ease
+
+  &:hover
+    color #0476D9
 
   &.active
-    color #4b2e12 // marrón oscuro
-    border-bottom solid 4px #ffb57a // barra amarilla más gruesa
+    color #021F59 // Azul oscuro de la app
+    border-bottom solid 4px #0476D9 // Azul claro activo
     font-weight bold
     position relative
 
@@ -41,7 +45,7 @@ input[type="checkbox"]:checked
       transform translateX(-50%)
       width 100% // Barra que cubre todo el ancho de la pestaña
       height 4px
-      background-color #FFD900
+      background-color #05AFF2 // Azul claro para la barra
       border-radius 2px
 
 @media (min-width: 1260px)

@@ -49,7 +49,7 @@
     <div v-if="selectedMode === 'red'">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h4>EQUIPO</h4>
-        <button @click="$router.push('/tree')" style="padding: 8px 16px; background: #00bcd4; border: none; border-radius: 6px; color: white;">
+        <button @click="$router.push('/tree')" style="padding: 8px 16px; background: #0476D9; border: none; border-radius: 6px; color: white;">
           Volver al selector
         </button>
       </div>
@@ -63,12 +63,12 @@
           <p style="margin-bottom: 8px; font-weight: bold;">Puntos por cada hijo:</p>
           <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
             <div v-for="(child, idx) in children" :key="child.id"
-                 style="background: #f0f7fa; border-radius: 12px; box-shadow: 0 2px 8px #00bcd420; padding: 12px 18px; min-width: 180px; display: flex; align-items: center; gap: 10px;">
-              <i class="fas fa-user-circle" style="font-size: 28px; color: #00bcd4;"></i>
+                 style="background: rgba(4, 118, 217, 0.1); border-radius: 12px; box-shadow: 0 2px 8px #0476D920; padding: 12px 18px; min-width: 180px; display: flex; align-items: center; gap: 10px;">
+              <i class="fas fa-user-circle" style="font-size: 28px; color: #0476D9;"></i>
               <div style="flex:1;">
                 <div style="font-weight: bold; color: #333; font-size: 15px;">{{ child.name }}</div>
                 <div style="color: #888; font-size: 13px;">
-                  Puntos grupales: <span style="color: #00bcd4; font-weight: bold;">{{ children_points[idx] }}</span>
+                  Puntos grupales: <span style="color: #0476D9; font-weight: bold;">{{ children_points[idx] }}</span>
                 </div>
               </div>
             </div> -->
@@ -364,7 +364,7 @@
     <div v-if="selectedMode === 'actividad'">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h3 style="color: #666;">Vista "{{ selectedMode }}" en construcción 🚧</h3>
-        <button @click="$router.push('/tree')" style="padding: 8px 16px; background: #00bcd4; border: none; border-radius: 6px; color: white;">
+        <button @click="$router.push('/tree')" style="padding: 8px 16px; background: #0476D9; border: none; border-radius: 6px; color: white;">
           Volver al selector
         </button>
       </div>
@@ -645,12 +645,12 @@ const TreeNode = {
         on: { click: this.handleSelect },
         style: {
           display: 'inline-block',
-          background: this.isSelected ? '#e0f7fa' : '#f8f9fa',
-          border: this.isSelected ? '2px solid #00bcd4' : '1px solid #ccc',
+          background: this.isSelected ? 'rgba(4, 118, 217, 0.1)' : '#f8f9fa',
+          border: this.isSelected ? '2px solid #0476D9' : '1px solid #ccc',
           borderRadius: '8px',
           padding: '8px 12px',
           minWidth: '120px',
-          boxShadow: this.isSelected ? '0 0 8px #00bcd4' : 'none',
+          boxShadow: this.isSelected ? '0 0 8px #0476D9' : 'none',
           cursor: 'pointer',
           position: 'relative',
         }
@@ -658,7 +658,7 @@ const TreeNode = {
         (this.node.childs && this.node.childs.length > 0) ?
           h('i', {
             class: ['fas', this.expanded ? 'fa-minus-square' : 'fa-plus-square'],
-            style: { cursor: 'pointer', marginRight: '6px', color: '#00bcd4', fontSize: '18px', position: 'absolute', left: '3px', top: '8px' },
+            style: { cursor: 'pointer', marginRight: '6px', color: '#0476D9', fontSize: '18px', position: 'absolute', left: '3px', top: '8px' },
             on: { click: this.expandNode }
           }) : null,
         h('i', { class: ['fas', 'fa-user-tie', { act: this.node.activated, aff: this.node.affiliated }], style: { fontSize: '24px', marginRight: '6px' } }),
@@ -666,15 +666,15 @@ const TreeNode = {
         h('span', { style: { fontWeight: 'bold', color: '#333' } }, this.node.name),
         h('br'),
         h('span', { style: { color: '#888', fontSize: '12px' } }, `Puntos personales: ${this.node.points}`),
-        (this.node.affiliation_points && this.node.affiliation_points > 0) ? h('span', { style: { color: '#ff9800', fontSize: '12px', marginLeft: '8px' } }, `Afiliación: ${this.node.affiliation_points}`) : null,
-        (this.node.total_points !== undefined) ? h('span', { style: { color: '#00bcd4', fontSize: '12px', marginLeft: '8px', fontWeight: 'bold' } }, `Total grupal: ${this.node.total_points}`) : null,
+        (this.node.affiliation_points && this.node.affiliation_points > 0) ? h('span', { style: { color: '#0476D9', fontSize: '12px', marginLeft: '8px' } }, `Afiliación: ${this.node.affiliation_points}`) : null,
+        (this.node.total_points !== undefined) ? h('span', { style: { color: '#0476D9', fontSize: '12px', marginLeft: '8px', fontWeight: 'bold' } }, `Total grupal: ${this.node.total_points}`) : null,
       ]),
-      this.loading ? h('div', { style: { color: '#00bcd4', fontSize: '12px', marginTop: '4px' } }, [
+      this.loading ? h('div', { style: { color: '#0476D9', fontSize: '12px', marginTop: '4px' } }, [
         h('i', { class: ['fas', 'fa-spinner', 'fa-spin'], style: { marginRight: '6px' } }), 'Cargando...']
       ) : null,
       // Mostrar el desglose de puntos por hijo debajo de los hijos expandidos
       (this.expanded && this.children_points && this.children_points.length > 0) ?
-        h('div', { style: { margin: '8px 0 8px 24px', fontSize: '13px', color: '#00bcd4' } }, [
+        h('div', { style: { margin: '8px 0 8px 24px', fontSize: '13px', color: '#0476D9' } }, [
           h(),
           h('ul', { style: { margin: '4px 0 0 0', padding: 0, listStyle: 'none' } },
             this.children_points.map((pts, idx) =>

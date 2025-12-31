@@ -25,7 +25,7 @@
     margin-bottom 50px
 
   .mode-selector .card
-    background white
+    background #05AFF226
     border none
     border-radius 10px
     padding 20px
@@ -45,32 +45,49 @@
 
   .card-text
     margin 0
-    color #333
-    font-weight 600
-    font-size 26px
+    color #3B3B3B
+    font-weight 700
+    font-size 20px
     letter-spacing 0.5px
-    margin-top 17px
+    margin-top 30px
+    font-family 'Roboto', sans-serif
     &.mobile
       font-size 20px !important
     &.mobile-small
       font-size 15px !important
 
+  // Ajustar textos de Niveles y Actividad para alinearlos con los otros
+  .card:has(img[alt="Niveles"]) .card-text,
+  .card:has(img[alt="Actividad"]) .card-text
+    margin-top 23px
+
   .mode-title
+    font-family 'Roboto', sans-serif
+    font-size 32px
+    font-weight 700
+    color #3B3B3B
     &.mobile
-      font-size 20px !important
+      font-size 30px !important
+      font-family 'Roboto', sans-serif !important
+      font-weight 700 !important
       margin-bottom 20px !important
     &.mobile-small
-      font-size 20px !important
+      font-size 30px !important
+      font-family 'Roboto', sans-serif !important
+      font-weight 700 !important
       margin-bottom 20px !important
 
   .card-icon
     display flex
     align-items center
     justify-content center
-    margin-top 10px
+    margin-top -5px
     svg
       width 60px
       height 60px
+    img[alt="Niveles"],
+    img[alt="Actividad"]
+      margin-top -10px
 
   .buttons-container
     display flex
@@ -100,8 +117,10 @@
     font-size 14px
 
   .btn-green
-    background #021F59
+    background #0476D9
     color white
+    font-family 'Inter', sans-serif
+    font-weight 600
     &:hover
       background #0476D9
       transform translateY(-2px)
@@ -112,6 +131,8 @@
     color white
     font-size 16px
     padding 14px 28px
+    font-family 'Inter', sans-serif
+    font-weight 500
     &:hover
       background #0476D9
       transform translateY(-2px)
@@ -252,14 +273,15 @@
     .cards-container
       display grid
       grid-template-columns repeat(2, 1fr)
-      gap 15px
-      max-width 350px
-      margin 0 auto 40px auto
+      gap 24px
+      max-width 400px
+      margin 50px auto 40px auto
+      padding 0 16px
     
     .mode-selector .card
-      width 140px
-      height 140px
-      padding 12px
+      width 165px
+      height 165px
+      padding 16px
     
     .card-text
       font-size 16px
@@ -274,7 +296,9 @@
       margin-bottom 20px
     
     .top-buttons
-      grid-template-columns repeat(2, 1fr)
+      display flex
+      flex-direction column
+      align-items center
       gap 15px
       max-width 350px
     
@@ -284,29 +308,38 @@
     
     .btn-orange
       font-size 14px
-      padding 12px 24px
+      padding 12px 30px
+      min-width 210px
 
   // Para móviles muy pequeños
   @media (max-width: 480px)
     .cards-container
-      gap 12px
-      max-width 300px
-      margin 0 auto 30px auto
+      gap 40px
+      max-width 340px
+      margin 50px auto 30px auto
+      padding 0 16px
     
     .mode-selector .card
-      width 120px
-      height 120px
-      padding 10px
+      width 150px
+      height 150px
+      padding 14px
     
     .card-text
-      font-size 14px
+      font-size 15px
       margin-top 6px
+    
+    // Bajar solo los títulos de Red y Frontales
+    .card:has(img[alt="Red"]) .card-text,
+    .card:has(img[alt="Frontales"]) .card-text
+      margin-top 12px
     
     .card-icon svg
       width 35px
       height 35px
     
     .mode-title
-      font-size 18px
+      font-size 30px
+      font-family 'Roboto', sans-serif
+      font-weight 700
       margin-bottom 15px
 

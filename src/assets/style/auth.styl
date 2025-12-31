@@ -305,8 +305,8 @@
             box-shadow none !important
             backdrop-filter none !important
             box-sizing border-box !important
-        
-      // Mostrar pestañas como en la imagen - diseño simple con subrayado
+      
+      // Mostrar pestañas igual que en login móvil - diseño simple con subrayado
       .auth-tabs
         display flex !important
         position fixed !important
@@ -316,18 +316,21 @@
         z-index 1001 !important
         background-color transparent !important
         border-radius 0 !important
-        width fit-content !important
+        width 100% !important
+        max-width 80% !important
         box-shadow none !important
-        gap 20px !important
+        gap 0 !important
+        margin 0 auto !important
+        justify-content center !important
         
         .tab
           width 170px !important
           height 70px !important
-          padding 12px 0 !important
+          padding 25px 0 0px 0 !important
           text-decoration none !important
           color #999 !important
           font-weight 600 !important
-          font-size 16px !important
+          font-size 15px !important
           background-color transparent !important
           display flex !important
           align-items center !important
@@ -341,11 +344,21 @@
           &.active
             background-color transparent !important
             color #021F59 !important
-            border-bottom 2px solid #05C7F2 !important
+            border-bottom 4px solid #05C7F2 !important
             font-weight bold !important
             
           &:hover
             color #021F59 !important
+      
+      @media (max-width: 480px)
+        .auth-tabs
+          top 5px !important
+          
+          .tab
+            width 120px !important
+            height 50px !important
+            font-size 12px !important
+        
   .welcome-title-form
     text-align center
     margin 25px 0 60px 0

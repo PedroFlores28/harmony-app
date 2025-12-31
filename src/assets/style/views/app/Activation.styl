@@ -1412,7 +1412,7 @@
 /* Sistema de banners con Grid - Izquierda separada, Derecha con centro integrado */
 .banners-grid-wrapper {
   display: grid;
-  grid-template-columns: 3.8fr 3.8fr; /* Dos columnas de igual proporción */
+  grid-template-columns: 2fr 1fr; /* Banner izquierdo más ancho, derecho más pequeño */
   gap: 15px;
   width: 100%;
   margin: 0;
@@ -1437,7 +1437,18 @@
 }
 
 .banner-left .banner-placeholder {
-  height: 400px;
+  height: 220px;
+  background: #E6F2FF !important;
+  border-radius: 12px;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.banner-left .banner-image-container {
+  height: 220px;
+  border-radius: 12px;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .banner-placeholder {
@@ -1461,71 +1472,45 @@
 /* Banner derecha con centro integrado - Columna derecha del grid */
 .banner-right-with-center {
   grid-column: 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Banners del centro más anchos, banner derecho más estrecho */
-  gap: 8px;
+  display: block;
   min-width: 0;
   position: relative;
-  align-items: start; /* Alinear todos los elementos al inicio */
+  align-self: stretch;
 }
 
-/* Columna de banners del centro uno debajo del otro */
+/* Ocultar banners del centro en desktop */
 .banner-center-column {
-  display flex
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-/*   grid-column: 1;
-  display: grid; */
-  grid-template-rows: 1fr 1fr; /* Dos filas iguales para los banners del centro */
-  gap: 4px; /* Gap más pequeño para que estén más juntos */
-  width: 100%;
-  position: relative;
-  align-items: stretch;
-  align-self: start; /* Alinear al inicio para que esté al mismo nivel */
+  display: none;
 }
 
-/* Banner centro superior */
-.banner-center-top {
-  grid-row: 1;
-  width: 100%;
- /* Altura uniforme con el resto */
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Banner centro inferior */
-.banner-center-bottom {
-  grid-row: 2;
-  width: 100%;
- /* Altura uniforme con el resto */
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Banner derecha principal */
+/* Banner derecho simple en desktop */
 .banner-right-main {
-  grid-column: 2;
   width: 100%;
-/* Banner principal */
+  height: 220px;
   position: relative;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: start; /* Alinear al inicio para que esté al mismo nivel */
+  border-radius: 12px;
 }
 
-/* Estilos para los placeholders de banners */
-.banner-center-top .banner-placeholder,
-.banner-center-bottom .banner-placeholder,
 .banner-right-main .banner-placeholder {
+  height: 220px;
+  background: #007BFF !important;
+  border-radius: 12px;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.banner-right-main .banner-image-container {
+  height: 220px;
+  border-radius: 12px;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
+/* Estilos para los placeholders de banners del centro (ocultos en desktop) */
+.banner-center-top .banner-placeholder,
+.banner-center-bottom .banner-placeholder {
   width: 100%;
   background: repeating-conic-gradient(
     #f0f0f0 0deg 90deg,
@@ -4420,7 +4405,14 @@
     grid-column: 1;
     grid-row: 1;
     width: 100%;
-/* Altura reducida para mejor proporción en móvil */
+  }
+  
+  .banner-left .banner-placeholder {
+    background: repeating-conic-gradient(
+      #f0f0f0 0deg 90deg,
+      #e0e0e0 90deg 180deg
+    );
+    background-size: 20px 20px;
   }
   
   .banner-right-with-center {
@@ -4429,24 +4421,32 @@
     display: grid;
     grid-template-columns: 1fr 1fr; /* Banners del centro y derecho lado a lado en móvil */
     gap: 8px;
-    width: 100%; /* Separación reducida para crear menos espacio visual */
+    width: 100%;
   }
   
   .banner-center-column {
     grid-column: 1;
     display: grid;
     grid-template-rows: 1fr 1fr;
-    gap: 6px; /* Gap más pequeño para mejor proporción */
+    gap: 6px;
   }
   
   .banner-center-top,
   .banner-center-bottom {
-    height: px; /* Altura reducida para móvil */
+    display: block;
   }
   
   .banner-right-main {
     grid-column: 2;
-/* Altura reducida que coincida con los dos banners del centro + gap */
+    width: 100%;
+  }
+  
+  .banner-right-main .banner-placeholder {
+    background: repeating-conic-gradient(
+      #f0f0f0 0deg 90deg,
+      #e0e0e0 90deg 180deg
+    );
+    background-size: 20px 20px;
   }
   
   /* Ajustar alturas de contenedores de imágenes en móvil */
@@ -5002,17 +5002,9 @@
 }
 
 /* Asegurar que las imágenes tengan las mismas dimensiones que los placeholders */
-.banner-left .banner-image-container {
-
-}
-
 .banner-center-top .banner-image-container,
 .banner-center-bottom .banner-image-container {
-
-}
-
-.banner-right-main .banner-image-container {
-
+  /* Estilos para banners del centro (ocultos en desktop) */
 }
 
 // Clase para deshabilitar scroll cuando el modal está abierto

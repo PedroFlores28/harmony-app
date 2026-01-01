@@ -251,7 +251,7 @@
         </div>
 
         <!-- Iconos de redes sociales -->
-        <div class="social" style="margin-top: -10px; margin-left: -20px;">
+        <div class="social" style="margin-top: -10px; margin-left: -10px;">
         <a
           class="social-icon facebook"
           :href="fb"

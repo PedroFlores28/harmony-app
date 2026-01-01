@@ -99,7 +99,7 @@ export default {
   background-color: #9f00ad; /* fondo base */
   border-radius: 0;
   width: fit-content;
-  z-index: 1000;
+  z-index: 10;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -116,7 +116,7 @@ export default {
     left: 50% !important;
     transform: translateX(-50%) !important;
     top: calc(30vh + 10px) !important; /* Posicionadas en la nueva línea divisoria */
-    z-index: 1001 !important; /* Por encima del contenido */
+    z-index: 10 !important; /* Reducido para que no pase por encima del formulario */
   }
 }
 
@@ -189,7 +189,8 @@ export default {
     justify-content: flex-start;
     padding-top: 60px; /* Espacio para las pestañas */
     padding-bottom: 8px;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     border-radius: 50px 50px 0 0 !important; /* Bordes más redondos en círculos */

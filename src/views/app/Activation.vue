@@ -552,6 +552,9 @@ export default {
 
     price() {
       // Suma el precio correcto según el plan
+      if (!this.products || !Array.isArray(this.products)) {
+        return 0;
+      }
       return this.products.reduce(
         (a, b) => a + this.getProductPrice(b) * b.total,
         0
@@ -561,10 +564,16 @@ export default {
       return "Tienda Harmony";
     },
     points() {
+      if (!this.products || !Array.isArray(this.products)) {
+        return 0;
+      }
       return this.products.reduce((a, b) => a + b.points * b.total, 0);
     },
     // commission() { return this.products.reduce((a, b) => a + (b.val ? b.val : b.price) * b.total, 0) },
     total() {
+      if (!this.products || !Array.isArray(this.products)) {
+        return 0;
+      }
       return this.products.reduce((a, b) => a + b.total, 0);
     },
 
@@ -1157,6 +1166,9 @@ export default {
       body.classList.remove('product-modal-open');
     },
     addToCart(product) {
+      if (!this.cartItems || !Array.isArray(this.cartItems)) {
+        this.cartItems = [];
+      }
       const existingItem = this.cartItems.find(item => item.id === product.id);
       if (existingItem) {
         existingItem.total += 1;
@@ -1167,15 +1179,26 @@ export default {
       this.$store.commit('setCartItems', [...this.cartItems]);
     },
     removeFromCart(index) {
+      if (!this.cartItems || !Array.isArray(this.cartItems)) {
+        this.cartItems = [];
+        return;
+      }
       this.cartItems.splice(index, 1);
       // Sincronizar con el store
       this.$store.commit('setCartItems', [...this.cartItems]);
     },
     getProductQuantity(product) {
+      if (!this.cartItems || !Array.isArray(this.cartItems)) {
+        return 0;
+      }
       const item = this.cartItems.find(item => item.id === product.id);
       return item ? item.total : 0;
     },
     increaseQuantity(product) {
+      if (!this.cartItems || !Array.isArray(this.cartItems)) {
+        this.cartItems = [];
+        return;
+      }
       const item = this.cartItems.find(item => item.id === product.id);
       if (item) {
         item.total += 1;
@@ -1184,6 +1207,10 @@ export default {
       }
     },
     decreaseQuantity(product) {
+      if (!this.cartItems || !Array.isArray(this.cartItems)) {
+        this.cartItems = [];
+        return;
+      }
       const item = this.cartItems.find(item => item.id === product.id);
       if (item && item.total > 0) {
         item.total -= 1;

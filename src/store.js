@@ -227,7 +227,8 @@ export default new Vuex.Store({
       }
     },
     setCartItems: (state, cartItems) => {
-      state.cartItems = cartItems
+      // Asegurar que cartItems siempre sea un array
+      state.cartItems = Array.isArray(cartItems) ? cartItems : [];
     },
     setAffiliationCheckout: (state, { total, points, plan }) => {
       state.affiliationTotal = total

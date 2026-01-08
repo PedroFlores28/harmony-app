@@ -303,7 +303,7 @@
                     </div>
                   </div>
                   
-                  <div v-if="cartItems.length === 0" class="empty-cart">
+                  <div v-if="safeCartItems.length === 0" class="empty-cart">
                     <i class="fas fa-shopping-cart"></i>
                     <p>Tu carrito está vacío</p>
                     <span>Agrega productos para comenzar</span>
@@ -329,7 +329,7 @@
                 </div>
                 
                 <div class="cart-actions">
-                  <button class="pay-btn" @click="goToCheckout" :disabled="cartItems.length === 0">
+                  <button class="pay-btn" @click="goToCheckout" :disabled="safeCartItems.length === 0">
                     Ir a Pagar
                   </button>
                   <button class="view-detail-btn" @click="openCartDetailModal">
@@ -436,7 +436,7 @@
                 </div>
               </div>
               
-              <div v-if="cartItems.length === 0" class="empty-cart-detail">
+              <div v-if="safeCartItems.length === 0" class="empty-cart-detail">
                 <i class="fas fa-shopping-cart"></i>
                                   <p>Tu carrito está vacío</p>
                   <span>Agregar productos para comenzar</span>
@@ -466,7 +466,7 @@
             
             <!-- Botones de acción -->
             <div class="cart-detail-actions">
-              <button class="go-to-pay-btn" @click="goToCheckout" :disabled="cartItems.length === 0">
+              <button class="go-to-pay-btn" @click="goToCheckout" :disabled="safeCartItems.length === 0">
                 Ir a Pagar
               </button>
               <button class="add-more-products-btn" @click="closeCartDetailModal">
@@ -544,6 +544,10 @@ export default {
     },
     office_id() {
       return this.$store.state.office_id;
+    },
+    // Computed property seguro para cartItems
+    safeCartItems() {
+      return Array.isArray(this.$store.state.cartItems) ? this.$store.state.cartItems : [];
     },
 
     price() {
@@ -750,8 +754,13 @@ export default {
       
       // Restaurar el carrito desde el store si existe
       const savedCartItems = this.$store.state.cartItems;
-      if (savedCartItems && savedCartItems.length > 0) {
+      if (savedCartItems && Array.isArray(savedCartItems) && savedCartItems.length > 0) {
         this.cartItems = [...savedCartItems];
+      }
+      
+      // Asegurar que cartItems siempre sea un array
+      if (!Array.isArray(this.cartItems)) {
+        this.cartItems = [];
       }
       
       // Inicializar categorías seleccionadas por defecto
@@ -1193,7 +1202,7 @@ export default {
     },
     proceedToCheckout() {
       // Validar que hay productos en el carrito
-      if (this.cartItems.length === 0) {
+      if (this.safeCartItems.length === 0) {
         this.error = "No hay productos en el carrito. Agrega productos antes de continuar.";
         return;
       }
@@ -1312,7 +1321,7 @@ export default {
     
     // Método para verificar el estado del carrito
     checkCartStatus() {
-      if (this.cartItems.length === 0) {
+      if (this.safeCartItems.length === 0) {
         return {
           status: 'empty',
           message: 'Tu carrito está vacío. Agrega productos para continuar.',
@@ -1350,15 +1359,20 @@ export default {
     next(vm => {
       // Restaurar el carrito desde el store si existe
       const savedCartItems = vm.$store.state.cartItems;
-      if (savedCartItems && savedCartItems.length > 0) {
+      if (savedCartItems && Array.isArray(savedCartItems) && savedCartItems.length > 0) {
         vm.cartItems = [...savedCartItems];
+      }
+      
+      // Asegurar que cartItems siempre sea un array
+      if (!Array.isArray(vm.cartItems)) {
+        vm.cartItems = [];
       }
     });
   },
   
   beforeRouteLeave(to, from, next) {
     // Guardar el estado del carrito en el store antes de salir
-    if (this.cartItems.length > 0) {
+    if (this.safeCartItems.length > 0) {
       this.$store.commit('setCartItems', this.cartItems);
     }
     next();

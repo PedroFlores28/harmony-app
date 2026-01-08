@@ -240,7 +240,7 @@
                       <div class="category-buttons">
                         <button 
                           @click="selectedCategories = []"
-                          :class="{ active: selectedCategories.length === 0 }"
+                          :class="{ active: !selectedCategories || !Array.isArray(selectedCategories) || selectedCategories.length === 0 }"
                           class="category-btn"
                         >
                           Todos
@@ -499,7 +499,7 @@
                   </div>
                 </div>
 
-                <div v-if="cartItems.length === 0" class="empty-cart-detail">
+                <div v-if="!cartItems || !Array.isArray(cartItems) || cartItems.length === 0" class="empty-cart-detail">
                   <i class="fas fa-shopping-cart"></i>
                   <p>Tu carrito está vacío</p>
                   <span>Agregar productos para comenzar</span>
@@ -1048,7 +1048,7 @@ export default {
           return category.toUpperCase();
         });
         
-        const matchesCategory = this.selectedCategories.length === 0 || originalSelectedCategories.includes(product.type);
+        const matchesCategory = !this.selectedCategories || !Array.isArray(this.selectedCategories) || this.selectedCategories.length === 0 || originalSelectedCategories.includes(product.type);
         
         return matchesSearch && matchesCategory;
       });
@@ -1056,7 +1056,7 @@ export default {
 
     filteredCatalogProducts() {
       // Si no hay productos filtrados, mostrar todos los productos
-      const productsToShow = this.catalogProducts.length > 0 ? this.catalogProducts : this.products;
+      const productsToShow = (this.catalogProducts && Array.isArray(this.catalogProducts) && this.catalogProducts.length > 0) ? this.catalogProducts : this.products;
       
       return productsToShow || [];
     },
@@ -1116,7 +1116,7 @@ export default {
 
       // Usar directamente los planes que llegan del backend
       this.plans = data.plans || [];
-      if (this.plans.length > 0) {
+      if (this.plans && Array.isArray(this.plans) && this.plans.length > 0) {
         this.selec_plan = this.plans[0];
       }
 
@@ -1132,10 +1132,10 @@ export default {
           },
         }));
 
-        if (this.products.length > 0) {
+        if (this.products && Array.isArray(this.products) && this.products.length > 0) {
           this.product = this.products[0];
           // Set initial tab if categories exist
-          if (this.categories && this.categories.length > 0) {
+          if (this.categories && Array.isArray(this.categories) && this.categories.length > 0) {
             this.tab = this.categories[0];
           }
         }
@@ -1255,7 +1255,7 @@ export default {
         
         // Cargar datos específicos para la afiliación
         this.plans = data.plans || [];
-        if (this.plans.length > 0) {
+        if (this.plans && Array.isArray(this.plans) && this.plans.length > 0) {
           this.selec_plan = this.plans[0];
         }
         
@@ -1271,10 +1271,10 @@ export default {
             },
           }));
           
-          if (this.products.length > 0) {
+          if (this.products && Array.isArray(this.products) && this.products.length > 0) {
             this.product = this.products[0];
             // Set initial tab if categories exist
-            if (this.categories && this.categories.length > 0) {
+            if (this.categories && Array.isArray(this.categories) && this.categories.length > 0) {
               this.tab = this.categories[0];
             }
           }
@@ -1734,8 +1734,8 @@ export default {
         }
         
         // Validar que se hayan seleccionado productos
-        const selectedProducts = this.products.filter(p => p.total > 0);
-        if (selectedProducts.length === 0) {
+        const selectedProducts = this.products && Array.isArray(this.products) ? this.products.filter(p => p.total > 0) : [];
+        if (!selectedProducts || selectedProducts.length === 0) {
           this.selectError = "Debes seleccionar al menos un producto";
           return;
         }
@@ -1745,7 +1745,7 @@ export default {
           return !product.plans || !product.plans[this.selec_plan.id];
         });
         
-        if (invalidProducts.length > 0) {
+        if (invalidProducts && Array.isArray(invalidProducts) && invalidProducts.length > 0) {
           this.selectError = `Los productos ${invalidProducts.map(p => p.name).join(', ')} no están disponibles para el plan ${this.selec_plan.name}`;
           return;
         }

@@ -2,7 +2,7 @@
   <App :session="session" :office_id="office_id" :title="title">
     <div v-cloak>
       <!-- Loading overlay que muestra la vista opaca -->
-      <div v-if="loading || !products || products.length === 0" class="loading-overlay">
+      <div v-if="loading || !products || (Array.isArray(products) && products.length === 0)" class="loading-overlay">
         <div class="loading-container">
           <div class="sifrah-logo-loading">
             <i class="fas fa-store"></i>
@@ -10,10 +10,10 @@
           <div class="loading-spinner-large"></div>
           <h2 v-if="loading">Cargando Tienda Sifrah...</h2>
           <h2 v-else-if="!products">Inicializando catálogo...</h2>
-          <h2 v-else-if="products && products.length === 0">No hay productos disponibles</h2>
+          <h2 v-else-if="products && Array.isArray(products) && products.length === 0">No hay productos disponibles</h2>
           <p v-if="loading">Preparando el mejor catálogo para ti</p>
           <p v-else-if="!products">Configurando productos y ofertas</p>
-          <p v-else-if="products && products.length === 0">Contacta al administrador para agregar productos</p>
+          <p v-else-if="products && Array.isArray(products) && products.length === 0">Contacta al administrador para agregar productos</p>
           <div v-if="error" class="error-message">
             {{ error }}
           </div>
@@ -21,7 +21,7 @@
       </div>
       
       <!-- Contenido principal (siempre visible, pero opaco durante carga) -->
-      <div class="tienda-sifrah-container" :class="{ 'content-loading': loading || !products || products.length === 0 }">
+      <div class="tienda-sifrah-container" :class="{ 'content-loading': loading || !products || (Array.isArray(products) && products.length === 0) }">
         
         <!-- Sistema de banners con Grid - Izquierda separada, Derecha con centro integrado -->
         <div class="banners-grid-wrapper">
@@ -89,7 +89,7 @@
               <button 
                 @click="clearAllFilters"
                 class="clear-filters-btn"
-                v-if="searchTerm || (selectedCategories.length > 0 && !selectedCategories.includes('Todos'))"
+                v-if="searchTerm || (selectedCategories && Array.isArray(selectedCategories) && selectedCategories.length > 0 && !selectedCategories.includes('Todos'))"
               >
                 <i class="fas fa-times"></i> Limpiar
               </button>
@@ -139,7 +139,7 @@
                         <button 
                           @click="clearAllFilters"
                           class="clear-filters-btn"
-                          v-if="searchTerm || (selectedCategories.length > 0 && !selectedCategories.includes('Todos'))"
+                          v-if="searchTerm || (selectedCategories && Array.isArray(selectedCategories) && selectedCategories.length > 0 && !selectedCategories.includes('Todos'))"
                         >
                           <i class="fas fa-times"></i> Limpiar
                         </button>
@@ -175,7 +175,7 @@
                     <!-- Indicador de productos mostrados -->
                     <div class="products-count-indicator">
                       <span>Mostrando {{ filteredCatalogProducts.length }} de {{ products.length }} productos</span>
-                      <span v-if="searchTerm || (selectedCategories.length > 0 && !selectedCategories.includes('Todos'))" class="filter-active">
+                      <span v-if="searchTerm || (selectedCategories && Array.isArray(selectedCategories) && selectedCategories.length > 0 && !selectedCategories.includes('Todos'))" class="filter-active">
                         (filtros activos)
                       </span>
                     </div>
@@ -620,7 +620,7 @@ export default {
         
         // Filtro por categoría
         let matchesCategory = true;
-        if (this.selectedCategories.length > 0 && !this.selectedCategories.includes("Todos")) {
+        if (this.selectedCategories && Array.isArray(this.selectedCategories) && this.selectedCategories.length > 0 && !this.selectedCategories.includes("Todos")) {
           matchesCategory = this.selectedCategories.includes(product.type);
         }
         
@@ -630,12 +630,12 @@ export default {
 
     filteredCatalogProducts() {
       // Si está cargando o no hay productos, retornar array vacío
-      if (this.loading || !this.products || this.products.length === 0) {
+      if (this.loading || !this.products || !Array.isArray(this.products) || this.products.length === 0) {
         return [];
       }
       
       // Si no hay productos filtrados, mostrar todos los productos
-      const productsToShow = this.catalogProducts.length > 0 ? this.catalogProducts : this.products;
+      const productsToShow = this.catalogProducts && Array.isArray(this.catalogProducts) && this.catalogProducts.length > 0 ? this.catalogProducts : this.products;
       
       return productsToShow.map(product => {
         const cartItem = this.cartItems.find(item => item.id === product.id);
@@ -693,7 +693,7 @@ export default {
     },
     products: {
       handler(newProducts) {
-        if (newProducts && newProducts.length > 0) {
+        if (newProducts && Array.isArray(newProducts) && newProducts.length > 0) {
           // Reinicializar categorías cuando cambien los productos
           this.initializeDefaultCategories();
         }
@@ -731,8 +731,8 @@ export default {
 
       this.current_points = data.points || 0;
       this.current_profit = data.profit || 0;
-      this.products = data.products ? data.products.map((a) => ({ ...a, total: 0 })) : [];
-      this.product = this.products.length > 0 ? this.products[0] : null;
+      this.products = data.products && Array.isArray(data.products) ? data.products.map((a) => ({ ...a, total: 0 })) : [];
+      this.product = this.products && Array.isArray(this.products) && this.products.length > 0 ? this.products[0] : null;
 
       this.balance = data.balance || 0;
       this._balance = data._balance || 0;
@@ -892,8 +892,8 @@ export default {
       } = this;
 
       // Validación de productos y oficina
-      const productosSeleccionados = this.products.filter(p => p.total > 0);
-      if (productosSeleccionados.length === 0) {
+      const productosSeleccionados = this.products && Array.isArray(this.products) ? this.products.filter(p => p.total > 0) : [];
+      if (!productosSeleccionados || productosSeleccionados.length === 0) {
         this.error = "No hay productos seleccionados";
         return;
       }
@@ -1123,7 +1123,7 @@ export default {
         }
         
         // Si no hay categorías seleccionadas, mostrar todos
-        if (this.selectedCategories.length === 0) {
+        if (!this.selectedCategories || !Array.isArray(this.selectedCategories) || this.selectedCategories.length === 0) {
           this.selectedCategories = [];
         }
       }

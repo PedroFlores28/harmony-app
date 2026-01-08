@@ -619,7 +619,7 @@
                     <div v-if="loadingPaymentMethods" class="loading-methods">
                       <span>Cargando métodos de pago...</span>
                     </div>
-                    <div v-else-if="paymentMethods.length === 0" class="no-methods">
+                    <div v-else-if="!paymentMethods || !Array.isArray(paymentMethods) || paymentMethods.length === 0" class="no-methods">
                       <span>No hay métodos de pago disponibles</span>
                     </div>
                     <div 
@@ -960,7 +960,7 @@ export default {
     },
     
     canProcessOrder() {
-      return this.cartItems.length > 0 && ((this.check && this.remaining === 0) || this.pay_method);
+      return this.cartItems && Array.isArray(this.cartItems) && this.cartItems.length > 0 && ((this.check && this.remaining === 0) || this.pay_method);
     },
     
     selectedOffice() {
@@ -1775,7 +1775,7 @@ export default {
         }
 
         // Validaciones finales antes de enviar
-        if (this.cartItems.length === 0) {
+        if (!this.cartItems || !Array.isArray(this.cartItems) || this.cartItems.length === 0) {
           this.activationError = 'No hay productos en el carrito.';
           this.sending = false;
           return;
@@ -1825,7 +1825,7 @@ export default {
           } else {
             // Para afiliación, si no hay pickup, usar la primera oficina disponible o null
             // El endpoint de afiliación puede manejar office como null
-            if (this.offices && this.offices.length > 0) {
+            if (this.offices && Array.isArray(this.offices) && this.offices.length > 0) {
               officeId = this.offices[0].id;
             }
           }
@@ -1960,7 +1960,7 @@ export default {
     document.body.scrollTop = 0;
     
     // Verificar si hay productos en el carrito
-    if (this.cartItems.length === 0) {
+    if (!this.cartItems || !Array.isArray(this.cartItems) || this.cartItems.length === 0) {
       this.$router.push('/activation');
     }
     

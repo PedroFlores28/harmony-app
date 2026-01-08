@@ -21,13 +21,15 @@
         <span v-if="country == 'Costa Rica'" style="font-size: 28px;">🇨🇷</span>
           &nbsp;&nbsp;&nbsp;SUEÑA SIN LIMITES
       </h3>-->
-      <div class="header-left">
+      <div class="header-left" style="display: flex; align-items: center; gap: 10px; margin-left: 20px;">
         <!-- Logo para desktop -->
         <img
-          src="../../assets/img/logo/logo-sifrah-BLANCO.png"
+          src="/faviconn.jpg"
           alt=""
           class="logo logo-desktop"
+          style="height: 40px; border-radius: 8px;"
         />
+        <span class="brand-text" style="color: white; font-weight: bold; font-size: 1.5rem;">Harmony</span>
       </div>
       
       <div class="header-center" v-if="office_id == null">
@@ -159,7 +161,7 @@
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: activeProduct === 0 ? '#0476D9' : '',
+            backgroundColor: activeProduct === 0 ? '#5C0F39' : '',
           }"
         >
           <span> <img src="@/assets/img/products-desktop-icon.svg" alt="Productos" style="width: 16px; height: 16px; margin-right: 8px;"> PRODUCTOS </span>
@@ -184,7 +186,7 @@
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: activeProduct === 1 ? '#0476D9' : '',
+            backgroundColor: activeProduct === 1 ? '#5C0F39' : '',
           }"
         >
           <span> <i class="fa fa-users"></i> ORGANIZACIÓN </span>
@@ -209,7 +211,7 @@
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: activeProduct === 2 ? '#0476D9' : '',
+            backgroundColor: activeProduct === 2 ? '#5C0F39' : '',
           }"
         >
           <span> <img src="@/assets/img/commissions-desktop-icon.svg" alt="Comisiones" style="width: 16px; height: 16px; margin-right: 8px;"> COMISIONES </span>
@@ -237,7 +239,7 @@
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: activeProduct === 3 ? '#0476D9' : '',
+            backgroundColor: activeProduct === 3 ? '#5C0F39' : '',
           }"
         >
           <span> <img src="@/assets/img/summary-desktop-icon.svg" alt="Resumen" style="width: 16px; height: 16px; margin-right: 8px;"> RESUMEN </span>
@@ -264,14 +266,14 @@
         </router-link>
 
         <br />
-        <a @click="logout" style="background-color: #0476D9">
+        <a @click="logout" style="background-color: #5C0F39">
           <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
         </a>
       </div>
 
       <div class="content">
         <header>
-          <p style="font-weight: bold; font-size: 20px; color: #021F59;">{{ title }}</p>
+          <p style="font-weight: bold; font-size: 20px; color: #450B2B;">{{ title }}</p>
           <div
           style="
               display: flex;
@@ -1175,7 +1177,7 @@ export default {
 .mobile-tabs-menu {
   width: 100%;
   height: 100%;
-  background: #D209B6;
+  background: #450B2B;
   display: flex;
   flex-direction: column;
   animation: slideUp 0.3s ease;
@@ -1245,7 +1247,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: linear-gradient(135deg, #021F59 0%, #0339A6 50%, #021F59 100%);
+  background: linear-gradient(135deg, #450B2B 0%, #5C0F39 50%, #450B2B 100%);
 }
 
 .mobile-menu-item {
@@ -1253,7 +1255,7 @@ export default {
   align-items: center;
   gap: 16px;
   padding: 12px 16px;
-  background: #021F59;
+  background: #450B2B;
   border-radius: 10px;
   color: white;
   font-size: 16px;
@@ -1267,7 +1269,7 @@ export default {
 
 .mobile-menu-item:hover,
 .mobile-menu-item.router-link-active {
-  background: #0476D9;
+  background: #5C0F39;
   border-radius: 12px;
 }
 
@@ -1281,12 +1283,12 @@ export default {
 }
 
 .mobile-menu-item-with-submenu.active-submenu {
-  background: #0476D9;
+  background: #5C0F39;
   border-radius: 12px;
 }
 
 .mobile-menu-item-logout {
-  background: #0476D9 !important;
+  background: #5C0F39 !important;
   margin-top: 8px;
 }
 
@@ -1311,7 +1313,7 @@ export default {
   align-items: center;
   gap: 12px;
   padding: 10px 16px;
-  background: #021F59;
+  background: #450B2B;
   border-radius: 8px;
   color: white;
   font-size: 14px;
@@ -1322,7 +1324,7 @@ export default {
 
 .mobile-submenu-item:hover,
 .mobile-submenu-item.router-link-active {
-  background: #0476D9;
+  background: #5C0F39;
 }
 
 .mobile-submenu-item i {

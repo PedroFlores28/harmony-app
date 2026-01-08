@@ -4,11 +4,11 @@
       <!-- Loading overlay que muestra la vista opaca -->
       <div v-if="loading || !products || (Array.isArray(products) && products.length === 0)" class="loading-overlay">
         <div class="loading-container">
-          <div class="sifrah-logo-loading">
+          <div class="harmony-logo-loading">
             <i class="fas fa-store"></i>
           </div>
           <div class="loading-spinner-large"></div>
-          <h2 v-if="loading">Cargando Tienda Sifrah...</h2>
+          <h2 v-if="loading">Cargando Tienda Harmony...</h2>
           <h2 v-else-if="!products">Inicializando catálogo...</h2>
           <h2 v-else-if="products && Array.isArray(products) && products.length === 0">No hay productos disponibles</h2>
           <p v-if="loading">Preparando el mejor catálogo para ti</p>
@@ -21,7 +21,7 @@
       </div>
       
       <!-- Contenido principal (siempre visible, pero opaco durante carga) -->
-      <div class="tienda-sifrah-container" :class="{ 'content-loading': loading || !products || (Array.isArray(products) && products.length === 0) }">
+      <div class="tienda-harmony-container" :class="{ 'content-loading': loading || !products || (Array.isArray(products) && products.length === 0) }">
         
         <!-- Sistema de banners con Grid - Izquierda separada, Derecha con centro integrado -->
         <div class="banners-grid-wrapper">

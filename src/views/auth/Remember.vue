@@ -4,7 +4,7 @@
       <!-- Header -->
       <div class="remember-header">
         <div class="logo-container">
-          <img src="@/assets/img/logo/logo sifrah BLANCO LOGIN.svg" alt="Sifrah Logo" class="logo" />
+          <img src="/faviconn.jpg" alt="Harmony Logo" class="logo" />
         </div>
         <h1>¿Olvidaste tu contraseña?</h1>
         <p>No te preocupes, te ayudaremos a recuperarla</p>
@@ -290,9 +290,9 @@ export default {
 
 .form-group input:focus {
   outline: none;
-  border-color: #ffd200;
+  border-color: #5C0F39;
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(255, 210, 0, 0.1);
+  box-shadow: 0 0 0 3px rgba(92, 15, 57, 0.1);
 }
 
 .form-group input.error {
@@ -309,8 +309,8 @@ export default {
 .submit-btn {
   width: 100%;
   padding: 14px 20px;
-  background: linear-gradient(135deg, #ffd200 0%, #f7971e 100%);
-  color: #333;
+  background: #450B2B;
+  color: white;
   border: none;
   border-radius: 8px;
   font-size: 16px;
@@ -325,7 +325,7 @@ export default {
 
 .submit-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 210, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(92, 15, 57, 0.3);
 }
 
 .submit-btn:disabled {
@@ -353,7 +353,7 @@ export default {
 }
 
 .help-links a:hover {
-  color: #f7971e;
+  color: #5C0F39;
 }
 
 .back-link {
@@ -361,7 +361,7 @@ export default {
 }
 
 .register-link {
-  color: #f7971e !important;
+  color: #5C0F39 !important;
 }
 
 /* Estados de carga, éxito y error */
@@ -380,7 +380,7 @@ export default {
   width: 60px;
   height: 60px;
   border: 4px solid #e9ecef;
-  border-top: 4px solid #ffd200;
+  border-top: 4px solid #5C0F39;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 20px;
@@ -463,8 +463,8 @@ export default {
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, #ffd200 0%, #f7971e 100%);
-  color: #333;
+  background: #450B2B;
+  color: white;
 }
 
 .secondary-btn {

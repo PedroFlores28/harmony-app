@@ -96,7 +96,7 @@ export default {
   top: 0;
   left: 60%;
   display: flex;
-  background-color: #9f00ad; /* fondo base */
+  background-color: #450B2B; /* fondo base */
   border-radius: 0;
   width: fit-content;
   z-index: 10;
@@ -141,7 +141,7 @@ export default {
   text-decoration: none;
   color: #FFFFFF;
   font-weight: bold;
-  background-color: #0339A6;
+  background-color: #450B2B;
   display: flex; /* Para centrar el texto */
   align-items: center; /* Centrar verticalmente */
   justify-content: center;
@@ -154,8 +154,8 @@ export default {
   border-bottom-right-radius: 0;
 }
 .tab.active {
-  background-color: #05C7F2;
-  color: #021F59;
+  background-color: #BE9FB0;
+  color: #450B2B;
 }
 
 .form {

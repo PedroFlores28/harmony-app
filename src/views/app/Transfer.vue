@@ -9,7 +9,7 @@
     </h4>
     <div class="transfer-soft-bg">
       <section class="transfer-soft-section">
-        <h4 class="transfer-title">MONEDERO SIFRAH</h4>
+        <h4 class="transfer-title">MONEDERO HARMONY</h4>
         <Spinner v-if="loading" :size="40" :color="'#086eb6'" />
         <div v-if="!loading">
           <form
@@ -269,7 +269,7 @@ export default {
   font-size: 1.18rem;
   font-weight: 600;
   color: #fff;
-  background: #9F00AD;
+  background: #BE9FB0;
   border-radius: 18px;
   padding: 10px 28px;
   margin: 0 6px;
@@ -280,7 +280,7 @@ export default {
 }
 .tab:hover,
 .tab.router-link-exact-active {
-  background: #d209b6;
+  background: #450b2b;
   color: #fff;
   box-shadow: 0 4px 16px rgba(255, 0, 221, 0.13);
   transform: translateY(-2px) scale(1.04);
@@ -289,7 +289,7 @@ export default {
   text-align: center;
   font-size: 1.3rem;
   font-weight: 700;
-  color: #9F00AD;
+  color: #450b2b;
   margin-bottom: 18px;
   letter-spacing: 1px;
 }
@@ -329,9 +329,9 @@ export default {
 .soft-form-group select:focus,
 .soft-form-group textarea:focus {
   background: #fff;
-  border: 2px solid #ff9800;
-  box-shadow: 0 0 0 4px rgba(255, 152, 0, 0.1),
-    0 4px 16px rgba(255, 152, 0, 0.13) inset;
+  border: 2px solid #450b2b;
+  box-shadow: 0 0 0 4px rgba(69, 11, 43, 0.1),
+    0 4px 16px rgba(69, 11, 43, 0.13) inset;
 }
 .soft-form-group textarea {
   min-height: 48px;
@@ -339,7 +339,7 @@ export default {
 }
 .soft-btn {
   width: 100%;
-  background: #d209b6;
+  background: #450b2b;
   color: #fff;
   border: none;
   border-radius: 22px;
@@ -357,11 +357,11 @@ export default {
   gap: 8px;
 }
 .soft-btn:active {
-  background: #fb8c00;
+  background: #450b2b;
 }
 .soft-btn:hover:not(:disabled) {
-  background: #9F00AD;
-  box-shadow: 0 6px 24px rgba(255, 152, 0, 0.18);
+  background: #450b2b;
+  box-shadow: 0 6px 24px rgba(69, 11, 43, 0.18);
   transform: translateY(-2px) scale(1.03);
 }
 .soft-alert {
@@ -441,7 +441,7 @@ export default {
 .transfer-soft-name {
   font-size: 1.15rem;
   font-weight: 600;
-  color: #ff9800;
+  color: #450b2b;
   margin-bottom: 8px;
 }
 .transfer-soft-pass-group {

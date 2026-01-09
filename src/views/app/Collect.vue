@@ -261,6 +261,34 @@ export default {
 </script>
 
 <style scoped>
+.tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.tab {
+  display: flex;
+  align-items: center;
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: #fff;
+  background: #BE9FB0;
+  border-radius: 18px;
+  padding: 10px 28px;
+  margin: 0 6px;
+  box-shadow: 0 2px 8px rgba(255, 152, 0, 0.07);
+  transition: all 0.18s;
+  text-decoration: none;
+  position: relative;
+}
+.tab:hover,
+.tab.router-link-exact-active {
+  background: #450b2b;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(114, 55, 2, 0.13);
+  transform: translateY(-2px) scale(1.04);
+}
 .collect-soft-bg {
   min-height: 100vh;
   display: flex;
@@ -332,7 +360,7 @@ export default {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  border: 2px solid #d209b6;
+  border: 2px solid #BE9FB0;
   background: #fff;
   box-shadow: 0 1px 4px rgba(255, 152, 0, 0.08);
   position: relative;
@@ -347,7 +375,7 @@ export default {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #9F00AD;
+  background: #450b2b;
   box-shadow: 0 2px 8px rgba(255, 152, 0, 0.13);
   margin: auto;
   animation: radio-pop 0.25s;
@@ -395,9 +423,9 @@ export default {
 .soft-form-group select:focus,
 .soft-form-group textarea:focus {
   background: #fff;
-  border: 2px solid #ff9800;
-  box-shadow: 0 0 0 4px rgba(255, 152, 0, 0.1),
-    0 4px 16px rgba(255, 152, 0, 0.13) inset;
+  border: 2px solid #450b2b;
+  box-shadow: 0 0 0 4px rgba(69, 11, 43, 0.1),
+    0 4px 16px rgba(69, 11, 43, 0.13) inset;
 }
 .soft-form-group textarea {
   min-height: 48px;
@@ -411,7 +439,7 @@ export default {
 }
 .soft-btn {
   width: 100%;
-  background: #d209b6;
+  background: #450b2b;
   color: #fff;
   border: none;
   border-radius: 22px;
@@ -429,11 +457,11 @@ export default {
   gap: 8px;
 }
 .soft-btn:active {
-  background: #9F00AD;
+  background: #450b2b;
 }
 .soft-btn:hover:not(:disabled) {
-  background: #9F00AD;
-  box-shadow: 0 6px 24px rgba(255, 152, 0, 0.18);
+  background: #450b2b;
+  box-shadow: 0 6px 24px rgba(69, 11, 43, 0.18);
   transform: translateY(-2px) scale(1.03);
 }
 .soft-alert {

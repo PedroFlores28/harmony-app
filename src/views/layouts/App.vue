@@ -148,6 +148,11 @@
           <a class="fab fa-youtube"         :href="yt" target="_blank" style="font-size: 18px;color: #ff0050;"></a>
         </div>-->
 
+        <div class="sidebar-brand-container">
+          <img src="/faviconn.jpg" class="sidebar-logo" alt="Harmony Logo">
+          <span class="sidebar-brand-text">HARMONY</span>
+        </div>
+
         <a @click="handleInicioClick" v-if="office_id == null">
           <img src="@/assets/img/home-desktop-icon.svg" alt="Inicio" style="width: 16px; height: 16px; margin-right: 8px;"> INICIO
         </a>
@@ -266,7 +271,7 @@
         </router-link>
 
         <br />
-        <a @click="logout" style="background-color: #5C0F39">
+        <a @click="logout" style="background-color: #450b2b">
           <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
         </a>
       </div>
@@ -1111,6 +1116,35 @@ export default {
   transform: translateX(-100%); /* Oculta el menú fuera de la vista */
 }
 
+.sidebar-brand-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 15px;
+  margin-bottom: 10px;
+  /* background: rgba(255, 255, 255, 0.03); */
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
+}
+
+.sidebar-logo {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  margin-bottom: 12px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-brand-text {
+  color: white;
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
 .menu.slide {
   transform: translateX(0); /* Muestra el menú */
 }
@@ -1288,7 +1322,7 @@ export default {
 }
 
 .mobile-menu-item-logout {
-  background: #5C0F39 !important;
+  background: #450b2b !important;
   margin-top: 8px;
 }
 

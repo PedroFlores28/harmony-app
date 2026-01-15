@@ -142,7 +142,7 @@ export default {
   overflow: hidden;
 }
 .collects-table thead tr {
-  background: #d209b6;
+  background: #450b2b;
   color: #fff;
   position: sticky;
   top: 0;
@@ -155,13 +155,14 @@ export default {
   padding: 14px 12px;
   text-align: left;
   font-size: 15px;
-  border-bottom: 1.5px solid #d209b666;
+  border-bottom: 1.5px solid rgba(190, 159, 176, 0.4);
 }
 .collects-table tbody tr:nth-child(even) {
-  background: #d209b666;
+  background: rgba(190, 159, 176, 0.15);
 }
 .collects-table tbody tr:hover {
-  background: #d209b666;
+  background: #5c0f39;
+  color: #fff;
   transition: background 0.2s;
 }
 .in {

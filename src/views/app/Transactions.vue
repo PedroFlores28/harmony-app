@@ -156,13 +156,13 @@ export default {
   text-align: left;
   font-size: 15px;
   border-bottom: 1.5px solid rgba(190, 159, 176, 0.4);
+  color: #450b2b;
 }
 .collects-table tbody tr:nth-child(even) {
   background: rgba(190, 159, 176, 0.15);
 }
 .collects-table tbody tr:hover {
-  background: #5c0f39;
-  color: #fff;
+  background: #be9fb0 !important;
   transition: background 0.2s;
 }
 .in {

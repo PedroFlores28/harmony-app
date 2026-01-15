@@ -24,7 +24,7 @@
       <div class="header-left" style="display: flex; align-items: center; gap: 10px; margin-left: 20px;">
         <!-- Logo para desktop -->
         <img
-          src="/faviconn.jpg"
+          src="/faviconn.png"
           alt=""
           class="logo logo-desktop"
           style="height: 40px; border-radius: 8px;"
@@ -149,7 +149,7 @@
         </div>-->
 
         <div class="sidebar-brand-container">
-          <img src="/faviconn.jpg" class="sidebar-logo" alt="Harmony Logo">
+          <img src="/faviconn.png" class="sidebar-logo" alt="Harmony Logo">
           <span class="sidebar-brand-text">HARMONY</span>
         </div>
 
@@ -1129,11 +1129,8 @@ export default {
 .sidebar-logo {
   height: 80px;
   width: 80px;
-  border-radius: 50%;
   margin-bottom: 12px;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  object-fit: contain;
 }
 
 .sidebar-brand-text {

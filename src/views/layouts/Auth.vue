@@ -422,7 +422,7 @@ export default {
   
   /* Ajuste para registro móvil - texto más arriba */
   .auth.register-page .welcome-text-right {
-    top: 3vh;
+    top: calc(3vh - 5px);
   }
   
   .welcome-subtitle-right {

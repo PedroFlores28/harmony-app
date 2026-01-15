@@ -191,10 +191,16 @@ input[type="checkbox"]:checked
     top 45% // Ajustar posición del icono
   
   .overflow-icon
-    top 10px // Mover iconos overflow más arriba
+    right 10px
+    top 50%
+    transform translateY(-50%)
+    margin-left 0
   
   .input-container .input-register-new
     padding-right 35px
+    width 100% !important
+    display block
+    margin 0 auto
 
 @media (max-width: 480px)
   .input-icon
@@ -203,11 +209,16 @@ input[type="checkbox"]:checked
     top 40% // Ajustar posición del icono
   
   .overflow-icon
-    top 5px // Mover iconos overflow aún más arriba
+    right 8px
+    top 50%
+    transform translateY(-50%)
+    margin-left 0
   
   .input-container .input-register-new
     padding-right 30px
-    width: 334px
+    width 100% !important
+    display block
+    margin 0 auto
     
 // Ocultar título del formulario en móvil
 @media (max-width: 768px)

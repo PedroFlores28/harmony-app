@@ -156,10 +156,15 @@ export default {
   text-align: left;
   font-size: 15px;
   border-bottom: 1.5px solid rgba(190, 159, 176, 0.4);
+}
+.collects-table th {
+  color: #fff;
+}
+.collects-table td {
   color: #450b2b;
 }
 .collects-table tbody tr:nth-child(even) {
-  background: rgba(190, 159, 176, 0.15);
+  background: #be9fb0;
 }
 .collects-table tbody tr:hover {
   background: #be9fb0 !important;

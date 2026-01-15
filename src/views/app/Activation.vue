@@ -229,7 +229,6 @@
                         <button 
                           @click.stop="addToCart(product)"
                           class="qty-control-btn"
-                          :disabled="getProductQuantity(product) >= 10"
                         >
                           +
                         </button>
@@ -240,7 +239,6 @@
                         <button 
                           @click.stop="addToCart(product)"
                           class="add-to-cart-btn"
-                          :disabled="getProductQuantity(product) >= 10"
                         >
                           <i class="fas fa-shopping-cart"></i>
                           Agregar
@@ -819,7 +817,6 @@ export default {
       this.product = this.products[i];
     },
     more(product) {
-      if (product.total == 10) return;
       product.total += 1;
     },
     less(product) {

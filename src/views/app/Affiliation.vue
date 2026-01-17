@@ -262,10 +262,12 @@
                   <div class="products-catalog-grid">
                     <div 
                       v-for="(product, i) in filteredCatalogProducts" 
-                      :key="product.id || i"
+                      :key="product && product.id ? product.id : `product-${i}`"
                       class="product-catalog-card"
                       v-if="
+                        product &&
                         product.plans &&
+                        selec_plan &&
                         product.plans[selec_plan.id] &&
                         Object.values(product.plans).some((plan) => plan === true)
                       "
@@ -651,7 +653,7 @@
                 <h5 class="section-title">Oficina y método de pago</h5>
                 <select class="input input-lg" v-model="office">
                   <option value="null" disabled>Oficina</option>
-                  <option v-for="office in offices" :value="office">
+                  <option v-for="office in offices" :key="office.id" :value="office" v-if="office && office.id">
                     {{ office.name }}
                   </option>
                 </select>
@@ -1058,7 +1060,8 @@ export default {
       // Si no hay productos filtrados, mostrar todos los productos
       const productsToShow = (this.catalogProducts && Array.isArray(this.catalogProducts) && this.catalogProducts.length > 0) ? this.catalogProducts : this.products;
       
-      return productsToShow || [];
+      // Filtrar productos null o undefined
+      return (productsToShow || []).filter(product => product !== null && product !== undefined);
     },
 
     cartItems() {
@@ -1114,23 +1117,26 @@ export default {
       if (data.dni) this.$store.commit("SET_DNI", data.dni);
       if (data.token) this.$store.commit("SET_TOKEN", data.token);
 
+
       // Usar directamente los planes que llegan del backend
-      this.plans = data.plans || [];
+      this.plans = data.filteredPlans || data.plans || [];
       if (this.plans && Array.isArray(this.plans) && this.plans.length > 0) {
         this.selec_plan = this.plans[0];
       }
 
       // Initialize products with proper structure
       if (data.products && Array.isArray(data.products)) {
-        this.products = data.products.map((product) => ({
-          ...product,
-          total: 0,
-          plans: product.plans || {
-            basic: false,
-            standard: false,
-            master: false,
-          },
-        }));
+        this.products = data.products
+          .filter(product => product !== null && product !== undefined)
+          .map((product) => ({
+            ...product,
+            total: 0,
+            plans: product.plans || {
+              basic: false,
+              standard: false,
+              master: false,
+            },
+          }));
 
         if (this.products && Array.isArray(this.products) && this.products.length > 0) {
           this.product = this.products[0];
@@ -1148,7 +1154,7 @@ export default {
 
       this.balance = data.balance || 0;
       this._balance = data._balance || 0;
-      this.offices = data.offices || [];
+      this.offices = (data.offices || []).filter(office => office !== null && office !== undefined);
       this.affiliation = data.affiliation || null;
       this.affiliations = data.affiliations || [];
       await this.loadAffiliationBanners();
@@ -1254,22 +1260,24 @@ export default {
         if (data._balance !== undefined) this.$store.commit("SET__BALANCE", data._balance);
         
         // Cargar datos específicos para la afiliación
-        this.plans = data.plans || [];
+        this.plans = data.filteredPlans || data.plans || [];
         if (this.plans && Array.isArray(this.plans) && this.plans.length > 0) {
           this.selec_plan = this.plans[0];
         }
         
         // Initialize products with proper structure
         if (data.products && Array.isArray(data.products)) {
-          this.products = data.products.map((product) => ({
-            ...product,
-            total: 0,
-            plans: product.plans || {
-              basic: false,
-              standard: false,
-              master: false,
-            },
-          }));
+          this.products = data.products
+            .filter(product => product !== null && product !== undefined)
+            .map((product) => ({
+              ...product,
+              total: 0,
+              plans: product.plans || {
+                basic: false,
+                standard: false,
+                master: false,
+              },
+            }));
           
           if (this.products && Array.isArray(this.products) && this.products.length > 0) {
             this.product = this.products[0];
@@ -1285,7 +1293,7 @@ export default {
         
         this.balance = data.balance || 0;
         this._balance = data._balance || 0;
-        this.offices = data.offices || [];
+        this.offices = (data.offices || []).filter(office => office !== null && office !== undefined);
         this.affiliation = data.affiliation || null;
         this.affiliations = data.affiliations || [];
         await this.loadAffiliationBanners();

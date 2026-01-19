@@ -8,6 +8,7 @@ export function rankFilter(val) {
   if (val === 'none') return 'Ninguno';
   if (val === 'active') return 'Activo';
   if (val === 'star') return 'Estrella';
+  if (val === 'vip') return 'VIP';
   if (val === 'master') return 'Maestro';
   if (val === 'silver') return 'Plata';
   if (val === 'gold') return 'Oro';

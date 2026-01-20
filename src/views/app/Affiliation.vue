@@ -112,7 +112,7 @@
               @error="handleBannerImageError('hero')"
             />
             <div v-else class="banner-content">
-              <h3>¡Comienza tu viaje con Sifrah!</h3>
+              <h3>¡Comienza tu viaje con Harmony!</h3>
               <p>Elige tu plan de afiliación y descubre un mundo de oportunidades</p>
             </div>
           </div>
@@ -175,26 +175,7 @@
                   </div>
                 </div>
 
-                <!-- Sección 2: Kit de inicio -->
-                <div class="kit-section">
-                  <h4 class="section-title">2.- Llévate tu Kit de Inicio:</h4>
-                <div
-                  class="kit-banner"
-                  :class="{ 'has-image': affiliationBanners.kit }"
-                >
-                  <img
-                    v-if="affiliationBanners.kit"
-                    :src="affiliationBanners.kit"
-                    alt="Banner Kit de Inicio"
-                    class="kit-banner__image"
-                    @error="handleBannerImageError('kit')"
-                  />
-                  <div v-else class="kit-content">
-                    <h5>Kit de Inicio Incluido</h5>
-                    <p>Todo lo que necesitas para comenzar</p>
-                  </div>
-                </div>
-                </div>
+
                 <!-- Resumen del carrito móvil - Copiado de Activation.vue -->
                 <div class="cart-button-container-mobile">
                   <div class="cart-info-left">
@@ -211,7 +192,39 @@
 
                 <!-- Sección 3: Selección de productos -->
                 <div class="products-section">
-                  <h4 class="section-title">3.- Escoge tus productos:</h4>
+                  <h4 class="section-title">2.- Escoge tus productos:</h4>
+                  
+                  <div v-if="selec_plan" class="product-selection-monitor" :class="{ 'monitor-complete': validationTotalItems >= selec_plan.max_products }">
+                    <div class="monitor-content">
+                      <div class="monitor-icon">
+                        <i class="fas" :class="validationTotalItems >= selec_plan.max_products ? 'fa-check-circle' : 'fa-info-circle'"></i>
+                      </div>
+                      <div class="monitor-info-text">
+                        <div class="monitor-title">
+                          {{ selec_plan.name }}
+                        </div>
+                        <div class="monitor-status-text">
+                          <span v-if="validationTotalItems < selec_plan.max_products">
+                            Selecciona <strong>{{ (selec_plan.max_products - validationTotalItems).toFixed(1).replace('.0', '') }}</strong> productos más para completar
+                          </span>
+                          <span v-else>
+                            ¡Selección completada! Puedes continuar.
+                          </span>
+                        </div>
+                      </div>
+                      <div class="monitor-count">
+                         <span class="current-count">{{ validationTotalItems.toFixed(1).replace('.0', '') }}</span>
+                         <span class="separator">/</span>
+                         <span class="max-count">{{ selec_plan.max_products }}</span>
+                      </div>
+                    </div>
+                    <div class="monitor-progress-bar-container">
+                      <div 
+                        class="monitor-progress-fill" 
+                        :style="{ width: Math.min((validationTotalItems / selec_plan.max_products) * 100, 100) + '%' }"
+                      ></div>
+                    </div>
+                  </div>
                   
                   <!-- Filtros y búsqueda -->
                   <div class="products-filters">
@@ -293,9 +306,7 @@
                         <div v-if="product.subdescription" class="product-catalog-info-text">
                           {{ product.subdescription }}
                         </div>
-                        <div class="product-catalog-price">
-                          Precio Socio: <span class="price-amount">S/ {{ getProductPrice(product) }}</span>
-                        </div>
+                        <!-- Price removed -->
                       </div>
                      
                       <!-- Controles de cantidad -->
@@ -368,7 +379,7 @@
                     <div class="cart-item-info">
                       <h4>{{ product.name }}</h4>
                       <div class="cart-item-details">
-                        <span class="cart-item-price">S/ {{ getProductPrice(product) }}</span>
+                        <!-- Price removed -->
                         <span class="cart-item-points">{{ product.points }}pts</span>
                       </div>
                     </div>
@@ -455,7 +466,7 @@
                   <div class="cart-detail-item-info">
                     <h4>{{ item.name }}</h4>
                     <div class="cart-detail-item-details">
-                      <span class="cart-detail-item-price">S/ {{ getProductPrice(item) }}</span>
+                      <!-- Price removed -->
                       <span class="cart-detail-item-points">{{ item.points }}pts</span>
                     </div>
                   </div>
@@ -566,7 +577,7 @@
                     <!-- Panel derecho - Información -->
                     <div class="product-modal-right">
                       <div class="product-modal-info">
-                        <div class="modal-product-price">S/ {{ getProductPrice(selectedProduct) }}</div>
+                        <!-- Price removed -->
                         <div class="modal-product-points">{{ selectedProduct.points }} pts</div>
                         
                         <div class="product-description">
@@ -1733,4 +1744,98 @@ export default {
 
 <style lang="stylus">
 @import '../../assets/style/views/app/Affiliation.styl'
+</style>
+
+<style scoped>
+.product-selection-monitor {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  transition: all 0.3s ease;
+}
+
+.product-selection-monitor.monitor-complete {
+  border-color: #4CAF50;
+  background: #f1f8f1;
+}
+
+.monitor-content {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  gap: 15px;
+}
+
+.monitor-icon {
+  font-size: 24px;
+  color: #ff9800;
+}
+
+.monitor-complete .monitor-icon {
+  color: #4CAF50;
+}
+
+.monitor-info-text {
+  flex: 1;
+}
+
+.monitor-title {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.monitor-status-text {
+  font-size: 14px;
+  color: #666;
+}
+
+.monitor-status-text strong {
+  color: #ff9800;
+  font-weight: 700;
+}
+
+.monitor-complete .monitor-status-text strong {
+  color: #4CAF50;
+}
+
+.monitor-count {
+  font-weight: 800;
+  font-size: 20px;
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+  padding: 5px 15px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.monitor-progress-bar-container {
+  height: 6px;
+  background: #eee;
+  width: 100%;
+}
+
+.monitor-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff9800, #ff5722);
+  transition: width 0.5s cubic-bezier(0.1, 0.7, 1.0, 0.1);
+}
+
+.monitor-complete .monitor-progress-fill {
+  background: #4CAF50;
+}
+
+@media (max-width: 600px) {
+  .monitor-content {
+    flex-wrap: wrap;
+    padding: 12px;
+  }
+  .monitor-count {
+    margin-left: auto;
+  }
+}
 </style>

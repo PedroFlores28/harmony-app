@@ -1664,6 +1664,8 @@ export default {
         
         // Validar que los productos seleccionados correspondan al plan
         const invalidProducts = selectedProducts.filter(product => {
+          // Si es plan VIP, todos los productos son válidos
+          if (this.selec_plan.id === 'vip') return false;
           return !product.plans || !product.plans[this.selec_plan.id];
         });
         

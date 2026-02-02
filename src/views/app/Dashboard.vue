@@ -329,7 +329,7 @@
                 <div class="award-divider"></div>
 
                 <div class="award-details">
-                  <span class="award-text">Premio por primera vez ({{ rank | _rank }})</span>
+                  <span class="award-text">Premio por primera vez (Diamante)</span>
                   <span class="award-amount">S/ 800.00 <i class="fas fa-chevron-right"></i></span>
                 </div>
 

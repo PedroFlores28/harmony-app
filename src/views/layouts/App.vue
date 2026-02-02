@@ -522,8 +522,8 @@
 import api from "@/api";
 import lib from "@/lib";
 
-const ROOT = process.env.VUE_APP_ROOT;
-console.log({ ROOT });
+// const ROOT = process.env.VUE_APP_ROOT;
+// console.log({ ROOT });
 
 export default {
   components: { },
@@ -681,7 +681,7 @@ export default {
       return this.$store.state.education;
     },
     affiliationLink() {
-      return `${ROOT}/register/${this.token}`;
+      return `${window.location.origin}/register/${this.token}`;
     },
     token() {
       return this.$store.state.token;

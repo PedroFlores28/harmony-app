@@ -191,7 +191,7 @@ import api from "@/api";
 import lib from "@/lib";
 import Spinner from "@/components/Spinner.vue";
 
-const ROOT = process.env.VUE_APP_ROOT;
+// const ROOT = process.env.VUE_APP_ROOT;
 
 export default {
   components: {
@@ -224,7 +224,7 @@ export default {
       return this.$store.state.office_id;
     },
     link() {
-      return `${ROOT}/register/${this.token}`;
+      return `${window.location.origin}/register/${this.token}`;
     },
     title() {
       return "Organización";

@@ -997,6 +997,7 @@ export default {
         }
 
         this.$store.commit("SET_SESSION", data.session);
+        this.$store.commit("SET_DNI", dni);
         
         // Redirigir según el estado de afiliación
         if (data.affiliated) {

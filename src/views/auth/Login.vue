@@ -278,6 +278,7 @@ export default {
         if (data.email) this.$store.commit("SET_EMAIL", data.email);
         if (data.photo) this.$store.commit("SET_PHOTO", data.photo);
         if (data.plan) this.$store.commit("SET_PLAN", data.plan);
+        if (data.dni) this.$store.commit("SET_DNI", data.dni);
         if (data.total_points !== undefined) this.$store.commit("SET_TOTAL_POINTS", data.total_points);
         
         // Establecer estado de afiliación
@@ -343,6 +344,7 @@ export default {
             if (userInfo.email) this.$store.commit("SET_EMAIL", userInfo.email);
             if (userInfo.photo) this.$store.commit("SET_PHOTO", userInfo.photo);
             if (userInfo.plan) this.$store.commit("SET_PLAN", userInfo.plan);
+            if (userInfo.dni) this.$store.commit("SET_DNI", userInfo.dni);
             if (userInfo.total_points !== undefined) this.$store.commit("SET_TOTAL_POINTS", userInfo.total_points);
             
             // Establecer estado de afiliación y otros campos
@@ -367,6 +369,7 @@ export default {
           if (data.email) this.$store.commit("SET_EMAIL", data.email);
           if (data.photo) this.$store.commit("SET_PHOTO", data.photo);
           if (data.plan) this.$store.commit("SET_PLAN", data.plan);
+          if (data.dni) this.$store.commit("SET_DNI", data.dni);
           if (data.total_points !== undefined) this.$store.commit("SET_TOTAL_POINTS", data.total_points);
           
           // Establecer estado de afiliación y otros campos

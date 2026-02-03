@@ -658,6 +658,9 @@
                     <div class="bank-info-item">
                       <strong>Cuenta:</strong> {{ getBankInfo(selectedBank).account }}
                     </div>
+                    <div v-if="getBankInfo(selectedBank).cci" class="bank-info-item">
+                      <strong>CCI:</strong> {{ getBankInfo(selectedBank).cci }}
+                    </div>
                     <div class="bank-info-item">
                       <strong>Titular:</strong> {{ getBankInfo(selectedBank).holder }}
                     </div>

@@ -1959,10 +1959,30 @@ export default {
       if (newType === 'boleta' && !this.proofData.document) {
         this.proofData.document = this.$store.state.dni || '';
       }
+    },
+    '$store.state.dni'(newDni) {
+      // Si el DNI en el store cambia/se carga y estamos en boleta con documento vacío, autocompletar
+      if (this.proofData.type === 'boleta' && !this.proofData.document) {
+        this.proofData.document = newDni || '';
+      }
+      // Autocompletar DNI de entrega si está vacío
+      if (!this.deliveryData.document) {
+        this.deliveryData.document = newDni || '';
+      }
     }
   },
   
   async mounted() {
+    // Autocompletar DNI si está vacío y es boleta
+    if (this.proofData.type === 'boleta' && !this.proofData.document) {
+      this.proofData.document = this.$store.state.dni || '';
+    }
+    
+    // Autocompletar DNI de entrega si está vacío
+    if (!this.deliveryData.document) {
+      this.deliveryData.document = this.$store.state.dni || '';
+    }
+
     // Asegurar que la página comience desde arriba
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;

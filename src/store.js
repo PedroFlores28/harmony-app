@@ -96,14 +96,10 @@ export default new Vuex.Store({
 
       state.affiliated = affiliatedValue;
 
-      console.log('Store: SET_AFFILIATED llamado con:', affiliated, '-> convertido a:', affiliatedValue);
-
       if (affiliatedValue !== null && affiliatedValue !== undefined) {
         localStorage.setItem('affiliated', affiliatedValue.toString());
-        console.log('Store: affiliated guardado en localStorage:', affiliatedValue.toString());
       } else {
         localStorage.removeItem('affiliated');
-        console.log('Store: affiliated removido de localStorage');
       }
     },
     SET_ACTIVATED: (state, activated) => {
@@ -294,7 +290,6 @@ export default new Vuex.Store({
     // Acción para restaurar el estado desde localStorage
     async restoreState({ commit }) {
       try {
-        console.log('Restaurando estado desde localStorage...');
 
         const session = localStorage.getItem('session')
         if (session) {
@@ -305,7 +300,6 @@ export default new Vuex.Store({
         const path = localStorage.getItem('path')
         if (office_id) {
           commit('SET_OFFICE_ID', { office_id, path })
-          console.log('Office ID restaurado:', !!office_id);
         }
 
         const name = localStorage.getItem('name')
@@ -318,7 +312,6 @@ export default new Vuex.Store({
         if (affiliated !== null) {
           const isAffiliated = affiliated === 'true'
           commit('SET_AFFILIATED', isAffiliated)
-          console.log('Estado de afiliación restaurado:', isAffiliated);
         }
 
         const activated = localStorage.getItem('activated')
@@ -369,7 +362,6 @@ export default new Vuex.Store({
         // Limpiar estados de los menús al restaurar (no deben persistir entre sesiones)
         commit('CLEAR_MENU_STATES')
 
-        console.log('Estado restaurado exitosamente');
         return true;
       } catch (error) {
         console.error('Error al restaurar el estado:', error);

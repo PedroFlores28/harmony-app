@@ -270,33 +270,12 @@ router.beforeEach(async (to, from, next) => {
     // Si hay discrepancia, sincronizar el store
     if (localAffiliated !== null && store.state.affiliated !== affiliated) {
       store.commit('SET_AFFILIATED', affiliated)
-      console.log('Router Guard: Estado de afiliación sincronizado desde localStorage:', affiliated)
     }
   }
-
-  console.log('Router Guard:', { 
-    to: to.path, 
-    from: from.path,
-    session: !!session, 
-    affiliated, 
-    office_id: !!office_id,
-    requiresAuth,
-    requiresAffiliation,
-    requiresNoAuth,
-    storeState: {
-      session: store.state.session,
-      affiliated: store.state.affiliated
-    },
-    localStorage: {
-      session: localStorage.getItem('session'),
-      affiliated: localStorage.getItem('affiliated')
-    }
-  })
 
   // Si es usuario de oficina, manejar redirección especial
   if (office_id && path) {
     if (requiresNoAuth && session) {
-      console.log('Router Guard: Usuario de oficina, redirigiendo a', `/${path}`)
       next({ path: `/${path}` })
       return
     }
@@ -306,16 +285,13 @@ router.beforeEach(async (to, from, next) => {
   if (requiresNoAuth && session && !office_id) {
     // Excepción para la ruta de registro con código de referido
     if (to.path.startsWith('/register/')) {
-      console.log('Router Guard: Permitiendo acceso a registro con código de referido a pesar de sesión activa')
       next()
       return
     }
     
     if (affiliated) {
-      console.log('Router Guard: Usuario autenticado y afiliado, redirigiendo a /dashboard')
       next({ path: '/dashboard' })
     } else {
-      console.log('Router Guard: Usuario autenticado pero no afiliado, redirigiendo a /affiliation')
       next({ path: '/affiliation' })
     }
     return
@@ -323,21 +299,18 @@ router.beforeEach(async (to, from, next) => {
 
   // Permitir acceso directo a registro con código de referido sin redireccionar
   if (to.path.startsWith('/register/')) {
-    console.log('Router Guard: Permitiendo acceso directo a registro con código de referido')
     next()
     return
   }
   
   // Si requiere autenticación y no está autenticado
   if (requiresAuth && !session) {
-    console.log('Router Guard: Requiere autenticación pero no hay sesión, redirigiendo a /login')
     next({ path: '/login' })
     return
   }
 
   // Si requiere afiliación y no está afiliado
   if (requiresAffiliation && !affiliated) {
-    console.log('Router Guard: Requiere afiliación pero no está afiliado, redirigiendo a /affiliation')
     next({ path: '/affiliation' })
     return
   }
@@ -346,27 +319,16 @@ router.beforeEach(async (to, from, next) => {
   // Esto permite que usuarios nuevos puedan pagar su paquete de afiliación
   const allowedRoutesForNonAffiliated = ['/affiliation', '/profile', '/password', '/security', '/checkout', '/activation']
   if (session && (affiliated === false || affiliated === null) && !allowedRoutesForNonAffiliated.includes(to.path)) {
-    console.log('Router Guard: Usuario autenticado pero no afiliado, redirigiendo a /affiliation')
     next({ path: '/affiliation' })
     return
   }
 
-  // IMPORTANTE: NO redirigir usuarios afiliados desde afiliación
-  // Ellos pueden querer acceder para hacer upgrade o ver historial
-  // if (session && affiliated && to.path === '/affiliation') {
-  //   console.log('Router Guard: Usuario afiliado en página de afiliación, redirigiendo a /dashboard')
-  //   next({ path: '/dashboard' })
-  //   return
-  // }
-
   // Si está autenticado y afiliado y va a la raíz, redirigir al dashboard
   if (session && affiliated && to.path === '/') {
-    console.log('Router Guard: Usuario afiliado en raíz, redirigiendo a /dashboard')
     next({ path: '/dashboard' })
     return
   }
 
-  console.log('Router Guard: Navegación permitida a', to.path)
   next()
 })
 

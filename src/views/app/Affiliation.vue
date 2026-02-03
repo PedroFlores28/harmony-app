@@ -1170,7 +1170,10 @@ export default {
           return;
         }
         
-        // Establecer datos en el store (sin cambiar affiliated)
+        // Establecer datos en el store
+        // IMPORTANTE: Actualizar siempre el estado de afiliación por si cambió (aprobación)
+        if (data.affiliated !== undefined) this.$store.commit("SET_AFFILIATED", data.affiliated);
+
         if (data.name) this.$store.commit("SET_NAME", data.name);
         if (data.lastName) this.$store.commit("SET_LAST_NAME", data.lastName);
         if (data.photo) this.$store.commit("SET_PHOTO", data.photo);

@@ -20,8 +20,6 @@ export default {
   },
   async created() {
     try {
-      console.log('AppInitializer: Iniciando verificación de estado...');
-      
       // Esperar un poco para que el router se inicialice completamente
       await this.$nextTick();
       
@@ -29,7 +27,6 @@ export default {
       const session = this.$store.state.session || localStorage.getItem('session');
       
       if (session) {
-        console.log('AppInitializer: Sesión encontrada, verificando estado de afiliación...');
         
         // Verificar estado de afiliación con mejor sincronización
         let affiliated = null;
@@ -41,34 +38,19 @@ export default {
           // Sincronizar el store si no está definido
           if (affiliated !== null) {
             this.$store.commit('SET_AFFILIATED', affiliated);
-            console.log('AppInitializer: Estado de afiliación sincronizado desde localStorage:', affiliated);
           }
         }
         
-        console.log('AppInitializer: Estado de afiliación:', affiliated);
-        console.log('AppInitializer: Ruta actual:', this.$route.path);
-        console.log('AppInitializer: Store state:', {
-          session: this.$store.state.session,
-          affiliated: this.$store.state.affiliated
-        });
-        console.log('AppInitializer: localStorage:', {
-          session: localStorage.getItem('session'),
-          affiliated: localStorage.getItem('affiliated')
-        });
-        
         // Permitir acceso a registro con código de referido incluso con sesión activa
         if (this.$route.path.startsWith('/register/')) {
-          console.log('AppInitializer: Permitiendo acceso a registro con código de referido a pesar de sesión activa');
           // No redirigir
         }
         // Si está afiliado y está en la página de afiliación, redirigir al dashboard
         else if (affiliated && this.$route.path === '/affiliation') {
-          console.log('AppInitializer: Usuario afiliado, redirigiendo a dashboard...');
           this.$router.push('/dashboard');
         }
         // Si está afiliado y está en la raíz, redirigir al dashboard
         else if (affiliated && this.$route.path === '/') {
-          console.log('AppInitializer: Usuario afiliado en raíz, redirigiendo a dashboard...');
           this.$router.push('/dashboard');
         }
         // Solo redirigir si es necesario y no estamos ya en la ruta correcta
@@ -76,27 +58,22 @@ export default {
         else if (!affiliated) {
           const allowedRoutesForNonAffiliated = ['/affiliation', '/profile', '/password', '/security', '/checkout', '/activation'];
           if (!allowedRoutesForNonAffiliated.includes(this.$route.path)) {
-            console.log('AppInitializer: Usuario no afiliado, redirigiendo a affiliation...');
             this.$router.push('/affiliation');
           }
         }
       } else {
-        console.log('AppInitializer: No hay sesión activa');
         
         // Permitir acceso directo a registro con código de referido sin redireccionar
         if (this.$route.path.startsWith('/register/')) {
-          console.log('AppInitializer: Permitiendo acceso directo a registro con código de referido sin sesión activa');
           // No redirigir
         }
         // Si no hay sesión y no está en login, redirigir a login
         else if (this.$route.path !== '/login' && this.$route.path !== '/welcome' && this.$route.path !== '/register' && this.$route.path !== '/remember' && this.$route.path !== '/reset-password') {
-          console.log('AppInitializer: No hay sesión, redirigiendo a login...');
           this.$router.push('/login');
         }
       }
       
       this.initialized = true;
-      console.log('AppInitializer: Inicialización completada');
       
     } catch (error) {
       console.error('AppInitializer: Error durante la inicialización:', error);
@@ -107,7 +84,6 @@ export default {
   // También verificar cuando cambie la ruta
   watch: {
     '$route'(to, from) {
-      console.log('AppInitializer: Ruta cambiada de', from.path, 'a', to.path);
       
       // Solo verificar si ya está inicializado
       if (this.initialized) {
@@ -127,7 +103,6 @@ export default {
         
         // Permitir acceso a registro con código de referido incluso con sesión activa
         if (this.$route.path.startsWith('/register/')) {
-          console.log('AppInitializer: Permitiendo acceso a registro con código de referido a pesar de sesión activa');
           // No redirigir
           return;
         }
@@ -136,7 +111,6 @@ export default {
         // Permitir acceso a checkout y activation para que usuarios nuevos puedan pagar su paquete de afiliación
         const allowedRoutesForNonAffiliated = ['/affiliation', '/profile', '/password', '/security', '/checkout', '/activation'];
         if (!affiliated && !allowedRoutesForNonAffiliated.includes(this.$route.path)) {
-          console.log('AppInitializer: Redirección por cambio de ruta - usuario no afiliado');
           this.$router.push('/affiliation');
         }
         // IMPORTANTE: NO redirigir usuarios afiliados desde afiliación

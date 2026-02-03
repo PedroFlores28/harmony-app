@@ -305,7 +305,10 @@
                         <span class="sparkle s2">✦</span>
                         <span class="sparkle s3">✦</span>
                       </div>
-                      <div class="diamond-shape">
+                      <div v-if="currentRankImage" class="rank-image-real">
+                        <img :src="currentRankImage" alt="Rango Actual" class="rank-image-img" />
+                      </div>
+                      <div v-else class="diamond-shape">
                         <i class="fas fa-gem"></i>
                       </div>
                     </div>
@@ -402,6 +405,7 @@ export default {
       node: {},
       currentBanner: 0,
       bannerInterval: null,
+      rankImages: {},
     };
   },
   computed: {
@@ -427,6 +431,11 @@ export default {
       return [this.banner.img, this.banner.img2, this.banner.img3].filter(
         (img) => typeof img === "string" && img.trim() !== ""
       );
+    },
+    currentRankImage() {
+      if (!this.rankImages || !this.rank) return null;
+      const rankKey = this.rank.toLowerCase().replace(/ /g, '_');
+      return this.rankImages[rankKey] || null;
     },
   },
   filters: {
@@ -485,6 +494,16 @@ export default {
         }, 5000);
       }
     },
+    async loadRankImages() {
+      try {
+        const { data } = await api.RankImages.GET(this.session);
+        if (data && data.rankImages) {
+          this.rankImages = data.rankImages;
+        }
+      } catch (error) {
+        console.error("Error fetching rank images:", error);
+      }
+    },
   },
   async created() {
     // GET data
@@ -536,6 +555,7 @@ export default {
 
     // Iniciar autoplay del banner si corresponde
     this.setupBannerAutoplay();
+    this.loadRankImages();
   },
   beforeDestroy() {
     if (this.bannerInterval) clearInterval(this.bannerInterval);

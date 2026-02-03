@@ -8,11 +8,11 @@ const getBaseURL = () => {
     const baseUrl = process.env.VUE_APP_SERVER.replace(/\/+$/, ''); // Remover trailing slashes
     return baseUrl + "/api";
   }
-  
+
   // Si no, usar la configuración por defecto según el entorno
   const isDevelopment = process.env.NODE_ENV === 'development';
-  return isDevelopment 
-    ? "http://localhost:3000/api" 
+  return isDevelopment
+    ? "http://localhost:3000/api"
     : "https://tu-app-backend.herokuapp.com/api"; // URL de ejemplo de Heroku
 };
 
@@ -34,7 +34,7 @@ class API {
     Transfers,
     Offices,
     ActivationBanners,
-    AffiliationBanners,
+    RankImages,
     PaymentMethods,
     Flyers,
   }) {
@@ -52,7 +52,7 @@ class API {
     this.Transfers = new Transfers();
     this.Offices = new Offices();
     this.ActivationBanners = new ActivationBanners();
-    this.AffiliationBanners = new AffiliationBanners();
+    this.RankImages = new RankImages();
     this.PaymentMethods = new PaymentMethods();
     this.Flyers = new Flyers();
   }
@@ -119,9 +119,9 @@ class API {
 
 
   // Mercado Pago
-//   mercadopagoPreference(data) {
-//     return axios.post("http://localhost:4000/api/app/mercadopago", data);
-//   }
+  //   mercadopagoPreference(data) {
+  //     return axios.post("http://localhost:4000/api/app/mercadopago", data);
+  //   }
 
   // Email System
   sendPasswordReset(data) {
@@ -131,30 +131,30 @@ class API {
   validateEmail(email) {
     return axios.post("/auth/validate-email", { email });
   }
-  
+
   sendContactEmail(data) {
     return axios.post("/email/contact", data);
   }
-  
+
   sendWelcomeEmail(data) {
     return axios.post("/email/welcome", data);
   }
-  
+
   sendActivationEmail(data) {
     return axios.post("/email/activation", data);
   }
-  
+
   sendCommissionEmail(data) {
     return axios.post("/email/commission", data);
   }
-  
+
   testEmailService() {
     return axios.get("/email/test");
   }
-  
+
   getDeliveryInfo(params = {}) {
-    const queryString = Object.keys(params).length > 0 
-      ? '?' + new URLSearchParams(params).toString() 
+    const queryString = Object.keys(params).length > 0
+      ? '?' + new URLSearchParams(params).toString()
       : '';
     return axios.get(`/app/delivery${queryString}`);
   }
@@ -274,9 +274,9 @@ class ActivationBanners {
   }
 }
 
-class AffiliationBanners {
+class RankImages {
   GET(session) {
-    return axios.get(`/app/affiliation-banners?session=${session}`);
+    return axios.get(`/app/rank-images?session=${session}`);
   }
 }
 
@@ -307,7 +307,7 @@ export default new API({
   Transfers,
   Offices,
   ActivationBanners,
-  AffiliationBanners,
+  RankImages,
   PaymentMethods,
   Flyers,
 });

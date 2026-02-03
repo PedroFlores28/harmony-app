@@ -98,24 +98,6 @@
        
         
         <section v-if="!loading && !(affiliation && affiliation.status === 'pending')" class="affiliation-main-container">
-          <!-- Banner principal - Fuera del contenedor para ocupar todo el ancho -->
-          <div
-            v-if="!showMasterTrophy && step === 1"
-            class="affiliation-banner-full"
-            :class="{ 'has-image': affiliationBanners.hero }"
-          >
-            <img
-              v-if="affiliationBanners.hero"
-              :src="affiliationBanners.hero"
-              alt="Banner de afiliación"
-              class="affiliation-banner-full__image"
-              @error="handleBannerImageError('hero')"
-            />
-            <div v-else class="banner-content">
-              <h3>¡Comienza tu viaje con Harmony!</h3>
-              <p>Elige tu plan de afiliación y descubre un mundo de oportunidades</p>
-            </div>
-          </div>
 
           <!-- Contenedor principal con layout flex -->
           <div class="affiliation-content-wrapper">
@@ -852,10 +834,6 @@ export default {
        selectedProduct: null,
        imageLoaded: false,
        showCartDetailModal: false,
-      affiliationBanners: {
-        hero: "",
-        kit: "",
-      },
      };
    },
   computed: {
@@ -1127,7 +1105,6 @@ export default {
       this.offices = (data.offices || []).filter(office => office !== null && office !== undefined);
       this.affiliation = data.affiliation || null;
       this.affiliations = data.affiliations || [];
-      await this.loadAffiliationBanners();
 
       // Llamar checkUpgradeMode después de que todo esté cargado
       if (this.selec_plan) {
@@ -1172,30 +1149,6 @@ export default {
   },
   
   methods: {
-    async loadAffiliationBanners() {
-      try {
-        const { data } = await api.AffiliationBanners.GET(this.session);
-        if (data && data.affiliationBanners) {
-          this.affiliationBanners = {
-            hero: data.affiliationBanners.hero || "",
-            kit: data.affiliationBanners.kit || "",
-          };
-        }
-      } catch (error) {
-        console.error("Error fetching affiliation banners:", error);
-      }
-    },
-    handleBannerImageError(position) {
-      if (!position) return;
-      try {
-        this.$set(this.affiliationBanners, position, "");
-      } catch (err) {
-        this.affiliationBanners = {
-          ...this.affiliationBanners,
-          [position]: "",
-        };
-      }
-    },
     openCartDetailModal() {
       this.showCartDetailModal = true;
       try {
@@ -1266,7 +1219,6 @@ export default {
         this.offices = (data.offices || []).filter(office => office !== null && office !== undefined);
         this.affiliation = data.affiliation || null;
         this.affiliations = data.affiliations || [];
-        await this.loadAffiliationBanners();
         
         // Llamar checkUpgradeMode después de que todo esté cargado
         if (this.selec_plan) {

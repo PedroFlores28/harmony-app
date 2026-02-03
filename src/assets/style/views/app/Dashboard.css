@@ -822,8 +822,8 @@
 }
 
 .rank-image-placeholder {
-  width: 160px;
-  height: 160px;
+  width: 200px;
+  height: 200px;
   background: radial-gradient(circle, #eef2ff 0%, #ffffff 100%);
   border-radius: 20px;
   display: flex;
@@ -831,6 +831,23 @@
   justify-content: center;
   position: relative;
   box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.02);
+}
+
+.rank-image-real {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  position: relative;
+}
+
+.rank-image-img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
 }
 
 .diamond-shape {
@@ -855,13 +872,37 @@
   animation: sparkle-anim 2s infinite ease-in-out;
 }
 
-.sparkle.s1 { top: 20%; right: 15%; animation-delay: 0s; }
-.sparkle.s2 { bottom: 25%; left: 10%; animation-delay: 0.5s; font-size: 18px; }
-.sparkle.s3 { top: 25%; left: 20%; animation-delay: 1.2s; }
+.sparkle.s1 {
+  top: 20%;
+  right: 15%;
+  animation-delay: 0s;
+}
+
+.sparkle.s2 {
+  bottom: 25%;
+  left: 10%;
+  animation-delay: 0.5s;
+  font-size: 18px;
+}
+
+.sparkle.s3 {
+  top: 25%;
+  left: 20%;
+  animation-delay: 1.2s;
+}
 
 @keyframes sparkle-anim {
-  0%, 100% { opacity: 0; transform: scale(0.5); }
-  50% { opacity: 1; transform: scale(1.2); }
+
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
 }
 
 .bono-rank-info {
@@ -1087,15 +1128,15 @@
     text-align: center;
     gap: 20px;
   }
-  
+
   .rank-status-row {
     justify-content: center;
   }
-  
+
   .status-badge.pagado {
     margin-left: 0;
   }
-  
+
   .secondary-actions {
     flex-direction: column;
   }

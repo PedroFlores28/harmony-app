@@ -1031,6 +1031,7 @@ export default {
         return {
           name: method.name,
           account: method.account,
+          cci: method.cci,
           holder: method.holder,
           type: method.type
         };

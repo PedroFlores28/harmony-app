@@ -16,6 +16,7 @@ const getBaseURL = () => {
     : "https://tu-app-backend.herokuapp.com/api"; // URL de ejemplo de Heroku
 };
 
+
 axios.defaults.baseURL = getBaseURL();
 
 class API {

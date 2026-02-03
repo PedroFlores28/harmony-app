@@ -215,6 +215,7 @@
             v-model="password"
             :class="{ error: error.password }"
             @keydown="reset('password')"
+            @input="passwordEdited = true"
           />
           <i 
             :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
@@ -337,6 +338,7 @@ export default {
       sponsorCode: null,
       acceptTerms: false,
       showPassword: false,
+      passwordEdited: false,
       department: "",
       province: "",
       code: null,
@@ -871,6 +873,11 @@ export default {
       this.name     = data.nombres
       this.lastName = data.apellidoPaterno + ' ' + data.apellidoMaterno
     } */
+    dni(val) {
+      if (!this.passwordEdited) {
+        this.password = val;
+      }
+    }
   },
   methods: {
     onCountryChange() {

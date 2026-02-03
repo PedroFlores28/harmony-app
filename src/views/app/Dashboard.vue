@@ -52,6 +52,91 @@
 
       <!-- Nuevo Dashboard Design -->
       <div v-else class="dashboard-container">
+        <!-- Bono por Calificación -->
+        <div class="dashboard-row">
+          <div class="dashboard-section bono-calificacion-section">
+            <div class="bono-header">
+              <div class="bono-title-container">
+                <div class="trophy-wrapper">
+                  <i class="fas fa-trophy trophy-icon"></i>
+                </div>
+                <div class="bono-titles">
+                  <h3>Bono por Calificación</h3>
+                  <p>Premio por alcanzar y mantener tu rango</p>
+                </div>
+              </div>
+              <a href="#" class="history-link">Ver historial de calificación <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="bono-inner-container">
+              <div class="bono-card">
+                <div class="bono-card-content">
+                  <div class="bono-rank-image">
+                    <div class="rank-image-placeholder">
+                      <div class="sparkles">
+                        <span class="sparkle s1">✦</span>
+                        <span class="sparkle s2">✦</span>
+                        <span class="sparkle s3">✦</span>
+                      </div>
+                      <div v-if="currentRankImage" class="rank-image-real">
+                        <img :src="currentRankImage" alt="Rango Actual" class="rank-image-img" />
+                      </div>
+                      <div v-else class="diamond-shape">
+                        <i class="fas fa-gem"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bono-rank-info">
+                    <div class="max-rank-tag">RANGO MÁXIMO ALCANZADO</div>
+                    <h2 class="rank-display-name">DIAMANTE</h2>
+                    <p class="rank-subtitle">Rango actual cerrado (este mes)</p>
+                    
+                    <div class="rank-status-row">
+                      <span class="status-badge platino">
+                        <i class="fas fa-check-circle"></i> PLATINO
+                      </span>
+                      <span class="status-badge pagado">
+                        PAGADO <i class="fas fa-check-circle"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="award-divider"></div>
+
+                <div class="award-details">
+                  <span class="award-text">Premio por primera vez (Diamante)</span>
+                  <span class="award-amount">S/ 800.00 <i class="fas fa-chevron-right"></i></span>
+                </div>
+
+                <div class="secondary-actions">
+                  <div class="bonus-tag-container">
+                    <div class="bonus-percent-tag">+ 20%</div>
+                    <div class="bonus-amount-tag">S/ 160.00</div>
+                    <div class="bonus-paid-tag">PAGADO <i class="fas fa-check-circle"></i></div>
+                  </div>
+                  
+                  <div class="requalification-card">
+                    <div class="recalc-top">
+                      <span class="recalc-label">Recalificación de rango</span>
+                      <span class="recalc-status inactive">
+                        <i class="fas fa-lock"></i> INACTIVO <i class="fas fa-chevron-right"></i>
+                      </span>
+                    </div>
+                    <div class="recalc-bottom">
+                      <i class="fas fa-ban"></i> Mantén tu rango este mes
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bono-info-box">
+                  <div class="info-circle"><i class="fas fa-info"></i></div>
+                  <p class="info-text">Motivo: Tu rango actual (Platino) es menor a tu rango máximo alcanzado (Diamante)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- Top Row -->
         <div class="dashboard-row">
           <!-- Nivel Actual -->
@@ -279,91 +364,7 @@
           </div>
         </div>
 
-        <!-- Bono por Calificación -->
-        <div class="dashboard-row">
-          <div class="dashboard-section bono-calificacion-section">
-            <div class="bono-header">
-              <div class="bono-title-container">
-                <div class="trophy-wrapper">
-                  <i class="fas fa-trophy trophy-icon"></i>
-                </div>
-                <div class="bono-titles">
-                  <h3>Bono por Calificación</h3>
-                  <p>Premio por alcanzar y mantener tu rango</p>
-                </div>
-              </div>
-              <a href="#" class="history-link">Ver historial de calificación <i class="fas fa-arrow-right"></i></a>
-            </div>
 
-            <div class="bono-inner-container">
-              <div class="bono-card">
-                <div class="bono-card-content">
-                  <div class="bono-rank-image">
-                    <div class="rank-image-placeholder">
-                      <div class="sparkles">
-                        <span class="sparkle s1">✦</span>
-                        <span class="sparkle s2">✦</span>
-                        <span class="sparkle s3">✦</span>
-                      </div>
-                      <div v-if="currentRankImage" class="rank-image-real">
-                        <img :src="currentRankImage" alt="Rango Actual" class="rank-image-img" />
-                      </div>
-                      <div v-else class="diamond-shape">
-                        <i class="fas fa-gem"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="bono-rank-info">
-                    <div class="max-rank-tag">RANGO MÁXIMO ALCANZADO</div>
-                    <h2 class="rank-display-name">DIAMANTE</h2>
-                    <p class="rank-subtitle">Rango actual cerrado (este mes)</p>
-                    
-                    <div class="rank-status-row">
-                      <span class="status-badge platino">
-                        <i class="fas fa-check-circle"></i> PLATINO
-                      </span>
-                      <span class="status-badge pagado">
-                        PAGADO <i class="fas fa-check-circle"></i>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="award-divider"></div>
-
-                <div class="award-details">
-                  <span class="award-text">Premio por primera vez (Diamante)</span>
-                  <span class="award-amount">S/ 800.00 <i class="fas fa-chevron-right"></i></span>
-                </div>
-
-                <div class="secondary-actions">
-                  <div class="bonus-tag-container">
-                    <div class="bonus-percent-tag">+ 20%</div>
-                    <div class="bonus-amount-tag">S/ 160.00</div>
-                    <div class="bonus-paid-tag">PAGADO <i class="fas fa-check-circle"></i></div>
-                  </div>
-                  
-                  <div class="requalification-card">
-                    <div class="recalc-top">
-                      <span class="recalc-label">Recalificación de rango</span>
-                      <span class="recalc-status inactive">
-                        <i class="fas fa-lock"></i> INACTIVO <i class="fas fa-chevron-right"></i>
-                      </span>
-                    </div>
-                    <div class="recalc-bottom">
-                      <i class="fas fa-ban"></i> Mantén tu rango este mes
-                    </div>
-                  </div>
-                </div>
-
-                <div class="bono-info-box">
-                  <div class="info-circle"><i class="fas fa-info"></i></div>
-                  <p class="info-text">Motivo: Tu rango actual (Platino) es menor a tu rango máximo alcanzado (Diamante)</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </App>

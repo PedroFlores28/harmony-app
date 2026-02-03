@@ -37,28 +37,7 @@
           
           <!-- Banner derecha con centro integrado - Columna derecha -->
           <div class="banner-right-with-center">
-            <!-- Banners del centro uno debajo del otro -->
-            <div class="banner-center-column">
-              <!-- Banner centro superior -->
-              <div class="banner-center-top">
-                <div v-if="getBannerImg('centerTop')" class="banner-image-container" @click="onBannerClick('centerTop')" style="cursor: pointer;">
-                  <img :src="getBannerImg('centerTop')" alt="Banner Centro Arriba" class="banner-image" />
-                </div>
-                <div v-else class="banner-placeholder">
-                  <span class="banner-text">Banner Centro Arriba</span>
-                </div>
-              </div>
-              
-              <!-- Banner centro inferior -->
-              <div class="banner-center-bottom">
-                <div v-if="getBannerImg('centerBottom')" class="banner-image-container" @click="onBannerClick('centerBottom')" style="cursor: pointer;">
-                  <img :src="getBannerImg('centerBottom')" alt="Banner Centro Abajo" class="banner-image" />
-                </div>
-                <div v-else class="banner-placeholder">
-                  <span class="banner-text">Banner Centro Abajo</span>
-                </div>
-              </div>
-            </div>
+          <!-- Banners del centro uno debajo del otro - ELIMINADOS -->
             
             <!-- Banner derecha principal -->
             <div class="banner-right-main">
@@ -525,8 +504,6 @@ export default {
       // Banners de activación
       activationBanners: {
         left: "",
-        centerTop: "",
-        centerBottom: "",
         right: ""
       },
       price: 0,

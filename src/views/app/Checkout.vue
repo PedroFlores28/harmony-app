@@ -799,7 +799,7 @@ export default {
       // Datos del comprobante
       proofData: {
         type: 'boleta',
-        document: '',
+        document: this.$store.state.dni || '',
         ruc: '',
         razonSocial: '',
         direccionFiscal: ''
@@ -1950,6 +1950,15 @@ export default {
       return this.deliveryMethod === 'delivery' && 
              ((this.deliveryZoneInfo && this.deliveryData.department === 'lima') ||
               (this.deliveryData.agency && this.deliveryData.department !== 'lima'));
+    }
+  },
+  
+  watch: {
+    'proofData.type'(newType) {
+      // Si cambia a boleta y el documento está vacío, autocompletar con el DNI del store
+      if (newType === 'boleta' && !this.proofData.document) {
+        this.proofData.document = this.$store.state.dni || '';
+      }
     }
   },
   

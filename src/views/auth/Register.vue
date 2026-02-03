@@ -151,8 +151,24 @@
         </div>
         </div>
 
-        <!-- Depto y Provincia en fila -->
+        <!-- País, Depto y Provincia en fila -->
         <div class="form-row">
+        <div class="form-field">
+          <div class="input-container">
+            <select
+              id="country"
+              class="input-register-new select-field"
+              v-model="country"
+              :class="{ error: error.country }"
+              @change="onCountryChange"
+            >
+              <option :value="null" disabled>País</option>
+              <option v-for="c in countries" :key="c" :value="c">
+                {{ c }}
+              </option>
+            </select>
+          </div>
+        </div>
         <div class="form-field">
           <div class="input-container">
             <select
@@ -306,10 +322,8 @@ export default {
   components: { Auth },
   data() {
     return {
-      // country: 'Perú',
-      // country: 'Bolivia',
-      // country: 'Ecuador',
       country: null,
+      countries: ['Perú', 'Bolivia'],
 
       younger: false,
       dni: null,
@@ -329,7 +343,9 @@ export default {
       check: false,
       
       // Datos de ubicación
-      departments: [
+      departments: [],
+      
+      peruDepartments: [
         { value: 'amazonas', name: 'Amazonas' },
         { value: 'ancash', name: 'Áncash' },
         { value: 'apurimac', name: 'Apurímac' },
@@ -356,9 +372,22 @@ export default {
         { value: 'tumbes', name: 'Tumbes' },
         { value: 'ucayali', name: 'Ucayali' }
       ],
+
+      boliviaDepartments: [
+        { value: 'beni', name: 'Beni' },
+        { value: 'chuquisaca', name: 'Chuquisaca' },
+        { value: 'cochabamba', name: 'Cochabamba' },
+        { value: 'la-paz', name: 'La Paz' },
+        { value: 'oruro', name: 'Oruro' },
+        { value: 'pando', name: 'Pando' },
+        { value: 'potosi', name: 'Potosí' },
+        { value: 'santa-cruz', name: 'Santa Cruz' },
+        { value: 'tarija', name: 'Tarija' }
+      ],
       
       // Datos estáticos de provincias por departamento
       provincesData: {
+        // Perú
         'amazonas': [
           { value: 'bagua', name: 'Bagua' },
           { value: 'bongara', name: 'Bongará' },
@@ -598,6 +627,137 @@ export default {
         ],
         'apurimac': [
           { value: 'abancay', name: 'Abancay' }
+        ],
+        
+        // Bolivia
+        'beni': [
+          { value: 'cercado', name: 'Cercado' },
+          { value: 'vaca-diez', name: 'Vaca Díez' },
+          { value: 'jose-ballivian', name: 'José Ballivián' },
+          { value: 'yacuma', name: 'Yacuma' },
+          { value: 'moxos', name: 'Moxos' },
+          { value: 'marban', name: 'Marbán' },
+          { value: 'mamore', name: 'Mamoré' },
+          { value: 'itenez', name: 'Iténez' }
+        ],
+        'chuquisaca': [
+          { value: 'oropeza', name: 'Oropeza' },
+          { value: 'azurduy', name: 'Azurduy' },
+          { value: 'zudanez', name: 'Zudáñez' },
+          { value: 'tomina', name: 'Tomina' },
+          { value: 'hernando-siles', name: 'Hernando Siles' },
+          { value: 'yamparaez', name: 'Yamparáez' },
+          { value: 'nor-cinti', name: 'Nor Cinti' },
+          { value: 'sud-cinti', name: 'Sud Cinti' },
+          { value: 'belisario-boeto', name: 'Belisario Boeto' },
+          { value: 'luis-calvo', name: 'Luis Calvo' }
+        ],
+        'cochabamba': [
+          { value: 'arani', name: 'Arani' },
+          { value: 'arque', name: 'Arque' },
+          { value: 'ayopaya', name: 'Ayopaya' },
+          { value: 'bolivar', name: 'Bolívar' },
+          { value: 'campero', name: 'Campero' },
+          { value: 'capinota', name: 'Capinota' },
+          { value: 'cercado', name: 'Cercado' },
+          { value: 'carrasco', name: 'Carrasco' },
+          { value: 'chapare', name: 'Chapare' },
+          { value: 'esteban-arce', name: 'Esteban Arce' },
+          { value: 'german-jordan', name: 'Germán Jordán' },
+          { value: 'mizque', name: 'Mizque' },
+          { value: 'punata', name: 'Punata' },
+          { value: 'quillacollo', name: 'Quillacollo' },
+          { value: 'tapacari', name: 'Tapacarí' },
+          { value: 'tiraque', name: 'Tiraque' }
+        ],
+        'la-paz': [
+          { value: 'aroma', name: 'Aroma' },
+          { value: 'bautista-saavedra', name: 'Bautista Saavedra' },
+          { value: 'abel-iturralde', name: 'Abel Iturralde' },
+          { value: 'caranavi', name: 'Caranavi' },
+          { value: 'eliodoro-camacho', name: 'Eliodoro Camacho' },
+          { value: 'franz-tamayo', name: 'Franz Tamayo' },
+          { value: 'gualberto-villarroel', name: 'Gualberto Villarroel' },
+          { value: 'ingavi', name: 'Ingavi' },
+          { value: 'inquisivi', name: 'Inquisivi' },
+          { value: 'jose-manuel-pando', name: 'José Manuel Pando' },
+          { value: 'larecaja', name: 'Larecaja' },
+          { value: 'loayza', name: 'Loayza' },
+          { value: 'los-andes', name: 'Los Andes' },
+          { value: 'manco-kapac', name: 'Manco Kapac' },
+          { value: 'munecas', name: 'Muñecas' },
+          { value: 'nor-yungas', name: 'Nor Yungas' },
+          { value: 'omasuyos', name: 'Omasuyos' },
+          { value: 'pacajes', name: 'Pacajes' },
+          { value: 'murillo', name: 'Murillo' },
+          { value: 'sud-yungas', name: 'Sud Yungas' }
+        ],
+        'oruro': [
+          { value: 'sabaya', name: 'Sabaya' },
+          { value: 'carangas', name: 'Carangas' },
+          { value: 'cercado', name: 'Cercado' },
+          { value: 'eduardo-avaroa', name: 'Eduardo Avaroa' },
+          { value: 'ladislao-cabrera', name: 'Ladislao Cabrera' },
+          { value: 'litoral-de-atacama', name: 'Litoral de Atacama' },
+          { value: 'nor-carangas', name: 'Nor Carangas' },
+          { value: 'pantaleon-dalence', name: 'Pantaleón Dalence' },
+          { value: 'poopo', name: 'Poopó' },
+          { value: 'sajama', name: 'Sajama' },
+          { value: 'san-pedro-de-totora', name: 'San Pedro de Totora' },
+          { value: 'saucari', name: 'Saucarí' },
+          { value: 'sebastian-pagador', name: 'Sebastián Pagador' },
+          { value: 'sud-carangas', name: 'Sud Carangas' },
+          { value: 'tomas-barron', name: 'Tomas Barrón' }
+        ],
+        'pando': [
+          { value: 'abuna', name: 'Abuná' },
+          { value: 'federico-roman', name: 'Federico Román' },
+          { value: 'madre-de-dios', name: 'Madre de Dios' },
+          { value: 'manuripi', name: 'Manuripi' },
+          { value: 'nicolas-suarez', name: 'Nicolás Suárez' }
+        ],
+        'potosi': [
+          { value: 'alonso-de-ibanez', name: 'Alonso de Ibáñez' },
+          { value: 'antonio-quijarro', name: 'Antonio Quijarro' },
+          { value: 'bernardino-bilbao', name: 'Bernardino Bilbao' },
+          { value: 'charcas', name: 'Charcas' },
+          { value: 'chayanta', name: 'Chayanta' },
+          { value: 'cornelio-saavedra', name: 'Cornelio Saavedra' },
+          { value: 'daniel-campos', name: 'Daniel Campos' },
+          { value: 'enrique-baldivieso', name: 'Enrique Baldivieso' },
+          { value: 'jose-maria-linares', name: 'José María Linares' },
+          { value: 'modesto-omiste', name: 'Modesto Omiste' },
+          { value: 'nor-chichas', name: 'Nor Chichas' },
+          { value: 'nor-lipez', name: 'Nor Lípez' },
+          { value: 'rafael-bustillo', name: 'Rafael Bustillo' },
+          { value: 'sud-chichas', name: 'Sud Chichas' },
+          { value: 'sud-lipez', name: 'Sud Lípez' },
+          { value: 'tomas-frias', name: 'Tomás Frías' }
+        ],
+        'santa-cruz': [
+          { value: 'andres-ibanez', name: 'Andrés Ibáñez' },
+          { value: 'angel-sandoval', name: 'Ángel Sandoval' },
+          { value: 'chiquitos', name: 'Chiquitos' },
+          { value: 'cordillera', name: 'Cordillera' },
+          { value: 'florida', name: 'Florida' },
+          { value: 'german-busch', name: 'Germán Busch' },
+          { value: 'guarayos', name: 'Guarayos' },
+          { value: 'ichilo', name: 'Ichilo' },
+          { value: 'ignacio-warnes', name: 'Ignacio Warnes' },
+          { value: 'jose-miguel-de-velasco', name: 'José Miguel de Velasco' },
+          { value: 'manuel-maria-caballero', name: 'Manuel María Caballero' },
+          { value: 'nuflo-de-chavez', name: 'Ñuflo de Chávez' },
+          { value: 'obispo-santistevan', name: 'Obispo Santistevan' },
+          { value: 'sara', name: 'Sara' },
+          { value: 'vallegrande', name: 'Vallegrande' }
+        ],
+        'tarija': [
+          { value: 'aniceto-arce', name: 'Aniceto Arce' },
+          { value: 'burdet-oconnor', name: 'Burdet O\'Connor' },
+          { value: 'cercado', name: 'Cercado' },
+          { value: 'eustaquio-mendez', name: 'Eustaquio Méndez' },
+          { value: 'gran-chaco', name: 'Gran Chaco' },
+          { value: 'jose-maria-aviles', name: 'José María Avilés' }
         ]
       },
       availableProvinces: [],
@@ -685,7 +845,10 @@ export default {
 
     // const contentAuth = document.getElementById("content-auth");
     // console.log(contentAuth);
-    // contentAuth.style.order = 0;
+    // Initial check for country
+    if (this.country) {
+      this.onCountryChange();
+    }
   },
   watch: {
     /* async dni(dni) {
@@ -710,8 +873,28 @@ export default {
     } */
   },
   methods: {
+    onCountryChange() {
+      this.reset('country');
+      this.department = "";
+      this.province = "";
+      this.availableProvinces = [];
+      
+      if (this.country === 'Perú') {
+        this.departments = this.peruDepartments;
+      } else if (this.country === 'Bolivia') {
+        this.departments = this.boliviaDepartments;
+      } else {
+        this.departments = [];
+      }
+    },
     async submit() {
-      const { dni, name, lastName, password, phone, sponsorCode, email, birthDate, acceptTerms, department, province } = this;
+      const { country, dni, name, lastName, password, phone, sponsorCode, email, birthDate, acceptTerms, department, province } = this;
+
+      if (!country) {
+        this.error.country = true;
+        this.alert = "El país se requiere";
+        return;
+      }
 
       if (!dni) {
         this.error.dni = true;
@@ -788,6 +971,7 @@ export default {
           password,
           phone,
           code: sponsorCode,
+          country,
           department,
           province,
         });
@@ -822,6 +1006,7 @@ export default {
     reset(name) {
       this.alert = null;
 
+      if (name == "country") this.error.country = false;
       if (name == "dni") this.error.dni = false;
       if (name == "name") this.error.name = false;
       if (name == "lastName") this.error.lastName = false;

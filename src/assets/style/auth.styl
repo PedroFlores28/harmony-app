@@ -445,7 +445,7 @@
     
   .form-row
     display flex
-    gap 15px
+    gap 10px
     justify-content center
     width 80%
     max-width 509px
@@ -456,60 +456,48 @@
     
     .form-field
       flex 1
-      max-width 250px
-      
+      min-width 0 // Permite que se encojan más allá de su contenido
       
     .input-register-new
       width 100%
-      max-width 250px
       
     // Responsive
     @media (max-width: 768px)
       width 90%
       max-width 400px
-      gap 10px
+      gap 8px
       
       .form-field
-        max-width 180px
+        // Removido max-width para dejar que flex: 1 maneje el espacio
         
       .input-register-new
-        max-width 180px
         border-radius 0
-        font-size 15px
-        padding 9px 11px
+        font-size 13px // Reducido ligeramente para que quepa el texto
+        padding 9px 8px
         height 40px
         
     @media (max-width: 480px)
       flex-direction row
-      gap 8px
-      width 95%
-      max-width 350px
+      gap 5px
+      width 98%
+      max-width 380px
       
       .form-field
         flex 1
-        max-width 48%
         
       .input-register-new
-        max-width 100%
         border-radius 0
-        font-size 14px
-        padding 7px 9px
+        font-size 11px // Reducido para móviles pequeños
+        padding 7px 5px
         height 36px
         
     @media (max-width: 375px)
-      gap 6px
-      width 95%
-      max-width 300px
+      gap 4px
+      width 100%
       
-      .form-field
-        flex 1
-        max-width 47%
-        
       .input-register-new
-        max-width 100%
-        border-radius 0
-        font-size 13px
-        padding 6px 8px
+        font-size 10px
+        padding 6px 4px
         height 32px
       
   .input-register-new

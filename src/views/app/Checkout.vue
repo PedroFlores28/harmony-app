@@ -630,7 +630,7 @@
                       @click="selectBankOption(method.id)" 
                       :class="{ 'selected': selectedBank === method.id }"
                     >
-                      <span>{{ method.name }}</span>
+                      <span>{{ method.banco }}</span>
                     </div>
                   </div>
                   
@@ -1022,18 +1022,18 @@ export default {
     
     getBankDisplayName(bankId) {
       const method = this.paymentMethods.find(m => m.id === bankId);
-      return method ? method.name : 'Pago con Comprobante';
+      return method ? method.banco : 'Pago con Comprobante';
     },
     
     getBankInfo(bankId) {
       const method = this.paymentMethods.find(m => m.id === bankId);
       if (method) {
         return {
-          name: method.name,
-          account: method.account,
+          name: method.banco,
+          account: method.cuenta,
           cci: method.cci || method.CCI || "",
-          holder: method.holder,
-          type: method.type
+          holder: method.titular,
+          type: method.tipo
         };
       }
       return {};

@@ -1,0 +1,567 @@
+<template>
+  <App :session="session" :title="title">
+    <div v-cloak>
+      <!-- Banner slider (mantener el existente) -->
+      <div v-if="!loading && bannerImages.length > 0" class="banner-slider">
+        <div class="slider-wrapper">
+          <transition name="carousel-3d" mode="out-in">
+            <div class="banner-slide" :key="currentBanner">
+              <img :src="bannerImages[currentBanner]" class="banner-img" />
+            </div>
+          </transition>
+          <button
+            v-if="bannerImages.length > 1"
+            class="nav left"
+            @click="prevBanner"
+          >
+            &#8592;
+          </button>
+          <button
+            v-if="bannerImages.length > 1"
+            class="nav right"
+            @click="nextBanner"
+          >
+            &#8594;
+          </button>
+        </div>
+        <div v-if="bannerImages.length > 1" class="dots">
+          <span
+            v-for="(img, idx) in bannerImages"
+            :key="'dot-' + idx"
+            :class="['dot', { active: currentBanner === idx }]"
+            @click="goToBanner(idx)"
+          ></span>
+        </div>
+      </div>
+      <div v-else-if="!loading" class="no-banners-msg">
+        <p>No hay banners para mostrar.</p>
+      </div>
+
+      <div v-if="loading" class="loading-container">
+        <div class="loading-spinner-large"></div>
+        <p>Cargando dashboard...</p>
+      </div>
+      
+      <SkeletonLoader
+        v-if="loading"
+        :lines="6"
+        width="100%"
+        height="60px"
+        style="margin: 24px 0"
+      />
+
+      <!-- Nuevo Dashboard Design -->
+      <div v-else class="dashboard-container">
+        <!-- Bono por Calificación -->
+        <div class="dashboard-row">
+          <div class="dashboard-section bono-calificacion-section">
+            <div class="bono-header">
+              <div class="bono-title-container">
+                <div class="trophy-wrapper">
+                  <i class="fas fa-trophy trophy-icon"></i>
+                </div>
+                <div class="bono-titles">
+                  <h3>Bono por Calificación</h3>
+                  <p>Premio por alcanzar y mantener tu rango</p>
+                </div>
+              </div>
+              <a href="#" class="history-link">Ver historial de calificación <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="bono-inner-container">
+              <div class="bono-card">
+                <div class="bono-card-content">
+                  <div class="bono-rank-image">
+                    <div class="rank-image-placeholder">
+                      <div class="sparkles">
+                        <span class="sparkle s1">✦</span>
+                        <span class="sparkle s2">✦</span>
+                        <span class="sparkle s3">✦</span>
+                      </div>
+                      <div v-if="currentRankImage" class="rank-image-real">
+                        <img :src="currentRankImage" alt="Rango Actual" class="rank-image-img" />
+                      </div>
+                      <div v-else class="diamond-shape">
+                        <i class="fas fa-gem"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bono-rank-info">
+                    <div class="max-rank-tag">RANGO MÁXIMO ALCANZADO</div>
+                    <h2 class="rank-display-name">DIAMANTE</h2>
+                    <p class="rank-subtitle">Rango actual cerrado (este mes)</p>
+                    
+                    <div class="rank-status-row">
+                      <span class="status-badge platino">
+                        <i class="fas fa-check-circle"></i> PLATINO
+                      </span>
+                      <span class="status-badge pagado">
+                        PAGADO <i class="fas fa-check-circle"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="award-divider"></div>
+
+                <div class="award-details">
+                  <span class="award-text">Premio por primera vez (Diamante)</span>
+                  <span class="award-amount">S/ 800.00 <i class="fas fa-chevron-right"></i></span>
+                </div>
+
+                <div class="secondary-actions">
+                  <div class="bonus-tag-container">
+                    <div class="bonus-percent-tag">+ 20%</div>
+                    <div class="bonus-amount-tag">S/ 160.00</div>
+                    <div class="bonus-paid-tag">PAGADO <i class="fas fa-check-circle"></i></div>
+                  </div>
+                  
+                  <div class="requalification-card">
+                    <div class="recalc-top">
+                      <span class="recalc-label">Recalificación de rango</span>
+                      <span class="recalc-status inactive">
+                        <i class="fas fa-lock"></i> INACTIVO <i class="fas fa-chevron-right"></i>
+                      </span>
+                    </div>
+                    <div class="recalc-bottom">
+                      <i class="fas fa-ban"></i> Mantén tu rango este mes
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bono-info-box">
+                  <div class="info-circle"><i class="fas fa-info"></i></div>
+                  <p class="info-text">Motivo: Tu rango actual (Platino) es menor a tu rango máximo alcanzado (Diamante)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Top Row -->
+        <div class="dashboard-row">
+          <!-- Nivel Actual -->
+          <div class="dashboard-section">
+            <div class="section-header">
+              <h3>Nivel Actual</h3>
+            </div>
+            <div class="level-card">
+              <div class="level-icon">
+                <div class="medal-icon">
+                  <i class="fas fa-gem"></i>
+                  <span class="medal-text">{{ rank | _rank }}</span>
+                </div>
+              </div>
+              <div class="level-info">
+                <!-- <h4>{{ plan }}</h4> -->
+              </div>
+            </div>
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <i class="fas fa-user"></i>
+                <div class="metric-content">
+                  <span class="metric-value">{{ points || 0 }}</span>
+                  <span class="metric-label">Puntos Personales</span>
+                </div>
+              </div>
+              <div class="metric-card">
+                <i class="fas fa-users"></i>
+                <div class="metric-content">
+                  <span class="metric-value">{{ directs ? directs.length : 0 }}</span>
+                  <span class="metric-label">Directos</span>
+                </div>
+              </div>
+              <div class="metric-card">
+                <i class="fas fa-star"></i>
+                <div class="metric-content">
+                  <span class="metric-value">{{ rank | _rank }}</span>
+                  <span class="metric-label">Rango Actual</span>
+                </div>
+              </div>
+              <div class="metric-card">
+                <i class="fas fa-users"></i>
+                <div class="metric-content">
+                  <span class="metric-value">{{ total_points }}</span>
+                  <span class="metric-label">Puntos Grupales</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rango Diamante -->
+          <div class="dashboard-section">
+            <div class="section-header">
+              <h3>Rango Diamante</h3>
+            </div>
+            <div class="rank-progress">
+              <div class="circular-progress">
+                <div class="progress-circle">
+                  <div class="progress-fill" :style="{ transform: `rotate(${75 * 4.6}deg)` }"></div>
+                  <div class="progress-center">
+                    <i class="fas fa-medal"></i>
+                  </div>
+                </div>
+                <div class="progress-text">
+                  <span class="progress-percentage">75%</span>
+                  <span class="progress-label">Avance actual</span>
+                  <span class="progress-subtitle">a 32% de subir a Segundo Diamante</span>
+                </div>
+              </div>
+              <div class="rank-metrics">
+                <div class="metric-card">
+                  <i class="fas fa-user"></i>
+                  <div class="metric-content">
+                    <span class="metric-value">{{ points || 0 }}</span>
+                    <span class="metric-label">Puntos Personales</span>
+                    <div class="metric-progress">
+                      <div class="progress-bar" style="width: 60%"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="metric-card dark">
+                  <i class="fas fa-users"></i>
+                  <div class="metric-content">
+                    <span class="metric-value">{{ directs ? directs.length : 0 }}</span>
+                    <span class="metric-label">Directos</span>
+                    <div class="metric-progress">
+                      <div class="progress-bar" style="width: 75%"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="metric-card">
+                  <i class="fas fa-star"></i>
+                  <div class="metric-content">
+                    <span class="metric-value">{{ rank | _rank }}</span>
+                    <span class="metric-label">Rango Actual</span>
+                    <div class="metric-progress">
+                      <div class="progress-bar" style="width: 45%"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="metric-card dark">
+                  <i class="fas fa-users"></i>
+                  <div class="metric-content">
+                    <span class="metric-value">{{ total_points }}</span>
+                    <span class="metric-label">Puntos Grupales</span>
+                    <div class="metric-progress">
+                      <div class="progress-bar" style="width: 80%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle Row -->
+        <div class="dashboard-row">
+          <!-- Pack de Afiliación -->
+          <div class="dashboard-section">
+            <div class="affiliation-pack">
+              <div class="pack-content">
+                <h4>Pack de Afiliación</h4>
+                <p v-if="userPlan && userPlan.name">{{ userPlan.name }}</p>
+                <p v-else>{{ plan }}</p>
+              </div>
+              <div class="pack-icon">
+                <img v-if="userPlan && userPlan.img" :src="userPlan.img" alt="Imagen del plan" style="width: 40px; height: 40px; border-radius: 50%; background: #fff; padding: 5px;" />
+                <i v-else class="fas fa-medal"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comisiones -->
+          <div class="dashboard-section">
+            <div class="section-header">
+              <h3>Comisiones</h3>
+              <p>Completa los porcentajes y ¡disfruta el viaje!</p>
+            </div>
+            <div class="commissions-grid">
+              <div class="commission-card">
+                <div class="commission-icon gold">
+                  <i class="fas fa-medal"></i>
+                </div>
+                <div class="commission-content">
+                  <span class="commission-value">{{ balance || 0 }}</span>
+                  <span class="commission-label">Saldo Disponible</span>
+                </div>
+              </div>
+              <div class="commission-card">
+                <div class="commission-icon blue">
+                  <i class="fas fa-medal"></i>
+                </div>
+                <div class="commission-content">
+                  <span class="commission-value">{{ _balance || 0 }}</span>
+                  <span class="commission-label">Saldo No Disponible</span>
+                </div>
+              </div>
+              <div class="commission-card">
+                <div class="commission-icon purple">
+                  <i class="fas fa-medal"></i>
+                </div>
+                <div class="commission-content">
+                  <span class="commission-value">{{ Number(ins + insVirtual).toFixed(2) }}</span>
+                  <span class="commission-label">Total Ganado</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bono Viaje -->
+          <div class="dashboard-section">
+            <div class="section-header">
+              <h3>Bono Viaje</h3>
+              <p>Estado y progreso del socio</p>
+            </div>
+            <div class="travel-bonus-info">
+              <div class="travel-bonus-text">
+                <p>{{ travelBonusText || 'Tu progreso hacia el Bono Viaje se actualizará próximamente. ¡Sigue trabajando para alcanzar tus objetivos!' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Row -->
+        <div class="dashboard-row">
+          <!-- Últimos Ingresos -->
+          <div class="dashboard-section">
+            <div class="section-header">
+              <h3>Últimos Ingresos</h3>
+            </div>
+            <div class="latest-incomes">
+              <div v-if="directs && directs.length > 0" v-for="direct in directs.slice(0, 4)" :key="direct.id" class="income-item">
+                <div class="income-avatar">
+                  <img v-if="direct.photo" :src="direct.photo" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+                  <i v-else class="fas fa-user"></i>
+                </div>
+                <div class="income-content">
+                  <span class="income-name">{{ direct.name }} {{ direct.lastName }}</span>
+                  <span class="income-pack">{{ direct.plan || 'Usuario' }}</span>
+                </div>
+              </div>
+              <div v-if="!directs || directs.length === 0" class="income-item">
+                <div class="income-avatar">
+                  <i class="fas fa-user"></i>
+                </div>
+                <div class="income-content">
+                  <span class="income-name">No hay directos</span>
+                  <span class="income-pack">Aún no tienes afiliados</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comisiones Card -->
+          <div class="dashboard-section">
+            <div class="commissions-summary">
+              <div class="summary-icon">
+                <i class="fas fa-bullseye"></i>
+              </div>
+              <div class="summary-content">
+                <span class="summary-value">{{ Number(ins + insVirtual).toFixed(2) }}</span>
+                <span class="summary-label">Total Ganado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </App>
+</template>
+
+<script>
+import App from "@/views/layouts/App";
+import api from "@/api";
+import Spinner from "@/components/Spinner.vue";
+import SkeletonLoader from "@/components/SkeletonLoader.vue";
+
+export default {
+  components: {
+    App,
+    Spinner,
+    SkeletonLoader,
+  },
+  data() {
+    return {
+      banner: { img: null },
+      ins: null,
+      outs: null,
+      balance: null,
+      _balance: null,
+      team: null,
+      rank: "",
+      points: null,
+      directs: [],
+      frontals: [],
+      loading: true,
+      plans: null,
+      plan: null ,
+      total_points: null,
+      travelBonusText: null,
+
+      op: 1,
+      op2: 0,
+      op3: 0,
+      node: {},
+      currentBanner: 0,
+      bannerInterval: null,
+      rankImages: {},
+    };
+  },
+  computed: {
+    session() {
+      return this.$store.state.session;
+    },
+    plan() {
+      if (this.$store.state.plan == "early") return "CLIENTE PREFERENTE";
+      if (this.$store.state.plan == "basic") return "EJECUTIVO";
+      if (this.$store.state.plan == "standard") return "DISTRIBUIDOR";
+      if (this.$store.state.plan == "master") return "EMPRESARIO";
+      return this.$store.state.plan;
+    },
+    userPlan() {
+      if (!this.plans) return null;
+      // Buscar por nombre o id según corresponda
+      return this.plans.find(p => p.name === this.plan || p.id === this.plan);
+    },
+    title() {
+      return "Dashboard";
+    },
+    bannerImages() {
+      return [this.banner.img, this.banner.img2, this.banner.img3].filter(
+        (img) => typeof img === "string" && img.trim() !== ""
+      );
+    },
+    currentRankImage() {
+      if (!this.rankImages || !this.rank) return null;
+      const rankKey = this.rank.toLowerCase().replace(/ /g, '_');
+      return this.rankImages[rankKey] || null;
+    },
+  },
+  filters: {
+    _rank(val) {
+      // Rangos antiguos (mantener por compatibilidad)
+      if (val === 'none') return 'Ninguno';
+      if (val === 'active') return 'Activo';
+      if (val === 'star') return 'Estrella';
+      if (val === 'master') return 'Maestro';
+      if (val === 'silver') return 'Plata';
+      if (val === 'gold') return 'Oro Antiguo';
+      if (val === 'sapphire') return 'Zafiro';
+      if (val === 'RUBI') return 'Rubí';
+      
+      // NUEVOS RANGOS HARMONY LIFE CORPORATION (10 RANGOS)
+      if (val === 'MILLONARIO') return 'Millonario';
+      if (val === 'ORO') return 'Oro';
+      if (val === 'ESMERALDA') return 'Esmeralda';
+      if (val === 'PLATINO') return 'Platino';
+      if (val === 'DIAMANTE') return 'Diamante';
+      if (val === 'DIAMANTE_AZUL') return 'Diamante Azul';
+      if (val === 'DIAMANTE_EJECUTIVO') return 'Diamante Ejecutivo';
+      if (val === 'DOBLE_DIAMANTE') return 'Doble Diamante';
+      if (val === 'DIAMANTE_CORONA') return 'Diamante Corona';
+      if (val === 'TOP_HARMONY') return 'Top Harmony';
+      
+      // Fallback
+      return val ? val.charAt(0).toUpperCase() + val.slice(1).toLowerCase().replace(/_/g, ' ') : 'Ninguno';
+    },
+  },
+  methods: {
+    nextBanner() {
+      this.currentBanner = (this.currentBanner + 1) % this.bannerImages.length;
+    },
+    prevBanner() {
+      this.currentBanner =
+        (this.currentBanner - 1 + this.bannerImages.length) %
+        this.bannerImages.length;
+    },
+    goToBanner(idx) {
+      this.currentBanner = idx;
+    },
+    setupBannerAutoplay() {
+      // Reiniciar cualquier intervalo previo
+      if (this.bannerInterval) {
+        clearInterval(this.bannerInterval);
+        this.bannerInterval = null;
+      }
+      // Iniciar autoplay solo si hay más de una imagen
+      if (this.bannerImages.length > 1) {
+        this.bannerInterval = setInterval(() => {
+          // Proteger contra longitud 0
+          if (this.bannerImages.length > 0) {
+            this.nextBanner();
+          }
+        }, 5000);
+      }
+    },
+    async loadRankImages() {
+      try {
+        const { data } = await api.RankImages.GET(this.session);
+        if (data && data.rankImages) {
+          this.rankImages = data.rankImages;
+        }
+      } catch (error) {
+        console.error("Error fetching rank images:", error);
+      }
+    },
+  },
+  async created() {
+    // GET data
+    const { data } = await api.dashboard(this.session);
+    this.loading = false;
+
+    // error
+    if (data.error && data.msg == "invalid session") {
+      this.$router.push("/login");
+      return;
+    }
+
+    // success - actualizar store
+    this.$store.commit("SET_NAME", data.name);
+    this.$store.commit("SET_LAST_NAME", data.lastName);
+    this.$store.commit("SET_AFFILIATED", data.affiliated);
+    this.$store.commit("SET__ACTIVATED", data._activated);
+    this.$store.commit("SET_ACTIVATED", data.activated);
+    this.$store.commit("SET_PLAN", data.plan);
+    this.$store.commit("SET_COUNTRY", data.country);
+    this.$store.commit("SET_PHOTO", data.photo);
+    this.$store.commit("SET_TREE", data.tree);
+    this.$store.commit("SET_EMAIL", data.email);
+    this.$store.commit("SET_TOKEN", data.token);
+    this.$store.commit("SET_TOTAL_POINTS", data.total_points);
+
+    // Verificar afiliación
+    if (!data.affiliated) {
+      this.$router.push("/affiliation");
+      return;
+    }
+
+    // Cargar datos del dashboard
+    this.banner = data.banner;
+    this.ins = data.ins;
+    this.insVirtual = data.insVirtual;
+    this.outs = data.outs ? data.outs.toFixed(2) : "0.00";
+    this.balance = data.balance ? data.balance.toFixed(2) : "0.00";
+    this._balance = data._balance ? data._balance.toFixed(2) : "0.00";
+    this.team = data.team;
+    this.rank = data.rank || "";
+    this.points = data.points;
+    this.node = data.node || {};
+    this.n_affiliates = data.n_affiliates;
+    this.directs = data.directs || [];
+    this.frontals = data.frontals || [];
+    this.total_points = data.total_points;
+    this.travelBonusText = data.travelBonusText || 'Tu progreso hacia el Bono Viaje se actualizará próximamente. ¡Sigue trabajando para alcanzar tus objetivos!';
+
+    // Iniciar autoplay del banner si corresponde
+    this.setupBannerAutoplay();
+    this.loadRankImages();
+  },
+  beforeDestroy() {
+    if (this.bannerInterval) clearInterval(this.bannerInterval);
+  },
+};
+</script>
+
+<style scoped src="../../assets/style/views/app/Dashboard.css"></style>

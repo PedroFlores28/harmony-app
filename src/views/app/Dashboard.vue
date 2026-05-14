@@ -52,319 +52,209 @@
 
       <!-- Nuevo Dashboard Design -->
       <div v-else class="dashboard-container">
-        <!-- Bono por Calificación -->
-        <div class="dashboard-row">
-          <div class="dashboard-section bono-calificacion-section">
-            <div class="bono-header">
-              <div class="bono-title-container">
-                <div class="trophy-wrapper">
-                  <i class="fas fa-trophy trophy-icon"></i>
-                </div>
-                <div class="bono-titles">
-                  <h3>Bono por Calificación</h3>
-                  <p>Premio por alcanzar y mantener tu rango</p>
-                </div>
+        <!-- Ganancias -->
+        <div class="dashboard-row earnings-row">
+          <div class="earnings-card">
+            <div class="earnings-total">
+              <div class="earnings-total-icon">
+                <i class="fas fa-wallet"></i>
               </div>
-              <a href="#" class="history-link">Ver historial de calificación <i class="fas fa-arrow-right"></i></a>
+              <div class="earnings-total-content">
+                <span class="earnings-total-label">TOTAL GANADO</span>
+                <strong>{{ totalEarnedDisplay }}</strong>
+                <span class="earnings-total-subtitle">Ganancias acumuladas</span>
+              </div>
             </div>
 
-            <div class="bono-inner-container">
-              <div class="bono-card">
-                <div class="bono-card-content">
-                  <div class="bono-rank-image">
-                    <div class="rank-image-placeholder">
-                      <div class="sparkles">
-                        <span class="sparkle s1">✦</span>
-                        <span class="sparkle s2">✦</span>
-                        <span class="sparkle s3">✦</span>
-                      </div>
-                      <div v-if="maxRankImage" class="rank-image-real">
-                        <img :src="maxRankImage" alt="Rango máximo alcanzado" class="rank-image-img" />
-                      </div>
-                      <div v-else class="diamond-shape">
-                        <i class="fas fa-gem"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="bono-rank-info">
-                    <div class="max-rank-tag">RANGO MÁXIMO ALCANZADO</div>
-                    <h2 class="rank-display-name">{{ maxRankDisplayName }}</h2>
-                    <p class="rank-subtitle">Mayor rango alcanzado por este usuario</p>
-                    
-                    <div class="rank-status-row">
-                      <span class="status-badge current-rank">
-                        <i class="fas fa-check-circle"></i> {{ currentRankDisplayName }}
-                      </span>
-                      <span class="status-badge pagado">
-                        PAGADO <i class="fas fa-check-circle"></i>
-                      </span>
-                    </div>
-                  </div>
+            <div class="earnings-breakdown">
+              <div class="earnings-balance-card available">
+                <div class="earnings-balance-icon">
+                  <i class="fas fa-wallet"></i>
                 </div>
-
-                <div class="award-divider"></div>
-
-                <div class="award-details">
-                  <span class="award-text">{{ awardText }}</span>
-                  <span class="award-amount">S/ 800.00 <i class="fas fa-chevron-right"></i></span>
+                <div>
+                  <span class="earnings-balance-label">SALDO DISPONIBLE</span>
+                  <strong>{{ availableBalanceDisplay }}</strong>
+                  <p>Disponible para retiro</p>
                 </div>
+              </div>
 
-                <div class="secondary-actions">
-                  <div class="bonus-tag-container">
-                    <div class="bonus-percent-tag">+ 20%</div>
-                    <div class="bonus-amount-tag">S/ 160.00</div>
-                    <div class="bonus-paid-tag">PAGADO <i class="fas fa-check-circle"></i></div>
-                  </div>
-                  
-                  <div class="requalification-card">
-                    <div class="recalc-top">
-                      <span class="recalc-label">Recalificación de rango</span>
-                      <span class="recalc-status inactive">
-                        <i class="fas fa-lock"></i> INACTIVO <i class="fas fa-chevron-right"></i>
-                      </span>
-                    </div>
-                    <div class="recalc-bottom">
-                      <i class="fas fa-ban"></i> Mantén tu rango este mes
-                    </div>
-                  </div>
+              <div class="earnings-balance-card unavailable">
+                <div class="earnings-balance-icon">
+                  <i class="fas fa-lock"></i>
                 </div>
-
-                <div class="bono-info-box">
-                  <div class="info-circle"><i class="fas fa-info"></i></div>
-                  <p class="info-text">{{ qualificationInfoText }}</p>
+                <div>
+                  <span class="earnings-balance-label">SALDO NO DISPONIBLE</span>
+                  <strong>{{ unavailableBalanceDisplay }}</strong>
+                  <p>Bonos retenidos por inactividad</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- Top Row -->
-        <div class="dashboard-row">
-          <!-- Nivel Actual -->
-          <div class="dashboard-section">
-            <div class="section-header">
-              <h3>Nivel Actual</h3>
-            </div>
-            <div class="level-card">
-              <div class="level-icon">
-                <div class="medal-icon">
-                  <i class="fas fa-gem"></i>
-                  <span class="medal-text">{{ rank | _rank }}</span>
+
+        <div class="dashboard-overview-grid">
+          <!-- Rangos -->
+          <div class="dashboard-row ranks-summary-row">
+            <div class="ranks-summary-card">
+              <h3>RANGOS</h3>
+
+              <div class="ranks-summary-inner">
+                <div class="rank-summary-item">
+                  <span class="rank-summary-label">RANGO ACTUAL</span>
+                  <div class="rank-summary-badge current">
+                    <img
+                      v-if="currentRankImage"
+                      :src="currentRankImage"
+                      alt="Rango actual"
+                    />
+                    <i v-else class="fas fa-star"></i>
+                  </div>
+                  <strong>{{ currentRankDisplayName }}</strong>
+                  <p>Rango del periodo actual</p>
                 </div>
-              </div>
-              <div class="level-info">
-                <!-- <h4>{{ plan }}</h4> -->
-              </div>
-            </div>
-            <div class="metrics-grid">
-              <div class="metric-card">
-                <i class="fas fa-user"></i>
-                <div class="metric-content">
-                  <span class="metric-value">{{ points || 0 }}</span>
-                  <span class="metric-label">Puntos Personales</span>
-                </div>
-              </div>
-              <div class="metric-card">
-                <i class="fas fa-users"></i>
-                <div class="metric-content">
-                  <span class="metric-value">{{ directs ? directs.length : 0 }}</span>
-                  <span class="metric-label">Directos</span>
-                </div>
-              </div>
-              <div class="metric-card">
-                <i class="fas fa-star"></i>
-                <div class="metric-content">
-                  <span class="metric-value">{{ rank | _rank }}</span>
-                  <span class="metric-label">Rango Actual</span>
-                </div>
-              </div>
-              <div class="metric-card">
-                <i class="fas fa-users"></i>
-                <div class="metric-content">
-                  <span class="metric-value">{{ total_points }}</span>
-                  <span class="metric-label">Puntos Grupales</span>
+
+                <div class="rank-summary-divider"></div>
+
+                <div class="rank-summary-item">
+                  <span class="rank-summary-label">RANGO MÁXIMO HISTÓRICO</span>
+                  <div class="rank-summary-badge historic">
+                    <img
+                      v-if="maxRankImage"
+                      :src="maxRankImage"
+                      alt="Rango máximo histórico"
+                    />
+                    <i v-else class="fas fa-gem"></i>
+                  </div>
+                  <strong>{{ maxRankDisplayName }}</strong>
+                  <p>Mayor rango alcanzado</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Rango Diamante -->
-          <div class="dashboard-section">
-            <div class="section-header">
-              <h3>Rango Diamante</h3>
+          <!-- Mi Actividad -->
+          <div class="dashboard-row activity-summary-row">
+            <div class="activity-summary-card">
+              <h3><i class="fas fa-list"></i> MI ACTIVIDAD</h3>
+
+              <div class="activity-summary-grid">
+                <div class="activity-box">
+                  <span class="activity-box-label">PUNTOS PERSONALES</span>
+                  <div class="activity-main-value">
+                    <i class="fas fa-user"></i>
+                    <strong>{{ points || 0 }}</strong>
+                    <small>pts</small>
+                  </div>
+                  <span
+                    class="activity-status-pill"
+                    :class="{ inactive: !activated }"
+                  >
+                    {{ activityStatusText }}
+                  </span>
+                  <p>Estado actual</p>
+                </div>
+
+                <div class="activity-box">
+                  <span class="activity-box-label">MEMBRESÍA ACTUAL</span>
+                  <div class="activity-membership-icon">
+                    <i class="fas fa-crown"></i>
+                  </div>
+                  <strong class="activity-membership-name">
+                    {{ membershipDisplayName }}
+                  </strong>
+                  <p>Membresía activa</p>
+                </div>
+              </div>
             </div>
-            <div class="rank-progress">
-              <div class="circular-progress">
-                <div class="progress-circle">
-                  <div class="progress-fill" :style="{ transform: `rotate(${75 * 4.6}deg)` }"></div>
-                  <div class="progress-center">
+          </div>
+
+          <!-- Mi Red -->
+          <div class="dashboard-row network-summary-row">
+            <div class="network-summary-card">
+              <h3><i class="fas fa-user-friends"></i> MI RED</h3>
+
+              <div class="network-summary-grid">
+                <div class="network-box directos">
+                  <i class="fas fa-user-friends"></i>
+                  <div>
+                    <span class="network-box-label">DIRECTOS</span>
+                    <strong>{{ directsCount }}</strong>
+                    <p>Total de directos</p>
+                  </div>
+                </div>
+
+                <div class="network-box activos">
+                  <i class="fas fa-user-friends"></i>
+                  <div>
+                    <span class="network-box-label">DIRECTOS ACTIVOS</span>
+                    <strong>{{ activeDirectsCount }}</strong>
+                    <p>Directos activos</p>
+                  </div>
+                </div>
+
+                <div class="network-box grupales">
+                  <i class="fas fa-network-wired"></i>
+                  <div>
+                    <span class="network-box-label">PUNTOS GRUPALES</span>
+                    <strong>{{ groupPointsDisplay }} <small>pts</small></strong>
+                    <p>Total de puntos grupales</p>
+                  </div>
+                </div>
+
+                <div class="network-box niveles">
+                  <i class="fas fa-layer-group"></i>
+                  <div>
+                    <span class="network-box-label">NIVELES DE PROFUNDIDAD</span>
+                    <strong>{{ depthLevels }}</strong>
+                    <p>Niveles alcanzados<br />(según tu rango)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Acceso rápido a bonos -->
+          <div class="dashboard-row bonus-access-row">
+            <div class="bonus-access-card">
+              <h3><i class="fas fa-user-friends"></i> ACCESO RÁPIDO A BONOS</h3>
+
+              <div class="bonus-access-grid">
+                <button class="bonus-access-item" type="button">
+                  <span class="bonus-access-icon">
                     <i class="fas fa-medal"></i>
-                  </div>
-                </div>
-                <div class="progress-text">
-                  <span class="progress-percentage">75%</span>
-                  <span class="progress-label">Avance actual</span>
-                  <span class="progress-subtitle">a 32% de subir a Segundo Diamante</span>
-                </div>
+                  </span>
+                  <strong>Rango</strong>
+                </button>
+
+                <button class="bonus-access-item" type="button">
+                  <span class="bonus-access-icon">
+                    <i class="fas fa-plane"></i>
+                  </span>
+                  <strong>Viaje</strong>
+                </button>
+
+                <button class="bonus-access-item" type="button">
+                  <span class="bonus-access-icon">
+                    <i class="fas fa-car"></i>
+                  </span>
+                  <strong>Auto</strong>
+                </button>
+
+                <button class="bonus-access-item" type="button">
+                  <span class="bonus-access-icon">
+                    <i class="fas fa-home"></i>
+                  </span>
+                  <strong>Casa</strong>
+                </button>
               </div>
-              <div class="rank-metrics">
-                <div class="metric-card">
-                  <i class="fas fa-user"></i>
-                  <div class="metric-content">
-                    <span class="metric-value">{{ points || 0 }}</span>
-                    <span class="metric-label">Puntos Personales</span>
-                    <div class="metric-progress">
-                      <div class="progress-bar" style="width: 60%"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="metric-card dark">
-                  <i class="fas fa-users"></i>
-                  <div class="metric-content">
-                    <span class="metric-value">{{ directs ? directs.length : 0 }}</span>
-                    <span class="metric-label">Directos</span>
-                    <div class="metric-progress">
-                      <div class="progress-bar" style="width: 75%"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="metric-card">
-                  <i class="fas fa-star"></i>
-                  <div class="metric-content">
-                    <span class="metric-value">{{ rank | _rank }}</span>
-                    <span class="metric-label">Rango Actual</span>
-                    <div class="metric-progress">
-                      <div class="progress-bar" style="width: 45%"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="metric-card dark">
-                  <i class="fas fa-users"></i>
-                  <div class="metric-content">
-                    <span class="metric-value">{{ total_points }}</span>
-                    <span class="metric-label">Puntos Grupales</span>
-                    <div class="metric-progress">
-                      <div class="progress-bar" style="width: 80%"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
+              <button class="bonus-access-all" type="button">
+                Ver todos los bonos
+                <i class="fas fa-arrow-right"></i>
+              </button>
             </div>
           </div>
         </div>
-
-        <!-- Middle Row -->
-        <div class="dashboard-row">
-          <!-- Pack de Afiliación -->
-          <div class="dashboard-section">
-            <div class="affiliation-pack">
-              <div class="pack-content">
-                <h4>Pack de Afiliación</h4>
-                <p v-if="userPlan && userPlan.name">{{ userPlan.name }}</p>
-                <p v-else>{{ plan }}</p>
-              </div>
-              <div class="pack-icon">
-                <img v-if="userPlan && userPlan.img" :src="userPlan.img" alt="Imagen del plan" style="width: 40px; height: 40px; border-radius: 50%; background: #fff; padding: 5px;" />
-                <i v-else class="fas fa-medal"></i>
-              </div>
-            </div>
-          </div>
-
-          <!-- Comisiones -->
-          <div class="dashboard-section">
-            <div class="section-header">
-              <h3>Comisiones</h3>
-              <p>Completa los porcentajes y ¡disfruta el viaje!</p>
-            </div>
-            <div class="commissions-grid">
-              <div class="commission-card">
-                <div class="commission-icon gold">
-                  <i class="fas fa-medal"></i>
-                </div>
-                <div class="commission-content">
-                  <span class="commission-value">{{ balance || 0 }}</span>
-                  <span class="commission-label">Saldo Disponible</span>
-                </div>
-              </div>
-              <div class="commission-card">
-                <div class="commission-icon blue">
-                  <i class="fas fa-medal"></i>
-                </div>
-                <div class="commission-content">
-                  <span class="commission-value">{{ _balance || 0 }}</span>
-                  <span class="commission-label">Saldo No Disponible</span>
-                </div>
-              </div>
-              <div class="commission-card">
-                <div class="commission-icon purple">
-                  <i class="fas fa-medal"></i>
-                </div>
-                <div class="commission-content">
-                  <span class="commission-value">{{ Number(ins + insVirtual).toFixed(2) }}</span>
-                  <span class="commission-label">Total Ganado</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Bono Viaje -->
-          <div class="dashboard-section">
-            <div class="section-header">
-              <h3>Bono Viaje</h3>
-              <p>Estado y progreso del socio</p>
-            </div>
-            <div class="travel-bonus-info">
-              <div class="travel-bonus-text">
-                <p>{{ travelBonusText || 'Tu progreso hacia el Bono Viaje se actualizará próximamente. ¡Sigue trabajando para alcanzar tus objetivos!' }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bottom Row -->
-        <div class="dashboard-row">
-          <!-- Últimos Ingresos -->
-          <div class="dashboard-section">
-            <div class="section-header">
-              <h3>Últimos Ingresos</h3>
-            </div>
-            <div class="latest-incomes">
-              <div v-if="directs && directs.length > 0" v-for="direct in directs.slice(0, 4)" :key="direct.id" class="income-item">
-                <div class="income-avatar">
-                  <img v-if="direct.photo" :src="direct.photo" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
-                  <i v-else class="fas fa-user"></i>
-                </div>
-                <div class="income-content">
-                  <span class="income-name">{{ direct.name }} {{ direct.lastName }}</span>
-                  <span class="income-pack">{{ direct.plan || 'Usuario' }}</span>
-                </div>
-              </div>
-              <div v-if="!directs || directs.length === 0" class="income-item">
-                <div class="income-avatar">
-                  <i class="fas fa-user"></i>
-                </div>
-                <div class="income-content">
-                  <span class="income-name">No hay directos</span>
-                  <span class="income-pack">Aún no tienes afiliados</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Comisiones Card -->
-          <div class="dashboard-section">
-            <div class="commissions-summary">
-              <div class="summary-icon">
-                <i class="fas fa-bullseye"></i>
-              </div>
-              <div class="summary-content">
-                <span class="summary-value">{{ Number(ins + insVirtual).toFixed(2) }}</span>
-                <span class="summary-label">Total Ganado</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
       </div>
     </div>
   </App>
@@ -396,6 +286,7 @@ export default {
       balance: null,
       _balance: null,
       team: null,
+      activated: false,
       rank: "",
       maxRank: "",
       points: null,
@@ -445,31 +336,64 @@ export default {
       const rankKey = this.rankImageKey(this.maxRank);
       return this.rankImages[rankKey] || null;
     },
+    currentRankImage() {
+      if (!this.rankImages || !this.rank) return null;
+      const rankKey = this.rankImageKey(this.rank);
+      return this.rankImages[rankKey] || null;
+    },
     maxRankDisplayName() {
       return this.formatRankName(this.maxRank).toUpperCase();
     },
     currentRankDisplayName() {
       return this.formatRankName(this.rank).toUpperCase();
     },
-    awardText() {
-      if (!this.hasMaxRank()) return "Premio por primera vez";
-      return `Premio por primera vez (${this.formatRankName(this.maxRank)})`;
+    availableBalanceDisplay() {
+      return this.formatCurrency(this.balance);
     },
-    qualificationInfoText() {
-      if (!this.hasMaxRank()) {
-        return "Motivo: Este usuario aún no registra un rango máximo alcanzado";
-      }
-
-      const currentRank = this.formatRankName(this.rank);
-      const maxRank = this.formatRankName(this.maxRank);
-      const currentPosition = this.rankPosition(this.rank);
-      const maxPosition = this.rankPosition(this.maxRank);
-
-      if (currentPosition < maxPosition) {
-        return `Motivo: Tu rango actual (${currentRank}) es menor a tu rango máximo alcanzado (${maxRank})`;
-      }
-
-      return `Motivo: Tu rango actual (${currentRank}) coincide con tu rango máximo alcanzado (${maxRank})`;
+    unavailableBalanceDisplay() {
+      return this.formatCurrency(this._balance);
+    },
+    totalEarnedDisplay() {
+      return this.formatCurrency(
+        this.numberValue(this.balance) + this.numberValue(this._balance)
+      );
+    },
+    activityStatusText() {
+      return this.activated ? "ACTIVO" : "INACTIVO";
+    },
+    membershipDisplayName() {
+      return this.plan || "Sin membresía";
+    },
+    directsCount() {
+      return Array.isArray(this.directs) ? this.directs.length : 0;
+    },
+    activeDirectsCount() {
+      if (!Array.isArray(this.directs)) return 0;
+      return this.directs.filter((direct) => {
+        return Boolean(direct.activated) || this.numberValue(direct.points) >= 180;
+      }).length;
+    },
+    groupPointsDisplay() {
+      return this.numberValue(this.total_points).toLocaleString("en-US", {
+        maximumFractionDigits: 0,
+      });
+    },
+    depthLevels() {
+      const levels = {
+        SIN_RANGO: 3,
+        MILLONARIO: 5,
+        ORO: 5,
+        ESMERALDA: 6,
+        PLATINO: 7,
+        DIAMANTE: 8,
+        DIAMANTE_AZUL: 9,
+        DIAMANTE_EJECUTIVO: 10,
+        DOBLE_DIAMANTE: 11,
+        DIAMANTE_CORONA: 12,
+        TOP_HARMONY: 30,
+      };
+      const rank = normalizeRankKey(this.maxRank || this.rank);
+      return levels[rank] || 0;
     },
   },
   filters: {
@@ -529,6 +453,16 @@ export default {
     hasMaxRank() {
       return this.rankPosition(this.maxRank) > -1;
     },
+    numberValue(value) {
+      const n = Number(value);
+      return Number.isFinite(n) ? n : 0;
+    },
+    formatCurrency(value) {
+      return `S/ ${this.numberValue(value).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`;
+    },
   },
   async created() {
     // GET data
@@ -569,6 +503,7 @@ export default {
     this.balance = data.balance ? data.balance.toFixed(2) : "0.00";
     this._balance = data._balance ? data._balance.toFixed(2) : "0.00";
     this.team = data.team;
+    this.activated = Boolean(data.activated);
     this.rank = data.rank || "";
     this.maxRank = data.maxRank || data.rank || "";
     this.points = data.points;

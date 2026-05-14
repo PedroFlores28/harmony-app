@@ -1428,38 +1428,42 @@
   }
 
   .earnings-breakdown {
-    gap: 10px;
-    padding: 10px;
+    gap: 8px;
+    padding: 8px;
   }
 
   .earnings-balance-card {
     align-items: flex-start;
-    gap: 10px;
-    min-height: 126px;
-    padding: 16px 10px;
+    gap: 8px;
+    min-height: 116px;
+    padding: 14px 8px;
+    border-radius: 14px;
   }
 
   .earnings-balance-icon {
-    width: 26px;
-    flex-basis: 26px;
+    width: 22px;
+    flex-basis: 22px;
   }
 
   .earnings-balance-icon i {
-    font-size: 22px;
+    font-size: 19px;
   }
 
   .earnings-balance-label {
-    font-size: 11px;
-    margin-bottom: 10px;
+    font-size: 10px;
+    line-height: 1.15;
+    margin-bottom: 8px;
   }
 
   .earnings-balance-card strong {
-    font-size: 22px;
+    font-size: 19px;
+    white-space: nowrap;
   }
 
   .earnings-balance-card p {
-    font-size: 13px;
-    margin-top: 12px;
+    font-size: 12px;
+    line-height: 1.22;
+    margin-top: 10px;
   }
 
   .ranks-summary-card {

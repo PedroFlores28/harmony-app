@@ -26,22 +26,45 @@ export const RANK_POSITIONS = Object.keys(RANK_LABELS).reduce((positions, rank, 
   return positions;
 }, {});
 
+export function normalizeRankKey(rank) {
+  const key = String(rank || '')
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, '_')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+  if (
+    !key ||
+    key === 'NONE' ||
+    key === 'NO_RANK' ||
+    key === 'SINRANGO' ||
+    key === 'ACTIVE'
+  ) {
+    return 'SIN_RANGO';
+  }
+
+  return key;
+}
+
 export function isValidRank(rank) {
-  return Object.prototype.hasOwnProperty.call(RANK_LABELS, rank);
+  return Object.prototype.hasOwnProperty.call(RANK_LABELS, normalizeRankKey(rank));
 }
 
 export function rankImageKey(rank) {
-  return String(rank || '').toLowerCase();
+  const key = normalizeRankKey(rank);
+  return key === 'SIN_RANGO' ? 'sin-rango' : key.toLowerCase();
 }
 
 export function rankFilter(val) {
-  return RANK_LABELS[val] || 'Sin rango';
+  return RANK_LABELS[normalizeRankKey(val)] || 'Sin rango';
 }
 
 export default {
   RANK_LABELS,
   RANK_OPTIONS,
   RANK_POSITIONS,
+  normalizeRankKey,
   isValidRank,
   rankImageKey,
   rankFilter,

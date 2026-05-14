@@ -127,6 +127,7 @@ import App from "@/views/layouts/App";
 import api from "@/api";
 import Spinner from "@/components/Spinner.vue";
 import SkeletonLoader from "@/components/SkeletonLoader.vue";
+import { rankFilter } from "@/utils/rankFilter";
 
 export default {
   components: {
@@ -166,18 +167,7 @@ export default {
       // return new Date(val).toLocaleString()
     },
     _rank(val) {
-      if (val == "none") return "Ninguno";
-      if (val == "active") return "ACTIVO";
-      if (val == "star") return "MASTER";
-      if (val == "master") return "PLATA";
-      if (val == "silver") return "PLATINO";
-      if (val == "gold") return "ORO";
-      if (val == "sapphire") return "ZAFIRO";
-      if (val == "RUBI") return "DIAMANTE RUBI";
-      if (val == "DIAMANTE") return "DIAMANTE ESTRELLA";
-      if (val == "DOBLE DIAMANTE") return "DIAMANTE DOS ESTRELLAS";
-      if (val == "TRIPLE DIAMANTE") return "DIAMANTE TRES ESTRELLAS";
-      if (val == "DIAMANTE ESTRELLA") return "DIAMANTE CBM";
+      return rankFilter(val);
     },
   },
   async created() {

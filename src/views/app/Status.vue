@@ -54,6 +54,7 @@
 <script>
 import App from '@/views/layouts/App'
 import api from '@/api'
+import { rankFilter } from '@/utils/rankFilter'
 
 export default {
   components: {
@@ -123,15 +124,7 @@ export default {
       return new Date(val).toLocaleDateString()
     },
     rank(val) {
-      if (val == 'active') return 'Activo'
-      if (val == 'coral') return 'Coral'
-      if (val == 'quartz') return 'Cuarzo'
-      if (val == 'sapphire') return 'Zafiro'
-      if (val == 'ruby') return 'Rubī'
-      if (val == 'emerald') return 'Esmeralda'
-      if (val == 'diamond') return 'Diamante'
-      if (val == 'crown-diamond') return 'Diamante Corona'
-      if (val == 'imperial-diamond') return 'Diamante Imperial'
+      return rankFilter(val)
     },
     plan(val) {
       if (val == 'basic') return 'EMPRENDEDOR'

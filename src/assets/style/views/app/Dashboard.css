@@ -952,13 +952,13 @@
   font-size: 14px;
 }
 
-.status-badge.platino {
+.status-badge.current-rank {
   background: #f0f7f4;
   color: #2c3e50;
   border: 1px solid #e1eee8;
 }
 
-.status-badge.platino i {
+.status-badge.current-rank i {
   color: #2ecc71;
 }
 

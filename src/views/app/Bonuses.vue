@@ -16,19 +16,19 @@
       <h4>Bono Logro</h4>
 
       <div v-for="(pay, i) in pays">
-        <spam v-if="pay.name == 'DOBLE DIAMANTE'">
+        <spam v-if="pay.name == 'DOBLE_DIAMANTE'">
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <i class="icon fas fa-gem" :class="{ green: pay.payed }"></i>
           <i class="icon fas fa-gem" :class="{ green: pay.payed }"></i>
         </spam>
 
-        <spam v-else-if="pay.name == 'TRIPLE DIAMANTE'">
+        <spam v-else-if="pay.name == 'DIAMANTE_CORONA'">
           <i class="icon fas fa-gem" :class="{ green: pay.payed }"></i>
           <i class="icon fas fa-gem" :class="{ green: pay.payed }"></i>
           <i class="icon fas fa-gem" :class="{ green: pay.payed }"></i>
         </spam>
 
-        <spam v-else-if="pay.name == 'DIAMANTE ESTRELLA'">
+        <spam v-else-if="pay.name == 'TOP_HARMONY'">
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <i class="icon fas fa-star" :class="{ green: pay.payed }"></i>
@@ -53,61 +53,61 @@
       <br />
       <br />
 
-      <h4>Rango Zafiro: 6/9</h4>
+      <h4>Rango Platino: 6/9</h4>
       <table>
         <thead>
           <tr>
-            <th v-for="(bonus, i) in sapphire">{{ i + 1 }}</th>
+            <th v-for="(bonus, i) in platino">{{ i + 1 }}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td v-for="bonus in sapphire">{{ bonus }}</td>
+            <td v-for="bonus in platino">{{ bonus }}</td>
           </tr>
         </tbody>
       </table>
       <br />
 
-      <h4>Rango Rubi: 6/12</h4>
+      <h4>Rango Diamante: 6/12</h4>
       <table>
         <thead>
           <tr>
-            <th v-for="(bonus, i) in ruby">{{ i + 1 }}</th>
+            <th v-for="(bonus, i) in diamante">{{ i + 1 }}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td v-for="bonus in ruby">{{ bonus }}</td>
+            <td v-for="bonus in diamante">{{ bonus }}</td>
           </tr>
         </tbody>
       </table>
       <br />
 
-      <h4>Rango ORO: 21/24</h4>
+      <h4>Rango Diamante Azul: 21/24</h4>
       <table>
         <thead>
           <tr>
-            <th v-for="(bonus, i) in gold">{{ i + 1 }}</th>
+            <th v-for="(bonus, i) in diamanteAzul">{{ i + 1 }}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td v-for="bonus in gold">{{ bonus }}</td>
+            <td v-for="bonus in diamanteAzul">{{ bonus }}</td>
           </tr>
         </tbody>
       </table>
       <br />
 
-      <h4>Rango Diamante: 6/9</h4>
+      <h4>Rango Diamante Ejecutivo: 6/9</h4>
       <table>
         <thead>
           <tr>
-            <th v-for="(bonus, i) in diamond">{{ i + 1 }}</th>
+            <th v-for="(bonus, i) in diamanteEjecutivo">{{ i + 1 }}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td v-for="bonus in diamond">{{ bonus }}</td>
+            <td v-for="bonus in diamanteEjecutivo">{{ bonus }}</td>
           </tr>
         </tbody>
       </table>
@@ -132,10 +132,10 @@ export default {
     return {
       loading: false,
       pays: [],
-      sapphire: [],
-      ruby: [],
-      gold: [],
-      diamond: [],
+      platino: [],
+      diamante: [],
+      diamanteAzul: [],
+      diamanteEjecutivo: [],
     };
   },
   computed: {
@@ -147,38 +147,39 @@ export default {
     const { data } = await api.bonuses(this.session);
     let n;
 
-    this.pays = data.pays;
+    const payLabels = {
+      MILLONARIO: "MILLONARIO $15",
+      ORO: "ORO $30",
+      ESMERALDA: "ESMERALDA $45",
+      PLATINO: "PLATINO $100",
+      DIAMANTE: "DIAMANTE $200",
+      DIAMANTE_AZUL: "DIAMANTE AZUL $300",
+      DIAMANTE_EJECUTIVO: "DIAMANTE EJECUTIVO $5.000",
+      DOBLE_DIAMANTE: "DOBLE DIAMANTE $10.000",
+      DIAMANTE_CORONA: "DIAMANTE CORONA $15.000",
+      TOP_HARMONY: "TOP HARMONY $25.000",
+    };
 
-    for (const pay of this.pays) {
-      if (pay.name == "star") pay._name = "ESTRELLA $15";
-      if (pay.name == "master") pay._name = "MASTER $30";
-      if (pay.name == "silver") pay._name = "PLATA $45";
-      if (pay.name == "gold") pay._name = "ORO $100";
-      if (pay.name == "sapphire") pay._name = "ZAFIRO $200";
-      if (pay.name == "RUBI") pay._name = "RUBI $300";
-      if (pay.name == "DIAMANTE") pay._name = "DIAMANTE $5.000";
-      if (pay.name == "DOBLE DIAMANTE") pay._name = "DOBLE DIAMANTE $10.000";
-      if (pay.name == "TRIPLE DIAMANTE") pay._name = "TRIPLE DIAMANTE $15.000";
-      if (pay.name == "DIAMANTE ESTRELLA")
-        pay._name = "DIAMANTE ESTRELLA $25.000";
-    }
+    this.pays = (data.pays || [])
+      .filter((pay) => payLabels[pay.name])
+      .map((pay) => ({ ...pay, _name: payLabels[pay.name] }));
 
-    this.sapphire = data.bonuses.sapphire;
-    this.ruby = data.bonuses.ruby;
-    this.gold = data.bonuses.gold;
-    this.diamond = data.bonuses.diamond;
+    this.platino = data.bonuses.platino || [];
+    this.diamante = data.bonuses.diamante || [];
+    this.diamanteAzul = data.bonuses.diamante_azul || [];
+    this.diamanteEjecutivo = data.bonuses.diamante_ejecutivo || [];
 
-    n = 9 - this.sapphire.length;
-    for (let i = 0; i < n; i++) this.sapphire.push("-");
+    n = 9 - this.platino.length;
+    for (let i = 0; i < n; i++) this.platino.push("-");
 
-    n = 12 - this.ruby.length;
-    for (let i = 0; i < n; i++) this.ruby.push("-");
+    n = 12 - this.diamante.length;
+    for (let i = 0; i < n; i++) this.diamante.push("-");
 
-    n = 24 - this.gold.length;
-    for (let i = 0; i < n; i++) this.gold.push("-");
+    n = 24 - this.diamanteAzul.length;
+    for (let i = 0; i < n; i++) this.diamanteAzul.push("-");
 
-    n = 9 - this.diamond.length;
-    for (let i = 0; i < n; i++) this.diamond.push("-");
+    n = 9 - this.diamanteEjecutivo.length;
+    for (let i = 0; i < n; i++) this.diamanteEjecutivo.push("-");
   },
 };
 </script>
@@ -192,37 +193,40 @@ export default {
   background-color: #06d6a0;
 }
 
-.input.star {
-  background-color: yellow;
+.input.MILLONARIO {
+  background-color: #5c0f39;
+  color: white;
 }
-.input.master {
-  background-color: #06d6a0;
-}
-.input.silver {
-  background-color: #aaa;
-}
-.input.gold {
+.input.ORO {
   background-color: #d4af37;
 }
-.input.sapphire {
-  background-color: blue;
+.input.ESMERALDA {
+  background-color: #2ecc71;
+  color: white;
 }
-/*.input.star {
-    background-color: yellow;
-  }
-  .input.star {
-    background-color: yellow;
-  }
-  .input.star {
-    background-color: yellow;
-  }
-  .input.star {
-    background-color: yellow;
-  }
-  .input.star {
-    background-color: yellow;
-  }
-  .input.star {
-    background-color: yellow;
-  }*/
+.input.PLATINO {
+  background-color: #e5e4e2;
+}
+.input.DIAMANTE {
+  background-color: #b9f2ff;
+}
+.input.DIAMANTE_AZUL {
+  background-color: #0476d9;
+  color: white;
+}
+.input.DIAMANTE_EJECUTIVO {
+  background-color: #243b6b;
+  color: white;
+}
+.input.DOBLE_DIAMANTE {
+  background-color: #7dd3fc;
+}
+.input.DIAMANTE_CORONA {
+  background-color: #8b5cf6;
+  color: white;
+}
+.input.TOP_HARMONY {
+  background-color: #111827;
+  color: white;
+}
 </style>

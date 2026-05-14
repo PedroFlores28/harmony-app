@@ -78,8 +78,8 @@
                         <span class="sparkle s2">✦</span>
                         <span class="sparkle s3">✦</span>
                       </div>
-                      <div v-if="currentRankImage" class="rank-image-real">
-                        <img :src="currentRankImage" alt="Rango Actual" class="rank-image-img" />
+                      <div v-if="maxRankImage" class="rank-image-real">
+                        <img :src="maxRankImage" alt="Rango máximo alcanzado" class="rank-image-img" />
                       </div>
                       <div v-else class="diamond-shape">
                         <i class="fas fa-gem"></i>
@@ -88,12 +88,12 @@
                   </div>
                   <div class="bono-rank-info">
                     <div class="max-rank-tag">RANGO MÁXIMO ALCANZADO</div>
-                    <h2 class="rank-display-name">DIAMANTE</h2>
-                    <p class="rank-subtitle">Rango actual cerrado (este mes)</p>
+                    <h2 class="rank-display-name">{{ maxRankDisplayName }}</h2>
+                    <p class="rank-subtitle">Mayor rango alcanzado por este usuario</p>
                     
                     <div class="rank-status-row">
-                      <span class="status-badge platino">
-                        <i class="fas fa-check-circle"></i> PLATINO
+                      <span class="status-badge current-rank">
+                        <i class="fas fa-check-circle"></i> {{ currentRankDisplayName }}
                       </span>
                       <span class="status-badge pagado">
                         PAGADO <i class="fas fa-check-circle"></i>
@@ -105,7 +105,7 @@
                 <div class="award-divider"></div>
 
                 <div class="award-details">
-                  <span class="award-text">Premio por primera vez (Diamante)</span>
+                  <span class="award-text">{{ awardText }}</span>
                   <span class="award-amount">S/ 800.00 <i class="fas fa-chevron-right"></i></span>
                 </div>
 
@@ -131,7 +131,7 @@
 
                 <div class="bono-info-box">
                   <div class="info-circle"><i class="fas fa-info"></i></div>
-                  <p class="info-text">Motivo: Tu rango actual (Platino) es menor a tu rango máximo alcanzado (Diamante)</p>
+                  <p class="info-text">{{ qualificationInfoText }}</p>
                 </div>
               </div>
             </div>
@@ -376,6 +376,30 @@ import api from "@/api";
 import Spinner from "@/components/Spinner.vue";
 import SkeletonLoader from "@/components/SkeletonLoader.vue";
 
+const RANK_POSITIONS = {
+  none: 0,
+  active: 1,
+  star: 2,
+  master: 3,
+  silver: 4,
+  gold: 5,
+  sapphire: 6,
+  RUBI: 7,
+  MILLONARIO: 8,
+  ORO: 9,
+  ESMERALDA: 10,
+  PLATINO: 11,
+  DIAMANTE: 12,
+  DIAMANTE_AZUL: 13,
+  DIAMANTE_EJECUTIVO: 14,
+  DOBLE_DIAMANTE: 15,
+  "DOBLE DIAMANTE": 15,
+  "TRIPLE DIAMANTE": 16,
+  DIAMANTE_CORONA: 17,
+  "DIAMANTE ESTRELLA": 17,
+  TOP_HARMONY: 18,
+};
+
 export default {
   components: {
     App,
@@ -391,6 +415,7 @@ export default {
       _balance: null,
       team: null,
       rank: "",
+      maxRank: "",
       points: null,
       directs: [],
       frontals: [],
@@ -433,10 +458,36 @@ export default {
         (img) => typeof img === "string" && img.trim() !== ""
       );
     },
-    currentRankImage() {
-      if (!this.rankImages || !this.rank) return null;
-      const rankKey = this.rank.toLowerCase().replace(/ /g, '_');
+    maxRankImage() {
+      if (!this.rankImages || !this.maxRank) return null;
+      const rankKey = this.rankImageKey(this.maxRank);
       return this.rankImages[rankKey] || null;
+    },
+    maxRankDisplayName() {
+      return this.formatRankName(this.maxRank).toUpperCase();
+    },
+    currentRankDisplayName() {
+      return this.formatRankName(this.rank).toUpperCase();
+    },
+    awardText() {
+      if (!this.hasMaxRank()) return "Premio por primera vez";
+      return `Premio por primera vez (${this.formatRankName(this.maxRank)})`;
+    },
+    qualificationInfoText() {
+      if (!this.hasMaxRank()) {
+        return "Motivo: Este usuario aún no registra un rango máximo alcanzado";
+      }
+
+      const currentRank = this.formatRankName(this.rank);
+      const maxRank = this.formatRankName(this.maxRank);
+      const currentPosition = this.rankPosition(this.rank);
+      const maxPosition = this.rankPosition(this.maxRank);
+
+      if (currentPosition < maxPosition) {
+        return `Motivo: Tu rango actual (${currentRank}) es menor a tu rango máximo alcanzado (${maxRank})`;
+      }
+
+      return `Motivo: Tu rango actual (${currentRank}) coincide con tu rango máximo alcanzado (${maxRank})`;
     },
   },
   filters: {
@@ -505,6 +556,19 @@ export default {
         console.error("Error fetching rank images:", error);
       }
     },
+    rankImageKey(rank) {
+      return String(rank || "").toLowerCase().replace(/\s+/g, "_");
+    },
+    rankPosition(rank) {
+      return RANK_POSITIONS[rank] !== undefined ? RANK_POSITIONS[rank] : -1;
+    },
+    formatRankName(rank) {
+      const rankFilter = this.$options.filters._rank;
+      return rankFilter ? rankFilter(rank) : (rank || "Ninguno");
+    },
+    hasMaxRank() {
+      return this.maxRank && this.maxRank !== "none";
+    },
   },
   async created() {
     // GET data
@@ -546,6 +610,7 @@ export default {
     this._balance = data._balance ? data._balance.toFixed(2) : "0.00";
     this.team = data.team;
     this.rank = data.rank || "";
+    this.maxRank = data.maxRank || data.rank || "";
     this.points = data.points;
     this.node = data.node || {};
     this.n_affiliates = data.n_affiliates;

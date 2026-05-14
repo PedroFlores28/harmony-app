@@ -375,30 +375,11 @@ import App from "@/views/layouts/App";
 import api from "@/api";
 import Spinner from "@/components/Spinner.vue";
 import SkeletonLoader from "@/components/SkeletonLoader.vue";
-
-const RANK_POSITIONS = {
-  none: 0,
-  active: 1,
-  star: 2,
-  master: 3,
-  silver: 4,
-  gold: 5,
-  sapphire: 6,
-  RUBI: 7,
-  MILLONARIO: 8,
-  ORO: 9,
-  ESMERALDA: 10,
-  PLATINO: 11,
-  DIAMANTE: 12,
-  DIAMANTE_AZUL: 13,
-  DIAMANTE_EJECUTIVO: 14,
-  DOBLE_DIAMANTE: 15,
-  "DOBLE DIAMANTE": 15,
-  "TRIPLE DIAMANTE": 16,
-  DIAMANTE_CORONA: 17,
-  "DIAMANTE ESTRELLA": 17,
-  TOP_HARMONY: 18,
-};
+import {
+  RANK_POSITIONS,
+  rankFilter,
+  rankImageKey as getRankImageKey,
+} from "@/utils/rankFilter";
 
 export default {
   components: {
@@ -492,30 +473,7 @@ export default {
   },
   filters: {
     _rank(val) {
-      // Rangos antiguos (mantener por compatibilidad)
-      if (val === 'none') return 'Ninguno';
-      if (val === 'active') return 'Activo';
-      if (val === 'star') return 'Estrella';
-      if (val === 'master') return 'Maestro';
-      if (val === 'silver') return 'Plata';
-      if (val === 'gold') return 'Oro Antiguo';
-      if (val === 'sapphire') return 'Zafiro';
-      if (val === 'RUBI') return 'Rubí';
-      
-      // NUEVOS RANGOS HARMONY LIFE CORPORATION (10 RANGOS)
-      if (val === 'MILLONARIO') return 'Millonario';
-      if (val === 'ORO') return 'Oro';
-      if (val === 'ESMERALDA') return 'Esmeralda';
-      if (val === 'PLATINO') return 'Platino';
-      if (val === 'DIAMANTE') return 'Diamante';
-      if (val === 'DIAMANTE_AZUL') return 'Diamante Azul';
-      if (val === 'DIAMANTE_EJECUTIVO') return 'Diamante Ejecutivo';
-      if (val === 'DOBLE_DIAMANTE') return 'Doble Diamante';
-      if (val === 'DIAMANTE_CORONA') return 'Diamante Corona';
-      if (val === 'TOP_HARMONY') return 'Top Harmony';
-      
-      // Fallback
-      return val ? val.charAt(0).toUpperCase() + val.slice(1).toLowerCase().replace(/_/g, ' ') : 'Ninguno';
+      return rankFilter(val);
     },
   },
   methods: {
@@ -557,17 +515,17 @@ export default {
       }
     },
     rankImageKey(rank) {
-      return String(rank || "").toLowerCase().replace(/\s+/g, "_");
+      return getRankImageKey(rank);
     },
     rankPosition(rank) {
       return RANK_POSITIONS[rank] !== undefined ? RANK_POSITIONS[rank] : -1;
     },
     formatRankName(rank) {
-      const rankFilter = this.$options.filters._rank;
-      return rankFilter ? rankFilter(rank) : (rank || "Ninguno");
+      const formatRank = this.$options.filters._rank;
+      return formatRank ? formatRank(rank) : "Sin rango";
     },
     hasMaxRank() {
-      return this.maxRank && this.maxRank !== "none";
+      return this.rankPosition(this.maxRank) > -1;
     },
   },
   async created() {

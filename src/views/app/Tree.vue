@@ -590,6 +590,7 @@
 import App from '@/views/layouts/App'
 import api from '@/api'
 import router from '../../router'
+import { rankFilter, rankImageKey } from '@/utils/rankFilter'
 
 // Componente recursivo para renderizar el árbol
 const TreeNode = {
@@ -743,18 +744,7 @@ export default {
       // return new Date(val).toLocaleString()
     },
     _rank(val) {
-      if(val == 'none')              return 'Ninguno'
-      if(val == 'active')            return 'ACTIVO'
-      if(val == 'star')              return 'BRONCE'
-      if(val == 'master')            return 'PLATA'
-      if(val == 'silver')            return 'PLATA'
-      if(val == 'gold')              return 'ORO'
-      if(val == 'sapphire')          return 'ZAFIRO'
-      if(val == 'RUBI')              return 'DIAMANTE RUBI'
-      if(val == 'DIAMANTE')          return 'DIAMANTE ESTRELLA'
-      if(val == 'DOBLE DIAMANTE')    return 'DIAMANTE DOS ESTRELLAS'
-      if(val == 'TRIPLE DIAMANTE')   return 'DIAMANTE TRES ESTRELLAS'
-      if(val == 'DIAMANTE ESTRELLA') return 'DIAMANTE CBM'
+      return rankFilter(val)
     },
   },
   async created() {
@@ -860,41 +850,11 @@ export default {
     // },
     // Métodos para la vista de frontales
     getMembershipClass(child) {
-      const rank = child._rank || child.rank || 'none';
-      const membershipMap = {
-        'none'   :       'Ninguno',
-       'active'       :     'ACTIVO',
-       'star'         :     'BRONCE',
-       'master'       :     'PLATA',
-       'silver'       :     'PLATA',
-       'gold'         :    'ORO',
-       'RUBI'         :    'DIAMANTE RUBI',
-       'sapphire'     :      'ZAFIRO',
-       'DIAMANTE'     :     'DIAMANTE ESTRELLA',
-       'DOBLE DIAMANTE'    :'DIAMANTE DOS ESTRELLAS',
-      'TRIPLE DIAMANTE' : 'DIAMANTE TRES ESTRELLAS',
-     'DIAMANTE ESTRELLA'  :'DIAMANTE CBM',
-    };
-      return membershipMap[rank] || 'bronze';
+      return rankImageKey(child._rank || child.rank) || 'sin-rango';
     },
     
     getMembershipText(child) {
-      const rank = child._rank || child.rank || 'none';
-      const membershipMap = {
-        'none'   :       'Ninguno',
-       'active'       :     'ACTIVO',
-       'star'         :     'BRONCE',
-       'master'       :     'PLATA',
-       'silver'       :     'PLATA',
-       'gold'         :    'ORO',
-       'RUBI'         :    'DIAMANTE RUBI',
-       'sapphire'     :      'ZAFIRO',
-       'DIAMANTE'     :     'DIAMANTE ESTRELLA',
-       'DOBLE DIAMANTE'    :'DIAMANTE DOS ESTRELLAS',
-      'TRIPLE DIAMANTE' : 'DIAMANTE TRES ESTRELLAS',
-     'DIAMANTE ESTRELLA'  :'DIAMANTE CBM',
-      };
-      return membershipMap[rank] || 'Bronce';
+      return rankFilter(child._rank || child.rank);
     },
     
     getStatusClass(child) {

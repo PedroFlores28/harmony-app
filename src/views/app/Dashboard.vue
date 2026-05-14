@@ -495,7 +495,7 @@ export default {
       // Rangos antiguos (mantener por compatibilidad)
       if (val === 'none') return 'Ninguno';
       if (val === 'active') return 'Activo';
-      if (val === 'star') return 'Estrella';
+      if (val === 'star') return 'Bronce';
       if (val === 'master') return 'Maestro';
       if (val === 'silver') return 'Plata';
       if (val === 'gold') return 'Oro Antiguo';

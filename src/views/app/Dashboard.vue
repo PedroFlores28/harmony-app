@@ -377,6 +377,7 @@ import Spinner from "@/components/Spinner.vue";
 import SkeletonLoader from "@/components/SkeletonLoader.vue";
 import {
   RANK_POSITIONS,
+  normalizeRankKey,
   rankFilter,
   rankImageKey as getRankImageKey,
 } from "@/utils/rankFilter";
@@ -518,7 +519,8 @@ export default {
       return getRankImageKey(rank);
     },
     rankPosition(rank) {
-      return RANK_POSITIONS[rank] !== undefined ? RANK_POSITIONS[rank] : -1;
+      const key = normalizeRankKey(rank);
+      return RANK_POSITIONS[key] !== undefined ? RANK_POSITIONS[key] : -1;
     },
     formatRankName(rank) {
       const formatRank = this.$options.filters._rank;

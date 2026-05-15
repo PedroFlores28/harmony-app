@@ -145,198 +145,54 @@
               </div>
             </div>
 
-            <!-- Paso 1: Opciones de Despacho -->
+            <!-- Paso 1: Recojo en sucursal principal (solo información fija) -->
             <div v-if="currentStep === 1" class="checkout-step">
-              <!-- Opciones de Despacho -->
-              <div class="delivery-options">
+              <div class="delivery-options pickup-only">
                 <div class="delivery-header">
-                  <h3>Opciones de Despacho</h3>
+                  <h3>Recojo en sucursal</h3>
                 </div>
-                
-                <div class="delivery-content">
-                  <div class="delivery-description">
-                    <p>Elije tu método de despacho preferido.</p>
-                  </div>
-                  
-                  <div class="delivery-methods">
-                    <button 
-                      @click="selectDeliveryMethod('pickup')" 
-                      :class="['delivery-method', { active: deliveryMethod === 'pickup' }]"
+
+                <p class="delivery-description-single">
+                  Retira tu compra en nuestra sede principal.
+                </p>
+
+                <div v-if="selectedOffice" class="principal-pickup-card">
+                  <p class="principal-branch-label">Sucursal Principal</p>
+
+                  <div class="map-link-section">
+                    <h4 class="map-section-title">Ubicación en mapa</h4>
+                    <a
+                      v-if="pickupMapHref"
+                      :href="pickupMapHref"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="map-link prominent-map-link"
                     >
-                      Retira tu Compra
-                    </button>
-                    <button 
-                      @click="selectDeliveryMethod('delivery')" 
-                      :class="['delivery-method', { active: deliveryMethod === 'delivery' }]"
-                    >
-                      Delivery
-                    </button>
+                      {{ pickupMapLinkLabel }}
+                    </a>
+                    <p v-else class="map-link-fallback">
+                      Ubica la sucursal con la dirección indicada abajo.
+                    </p>
                   </div>
-                </div>
-                
-                <!-- Formulario de Delivery -->
-                <div v-if="deliveryMethod === 'delivery'" class="delivery-form">
-                  <div class="form-section">
-                    <h4>Información del Receptor</h4>
-                    
-                    <div class="form-row">
-                      <div class="form-group">
-                        <label>Nombre Receptor</label>
-                        <div class="input-with-icon">
-                          <input v-model="deliveryData.recipientName" type="text" placeholder="Nombre Completo" @input="onlyLetters($event, 'deliveryData.recipientName')" required />
-                          <i class="fas fa-user"></i>
-                        </div>
-                      </div>
-                      
-                      <div class="form-group">
-                        <label>Documento</label>
-                        <div class="input-with-icon">
-                          <input v-model="deliveryData.document" type="text" placeholder="Nro. de Documento" @input="onlyNumbersDocument($event, 'deliveryData.document')" maxlength="8" required />
-                          <i class="fas fa-list"></i>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="form-group">
-                      <label>Celular Receptor</label>
-                      <div class="input-with-icon">
-                        <input v-model="deliveryData.recipientPhone" type="tel" placeholder="Celular Receptor" @input="onlyNumbersPhone($event, 'deliveryData.recipientPhone')" maxlength="9" required />
-                        <i class="fas fa-phone"></i>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div class="form-section">
-                    <h4>Ubicación de Entrega</h4>
-                    
-                    <div class="form-row">
-                                              <div class="form-group department-field">
-                          <label>Departamento</label>
-                          <select v-model="deliveryData.department" class="form-select" @change="onDepartmentChange">
-                            <option value="">Selecciona</option>
-                            <option v-for="dept in availableDepartments" :key="dept.value" :value="dept.value">
-                              {{ dept.name }}
-                            </option>
-                          </select>
-                        </div>
-                        
-                        <div class="form-group province-field">
-                          <label>Provincia</label>
-                          <select v-model="deliveryData.province" class="form-select" @change="onProvinceChange">
-                            <option value="">Selecciona</option>
-                            <option v-for="province in availableProvinces" :key="province.value" :value="province.value">
-                              {{ province.name }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      
-                      <div class="form-group">
-                        <label>Distrito</label>
-                        <select v-model="deliveryData.district" class="form-select district-select" @change="onDistrictChange">
-                          <option value="">Selecciona</option>
-                          <option v-for="district in availableDistricts" :key="district.value" :value="district.value">
-                            {{ district.name }}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                    
-                    <!-- Campo de Agencia (solo para envíos fuera de Lima) -->
-                    <div v-if="showAgencyField" class="form-section agency-section">
-                      <h4>Agencia de Transporte</h4>
-                      <div class="form-group">
-                        <label>Agencia</label>
-                        <select v-model="deliveryData.agency" class="form-select agency-select">
-                          <option value="">Seleccione el PDE</option>
-                          <option v-for="agency in availableAgencies" :key="agency._id" :value="agency.agency_code">
-                            {{ agency.agency_name }}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                    
 
-                    
-                    <div v-if="showAgencyField" class="delivery-note">
-                      <p>💡 El costo de envío varía según la agencia y destino. Consulta directamente con la agencia seleccionada.</p>
+                  <div class="office-details office-details-plain">
+                    <div class="office-item">
+                      <span class="office-label">Dirección:</span>
+                      <span class="office-value">{{ selectedOffice.address || 'No disponible' }}</span>
                     </div>
-                </div>
-                
-                <!-- Formulario de Pickup -->
-                <div v-if="deliveryMethod === 'pickup'" class="pickup-form">
-                  <div class="pickup-section">
-                    <h4>Seleccione el PDE</h4>
-                    <select v-model="selectedPickupPoint" class="pickup-select" @change="onPickupPointChange">
-                      <option value="">Selecciona un punto de entrega</option>
-                      <option v-for="office in offices" :key="office.id" :value="office.id">
-                        {{ office.name }}
-                        <span v-if="office.googleMapsUrl" class="maps-indicator" title="Tiene Google Maps">
-                          <i class="fas fa-map-marker-alt"></i>
-                        </span>
-                      </option>
-                    </select>
+                    <div class="office-item">
+                      <span class="office-label">Teléfono:</span>
+                      <span class="office-value">{{ formatPickupPhone(selectedOffice.phone) }}</span>
+                    </div>
+                    <div class="office-item">
+                      <span class="office-label">Horario:</span>
+                      <span class="office-value">{{ pickupScheduleDisplay }}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Ubicación en mapa y información -->
-              <div v-if="selectedPickupPoint && deliveryMethod === 'pickup'" class="map-and-location-container">
-                <div class="section-header">
-                  <h3>Ubicación en mapa</h3>
-                </div>
-                
-                <div class="map-location-vertical">
-                  <!-- Mapa en la parte superior -->
-                  <div class="map-section">
-                    <div class="map-container">
-                      <div id="map" style="height: 300px; border-radius: 12px;"></div>
-                      <div class="map-info">
-                        <div class="map-location-label">Ubicación en Mapa:</div>
-                        <a 
-                          v-if="selectedOffice && selectedOffice.googleMapsUrl" 
-                          :href="selectedOffice.googleMapsUrl" 
-                          target="_blank" 
-                          class="map-link"
-                        >
-                          Ver en Google Maps
-                        </a>
-                        <a 
-                          v-else-if="selectedOffice && selectedOffice.address && selectedOffice.address !== 'Dirección no disponible' && selectedOffice.address !== 'hola'"
-                          :href="`https://www.openstreetmap.org/search?query=${encodeURIComponent(selectedOffice.address)}`"
-                          target="_blank" 
-                          class="map-link"
-                        >
-                          Ver en OpenStreetMap
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <!-- Información de la oficina matriz debajo del mapa -->
-                  <div class="office-info-section">
-                    <div class="office-header">
-                      <h4>{{ selectedOffice ? selectedOffice.name : 'Oficina' }}</h4>
-                    </div>
-                    
-                    <div class="office-details">
-                      <div class="office-item">
-                        <span class="office-label">Dirección:</span>
-                        <span class="office-value">{{ selectedOffice ? selectedOffice.address : 'No disponible' }}</span>
-                      </div>
-                      
-                      <div class="office-item">
-                        <span class="office-label">Teléfono:</span>
-                        <span class="office-value">{{ selectedOffice ? selectedOffice.phone : 'No disponible' }}</span>
-                      </div>
-
-                      <div class="office-item" v-if="selectedOffice.horario && selectedOffice.id !== 'central'">
-                        <span class="office-label">Horario:</span>
-                        <span class="office-value">{{ selectedOffice.horario }}</span>
-                      </div>
-                      
-                    </div>
-                  </div>
+                <div v-else class="pickup-unavailable-msg">
+                  <p>No se pudo cargar la información de la sucursal. Actualiza la página o intenta más tarde.</p>
                 </div>
               </div>
 
@@ -472,13 +328,13 @@
                       <div class="delivery-info-item">
                         <span class="delivery-label">Teléfono:</span>
                         <span class="delivery-value">
-                          +51 {{ selectedOffice.phone }}
+                          {{ formatPickupPhone(selectedOffice.phone) }}
                           <i class="fab fa-whatsapp whatsapp-icon" v-if="selectedOffice.phone && selectedOffice.phone !== 'No disponible'"></i>
                         </span>
                       </div>
-                      <div class="delivery-info-item" v-if="selectedOffice.horario && selectedOffice.id !== 'central'">
+                      <div class="delivery-info-item">
                         <span class="delivery-label">Horario:</span>
-                        <span class="delivery-value">{{ selectedOffice.horario }}</span>
+                        <span class="delivery-value">{{ pickupScheduleDisplay }}</span>
                       </div>
                       <!-- Mapa pequeño para la oficina seleccionada -->
                       <div class="delivery-info-item map-section" v-if="selectedOffice">
@@ -902,22 +758,7 @@ export default {
     
     canProceedToNextStep() {
       if (this.currentStep === 1) {
-        if (this.deliveryMethod === 'delivery') {
-          const basicInfo = this.deliveryData.recipientName && 
-                           this.deliveryData.document && 
-                           this.deliveryData.document.length === 8 &&
-                           this.deliveryData.recipientPhone &&
-                           this.deliveryData.department &&
-                           this.deliveryData.province &&
-                           this.deliveryData.district;
-          
-          if (this.showAgencyField) {
-            return basicInfo && this.deliveryData.agency;
-          }
-          
-          return basicInfo;
-        }
-        return this.deliveryMethod && this.selectedPickupPoint;
+        return Boolean(this.selectedPickupPoint && this.selectedOffice);
       }
       if (this.currentStep === 2) {
         // Para boleta solo requiere documento con exactamente 8 números
@@ -966,6 +807,44 @@ export default {
     selectedOffice() {
       if (!this.selectedPickupPoint) return null;
       return this.offices.find(office => office.id == this.selectedPickupPoint);
+    },
+
+    pickupMapHref() {
+      const o = this.selectedOffice;
+      if (!o) return '';
+      const g = o.googleMapsUrl && String(o.googleMapsUrl).trim();
+      if (g) return g;
+      const addr = o.address;
+      if (
+        addr &&
+        addr !== 'Dirección no disponible' &&
+        addr !== 'hola'
+      ) {
+        return `https://www.openstreetmap.org/search?query=${encodeURIComponent(addr)}`;
+      }
+      return '';
+    },
+
+    pickupMapLinkLabel() {
+      if (!this.selectedOffice || !this.pickupMapHref) return '';
+      const g =
+        this.selectedOffice.googleMapsUrl &&
+        String(this.selectedOffice.googleMapsUrl).trim();
+      return g ? 'Ver en Google Maps' : 'Ver en OpenStreetMap';
+    },
+
+    pickupScheduleDisplay() {
+      const o = this.selectedOffice;
+      if (!o) return '';
+      const hRaw = o.horario != null ? String(o.horario).trim() : '';
+      const dRaw = o.dias != null ? String(o.dias).trim() : '';
+      const hBad = !hRaw || hRaw === 'Horario no disponible';
+      const dBad = !dRaw || dRaw === 'Días no disponible';
+
+      if (!hBad && !dBad) return `${dRaw}. ${hRaw}`;
+      if (!hBad) return hRaw;
+      if (!dBad) return dRaw;
+      return 'No disponible';
     },
     
     hasDeliveryInfo() {
@@ -1070,6 +949,36 @@ export default {
       }
       return product.price || 0;
     },
+
+    formatPickupPhone(phone) {
+      if (!phone || phone === 'No disponible') return 'No disponible';
+      const raw = String(phone).trim();
+      const digits = raw.replace(/\D/g, '');
+      if (digits.length >= 9) return `+51 ${digits.slice(-9)}`;
+      return raw;
+    },
+
+    pickPrincipalPickupOffice() {
+      const list = this.offices;
+      if (!Array.isArray(list) || list.length === 0) return;
+      const norm = (s) =>
+        String(s || '')
+          .toUpperCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '');
+      const office =
+        list.find((o) => {
+          const n = norm(o.name);
+          return (
+            n.includes('PRINCIPAL') ||
+            n.includes('MATRIZ') ||
+            n.includes('OFICINA CENTRAL')
+          );
+        }) ||
+        list.find((o) => String(o.id).toLowerCase() === 'central') ||
+        list[0];
+      if (office) this.selectedPickupPoint = office.id;
+    },
     
     onlyNumbers(event, fieldPath) {
       // Remover todos los caracteres que no sean números
@@ -1149,16 +1058,9 @@ export default {
         this[pathParts[0]][pathParts[1]] = value;
       }
     },
-    
-    selectDeliveryMethod(method) {
-      this.deliveryMethod = method;
-      if (method === 'delivery') {
-        this.selectedPickupPoint = '';
-      }
-    },
-    
+
     async onDepartmentChange() {
-      
+
       // Resetear campos dependientes
       this.deliveryData.province = '';
       this.deliveryData.district = '';
@@ -1272,6 +1174,7 @@ export default {
               horario: office.horario || 'Horario no disponible',
               dias: office.dias || 'Días no disponible',
             }));
+            this.pickPrincipalPickupOffice();
             return;
           }
         }
@@ -1286,7 +1189,9 @@ export default {
             phone: "central", // Usando el email como teléfono temporalmente
             address: "Calle Loma Real 262",
             googleMapsUrl: "https://maps.google.com/?q=-12.0464,-77.0428",
-            accounts: "Banco BCP - Cuenta de Ahorros - N° 194 90823860 070"
+            accounts: "Banco BCP - Cuenta de Ahorros - N° 194 90823860 070",
+            horario: "Lun. a Vie. 9:00 a.m. – 6:00 p.m., Sáb. 9:00 a.m. – 1:00 p.m.",
+            dias: "Lunes a sábado",
           },
           {
             id: "001",
@@ -1294,7 +1199,9 @@ export default {
             phone: "santaanita", // Usando el email como teléfono temporalmente
             address: "Ate Vitarte, Lima",
             googleMapsUrl: "https://maps.google.com/?q=-12.0432,-76.8987",
-            accounts: "Información de cuentas no disponible"
+            accounts: "Información de cuentas no disponible",
+            horario: "Consultar en sucursal",
+            dias: "Lunes a viernes",
           },
           {
             id: "002",
@@ -1314,6 +1221,7 @@ export default {
           }
         ];
       }
+      this.pickPrincipalPickupOffice();
     },
     
     async loadPaymentMethods() {
@@ -1905,23 +1813,18 @@ export default {
     },
     selectedPickupPoint: {
       handler(newPickupPoint) {
-        if (newPickupPoint) {
-          const office = this.offices.find(o => o.id == newPickupPoint);
-          if (office) {
-            // Esperar a que el DOM se actualice
-            this.$nextTick(() => {
+        if (!newPickupPoint) return;
+        const office = this.offices.find(o => o.id == newPickupPoint);
+        if (!office) return;
+        this.$nextTick(() => {
+          setTimeout(() => {
+            if (this.currentStep === 3) {
               setTimeout(() => {
-                this.initMap(office);
-                // También inicializar el mapa pequeño si estamos en el paso 3
-                if (this.currentStep === 3) {
-                  setTimeout(() => {
-                    this.initSmallMap(office);
-                  }, 300);
-                }
-              }, 100);
-            });
-          }
-        }
+                this.initSmallMap(office);
+              }, 300);
+            }
+          }, 100);
+        });
       }
     },
 
@@ -1942,13 +1845,6 @@ export default {
           });
         }
       }
-    },
-
-    // Computed para mostrar info de delivery
-    hasDeliveryInfo() {
-      return this.deliveryMethod === 'delivery' && 
-             ((this.deliveryZoneInfo && this.deliveryData.department === 'lima') ||
-              (this.deliveryData.agency && this.deliveryData.department !== 'lima'));
     },
 
     // Watcher para autocompletar el documento cuando se selecciona Boleta

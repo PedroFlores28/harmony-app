@@ -598,48 +598,98 @@ body
   margin-bottom 30px
 
 .delivery-options.pickup-only
-  .delivery-description-single
-    margin 0
-    padding 22px 30px 12px
+  .pickup-only-body
+    padding 24px 28px 28px
+    border-radius 0 0 12px 12px
+
+  .pickup-intro-text
+    margin 0 0 18px
+    padding 0
     color #444
     font-size 1rem
     line-height 1.55
-    border-left 1px solid #e0e0e0
-    border-right 1px solid #e0e0e0
+    font-weight 500
 
-.principal-pickup-card
-  padding 8px 30px 28px
-  border-left 1px solid #e0e0e0
-  border-right 1px solid #e0e0e0
-  border-bottom 1px solid #e0e0e0
-  border-radius 0 0 12px 12px
+  .pickup-divider
+    width 100%
+    margin 0
+    border none
+    &--thick
+      height 4px
+      background #2d1f24
+      border-radius 2px
+      margin-bottom 22px
+    &--thin
+      height 1px
+      background #e5e7eb
+      margin 20px 0
 
-.principal-branch-label
-  font-size 1.2rem
-  font-weight 700
-  color #450b2b
-  margin 8px 0 22px
+  .pickup-reference-block
+    margin-bottom 4px
 
-.map-link-section
-  margin-bottom 22px
-
-.map-section-title
-  margin 0 0 12px
-  font-size 1.05rem
-  font-weight 700
-  color #333
-
-.prominent-map-link
-  font-weight 600
-  color #5c0f39
-  text-decoration underline
-  &:hover
+  .pickup-reference-label
+    display block
+    margin-bottom 10px
+    font-size 1rem
+    font-weight 700
     color #450b2b
 
-.map-link-fallback
-  margin 0
-  color #666
-  font-size 0.95rem
+  .pickup-reference-select
+    width 100%
+    box-sizing border-box
+    padding 14px 40px 14px 16px
+    font-size 1rem
+    font-weight 600
+    color #1f2937
+    background white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 14px center
+    border 1px solid #d1d5db
+    border-radius 8px
+    cursor pointer
+    opacity 1
+    appearance none
+    box-shadow none
+    transition border-color 0.15s ease, box-shadow 0.15s ease
+    &:hover
+      border-color #a88f9a
+    &:focus
+      outline none
+      border-color #450b2b
+      box-shadow 0 0 0 3px rgba(69, 11, 43, 0.18)
+
+  .map-link-section--mockup
+    margin-bottom 0
+
+  .map-section-title
+    margin 0 0 12px
+    font-size 1.05rem
+    font-weight 700
+    color #450b2b
+
+  .map-link-display-url
+    display inline-block
+    max-width 100%
+    font-size 0.9rem
+    font-weight 600
+    color #450b2b
+    text-decoration underline
+    word-break break-all
+    line-height 1.45
+    &:hover
+      color #350824
+
+  .pickup-info-card-title
+    margin 0 0 14px
+    padding 0
+    font-size 1.15rem
+    font-weight 700
+    color #450b2b
+    letter-spacing 0.02em
+
+.office-details-mockup
+  margin-top 0
+  background white
+  border 1px solid #e8e8e8
+  box-shadow 0 1px 4px rgba(0,0,0,0.06)
 
 .office-details-plain
   background #fafafa

@@ -145,37 +145,50 @@
               </div>
             </div>
 
-            <!-- Paso 1: Recojo en sucursal principal (solo información fija) -->
+            <!-- Paso 1: Recojo sucursal principal (layout tipo mockup) -->
             <div v-if="currentStep === 1" class="checkout-step">
               <div class="delivery-options pickup-only">
-                <div class="delivery-header">
-                  <h3>Recojo en sucursal</h3>
-                </div>
+                <div v-if="selectedOffice" class="pickup-only-body">
+                  <p class="pickup-intro-text">
+                    Elije tu método de despacho preferido.
+                  </p>
+                  <div class="pickup-divider pickup-divider--thick"></div>
 
-                <p class="delivery-description-single">
-                  Retira tu compra en nuestra sede principal.
-                </p>
-
-                <div v-if="selectedOffice" class="principal-pickup-card">
-                  <p class="principal-branch-label">Sucursal Principal</p>
-
-                  <div class="map-link-section">
-                    <h4 class="map-section-title">Ubicación en mapa</h4>
-                    <a
-                      v-if="pickupMapHref"
-                      :href="pickupMapHref"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="map-link prominent-map-link"
+                  <div class="pickup-reference-block">
+                    <label class="pickup-reference-label" for="pickup-reference-select">
+                      Referencia a:
+                    </label>
+                    <select
+                      id="pickup-reference-select"
+                      v-model="selectedPickupPoint"
+                      class="pickup-reference-select"
+                      aria-label="Elegir sucursal de recojo"
                     >
-                      {{ pickupMapLinkLabel }}
-                    </a>
-                    <p v-else class="map-link-fallback">
-                      Ubica la sucursal con la dirección indicada abajo.
-                    </p>
+                      <option :value="selectedOffice.id">
+                        SUCURSAL PRINCIPAL
+                      </option>
+                    </select>
                   </div>
 
-                  <div class="office-details office-details-plain">
+                  <div class="pickup-divider pickup-divider--thin"></div>
+
+                  <div class="map-link-section map-link-section--mockup">
+                    <h4 class="map-section-title">Ubicación en mapa</h4>
+                    <a
+                      :href="pickupMapUrl"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="map-link-display-url"
+                    >
+                      {{ pickupMapUrl }}
+                    </a>
+                  </div>
+
+                  <div class="pickup-divider pickup-divider--thin"></div>
+
+                  <h3 class="pickup-info-card-title">SUCURSAL PRINCIPAL</h3>
+
+                  <div class="office-details office-details-plain office-details-mockup">
                     <div class="office-item">
                       <span class="office-label">Dirección:</span>
                       <span class="office-value">{{ selectedOffice.address || 'No disponible' }}</span>
@@ -825,12 +838,19 @@ export default {
       return '';
     },
 
-    pickupMapLinkLabel() {
-      if (!this.selectedOffice || !this.pickupMapHref) return '';
-      const g =
-        this.selectedOffice.googleMapsUrl &&
-        String(this.selectedOffice.googleMapsUrl).trim();
-      return g ? 'Ver en Google Maps' : 'Ver en OpenStreetMap';
+    /** Siempre que haya sucursal: URL para mostrar como en el mockup (prioriza Google Maps). */
+    pickupMapUrl() {
+      const o = this.selectedOffice;
+      if (!o) return '';
+      const g = o.googleMapsUrl && String(o.googleMapsUrl).trim();
+      if (g) return g;
+      const addr = o.address;
+      if (addr && addr !== 'Dirección no disponible' && addr !== 'hola') {
+        const q = encodeURIComponent(`${o.name || 'SUCURSAL PRINCIPAL'} ${addr}`.trim());
+        return `https://maps.google.com/?q=${q}`;
+      }
+      const q = encodeURIComponent((o.name || 'SUCURSAL PRINCIPAL').trim());
+      return `https://maps.google.com/?q=${q}`;
     },
 
     pickupScheduleDisplay() {

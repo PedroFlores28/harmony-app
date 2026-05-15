@@ -743,8 +743,6 @@
           </div>
           <div class="modal-body">
             <p>Tu orden ha sido procesada exitosamente.</p>
-            <p>Número de orden: <strong>{{ orderNumber }}</strong></p>
-            <p>Te enviaremos un email con los detalles de tu compra.</p>
           </div>
           <div class="modal-actions">
             <button @click="goToDashboard" class="dashboard-btn">
@@ -775,7 +773,6 @@ export default {
       selectedPickupPoint: '',
       pay_method: "",
       showConfirmation: false,
-      orderNumber: '',
       
       // Datos de facturación
       billingData: {
@@ -1859,7 +1856,6 @@ export default {
           }
           
           // Éxito en la afiliación
-          this.orderNumber = data.orderNumber || 'N/A';
           this.activationSuccess = true;
           this.showConfirmation = true;
           this.$store.commit('setCartItems', []); // Limpiar el carrito en el store
@@ -1873,7 +1869,6 @@ export default {
           }
 
           // Éxito en la activación
-          this.orderNumber = data.orderNumber || 'N/A'; // Suponiendo que la API devuelve un número de orden
           this.activationSuccess = true;
           this.showConfirmation = true;
           this.$store.commit('setCartItems', []); // Limpiar el carrito en el store

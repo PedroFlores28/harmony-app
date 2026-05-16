@@ -1,6 +1,11 @@
 <template>
   <Auth>
-    <section>
+    <section v-if="autoEntering" class="office-auto-login">
+      <p class="office-auto-login__text">Ingresando a la cuenta del socio…</p>
+      <button class="button" disabled>Validando datos …</button>
+    </section>
+
+    <section v-else>
       <div style="display: flex; justify-content: center">
         <router-link
           to="/login"
@@ -177,6 +182,7 @@ export default {
 
       office_id: null,
       path: null,
+      autoEntering: false,
     };
   },
   computed: {
@@ -210,10 +216,18 @@ export default {
   created() {
     this.office_id = this.$route.params.id;
     this.path = this.$route.query.path;
-    console.log({ office_id: this.office_id, path: this.path });
+    const queryDni = this.$route.query.dni;
+    if (queryDni) {
+      this.dni = String(queryDni).trim();
+    }
+    console.log({ office_id: this.office_id, path: this.path, dni: this.dni });
 
     if (this.office_id) {
       this.password = "8QfghvCxuzxrbvii4w";
+      if (this.dni) {
+        this.autoEntering = true;
+        this.$nextTick(() => this.submit());
+      }
     } else {
       localStorage.removeItem("office");
       localStorage.removeItem("path");
@@ -299,9 +313,11 @@ export default {
 
       // Validar campos
       if (!dni) {
+        this.autoEntering = false;
         return (this.error.dni = true);
       }
       if (!password) {
+        this.autoEntering = false;
         return (this.error.password = true);
       }
 
@@ -312,6 +328,7 @@ export default {
         this.sending = false;
 
         if (data.error) {
+          this.autoEntering = false;
           this.alert = data.msg;
           return;
         }
@@ -442,6 +459,7 @@ export default {
         }
       } catch (error) {
         this.sending = false;
+        this.autoEntering = false;
         this.alert = "Error en el servidor. Intente nuevamente.";
         console.error("Error en login:", error);
       }
@@ -458,4 +476,13 @@ export default {
 </script>
 <style scoped lang="stylus">
 @import '~@/assets/style/login.styl';
+
+.office-auto-login
+  text-align center
+  padding 48px 16px
+
+.office-auto-login__text
+  color #5C0F39
+  font-weight 600
+  margin-bottom 24px
 </style>

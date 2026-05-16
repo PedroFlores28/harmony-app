@@ -19,41 +19,57 @@ export default {
     }
   },
   async created() {
+    // 1. Escuchar mensajes del padre (Admin) para Sudo Login (Vía PostMessage)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'SIFRAH_SUDO_LOGIN') {
+          console.log("DEBUG [AppInitializer]: Mensaje postMessage recibido:", event.data);
+          const { session, user, officeId, path } = event.data;
+          
+          if (session) {
+            this.$store.commit("SET_SESSION", session);
+            if (user) {
+              if (user.name) this.$store.commit("SET_NAME", user.name);
+              if (user.lastName) this.$store.commit("SET_LAST_NAME", user.lastName);
+              if (user.dni) this.$store.commit("SET_DNI", user.dni);
+              this.$store.commit("SET_AFFILIATED", user.affiliated !== false);
+            }
+            if (officeId) {
+              this.$store.commit("SET_OFFICE_ID", { office_id: officeId, path: path || 'dashboard' });
+            }
+            
+            const target = path || (user && user.affiliated !== false ? 'dashboard' : 'affiliation');
+            console.log("DEBUG [AppInitializer]: Redirigiendo vía postMessage a:", target);
+            this.$router.push(`/${target.replace(/^\//, '')}`);
+          }
+        }
+      });
+    }
+
     try {
-      // 1. Capturar parámetros de sesión administrativa de todas las fuentes posibles
+      // 2. Capturar parámetros de la URL (Vía Query Params)
       let query = { ...this.$route.query };
       
-      // Fallback a URL nativa si el router aún no está listo
       if (Object.keys(query).length === 0 && typeof window !== 'undefined') {
         const urlParams = new URLSearchParams(window.location.search);
-        urlParams.forEach((value, key) => {
-          query[key] = value;
-        });
+        urlParams.forEach((value, key) => { query[key] = value; });
       }
 
-      console.log("DEBUG [AppInitializer]: Parámetros capturados:", query);
-
-      const querySession = query.session;
-      const officeId = this.$route.params.id || query.office_id;
-      const path = query.path || 'dashboard';
-
-      if (querySession) {
-        console.log("DEBUG [AppInitializer]: Sesión administrativa detectada:", querySession);
-        this.$store.commit("SET_SESSION", querySession);
-        
+      if (query.session) {
+        console.log("DEBUG [AppInitializer]: Sesión detectada en URL:", query.session);
+        this.$store.commit("SET_SESSION", query.session);
         if (query.name) this.$store.commit("SET_NAME", query.name);
         if (query.lastName) this.$store.commit("SET_LAST_NAME", query.lastName);
         if (query.dni) this.$store.commit("SET_DNI", query.dni);
-        
-        const isAffiliated = query.affiliated !== 'false';
-        this.$store.commit("SET_AFFILIATED", isAffiliated);
-
-        if (officeId) {
-          this.$store.commit("SET_OFFICE_ID", { office_id: officeId, path: path });
+        this.$store.commit("SET_AFFILIATED", query.affiliated !== 'false');
+        if (this.$route.params.id || query.office_id) {
+          this.$store.commit("SET_OFFICE_ID", { 
+            office_id: this.$route.params.id || query.office_id, 
+            path: query.path || 'dashboard' 
+          });
         }
       }
 
-      // Esperar un poco para que el router se inicialice completamente
       await this.$nextTick();
       console.log("DEBUG [AppInitializer]: NextTick completado");
       

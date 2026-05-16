@@ -499,16 +499,14 @@ export default {
 
         // Redirigir según el tipo de usuario
         if (office_id) {
-          // Usuario de oficina
-          console.log('Login: Redirigiendo usuario de oficina a', `/${this.path}`);
-          this.$router.push(`/${this.path}`);
+          // Usuario de oficina (Impersonación Admin)
+          console.log('Login: Redirigiendo impersonación a', `/${this.path}`);
+          this.$router.push(`/${this.path.replace(/^\//, '')}`);
         } else {
           // Usuario normal - redirigir según afiliación
           if (this.$store.state.affiliated) {
-            console.log('Login: Usuario afiliado, redirigiendo a /dashboard');
             this.$router.push("/dashboard");
           } else {
-            console.log('Login: Usuario no afiliado, redirigiendo a /affiliation');
             this.$router.push("/affiliation");
           }
         }

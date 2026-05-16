@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import storage from "@/utils/storage"
 
 Vue.use(Vuex)
 
@@ -48,202 +49,106 @@ export default new Vuex.Store({
   mutations: {
     SET_SESSION: (state, session) => {
       state.session = session
-      try {
-        if (session) {
-          localStorage.setItem('session', session)
-        } else {
-          localStorage.removeItem('session')
-        }
-      } catch (e) {
-        console.warn('LocalStorage blocked in iframe', e)
+      if (session) {
+        storage.set('session', session)
+      } else {
+        storage.remove('session')
       }
     },
     SET_OFFICE_ID: (state, { office_id, path }) => {
       state.office_id = office_id
-      try {
-        if (office_id) {
-          localStorage.setItem('office', 'true')
-          localStorage.setItem('office_id', office_id)
-          localStorage.setItem('path', path)
-        } else {
-          localStorage.removeItem('office')
-          localStorage.removeItem('office_id')
-          localStorage.removeItem('path')
-        }
-      } catch (e) {
-        console.warn('LocalStorage blocked in iframe', e)
+      if (office_id) {
+        storage.set('office', 'true')
+        storage.set('office_id', office_id)
+        storage.set('path', path)
+      } else {
+        storage.remove('office')
+        storage.remove('office_id')
+        storage.remove('path')
       }
     },
     SET_NAME: (state, name) => {
       state.name = name
-      try {
-        if (name) {
-          localStorage.setItem('name', name)
-        } else {
-          localStorage.removeItem('name')
-        }
-      } catch (e) {
-        console.warn('LocalStorage blocked in iframe', e)
+      if (name) {
+        storage.set('name', name)
+      } else {
+        storage.remove('name')
       }
     },
     SET_LAST_NAME: (state, lastName) => {
       state.lastName = lastName
-      try {
-        if (lastName) {
-          localStorage.setItem('lastName', lastName)
-        } else {
-          localStorage.removeItem('lastName')
-        }
-      } catch (e) {
-        console.warn('LocalStorage blocked in iframe', e)
+      if (lastName) {
+        storage.set('lastName', lastName)
+      } else {
+        storage.remove('lastName')
       }
     },
     SET_AFFILIATED: (state, affiliated) => {
-      // Asegurar que affiliated sea un booleano válido
-      let affiliatedValue = affiliated;
-
-      if (typeof affiliated === 'string') {
-        affiliatedValue = affiliated === 'true';
-      } else if (affiliated === null || affiliated === undefined) {
-        affiliatedValue = null;
-      } else {
-        affiliatedValue = Boolean(affiliated);
-      }
-
-      state.affiliated = affiliatedValue;
-
-      try {
-        if (affiliatedValue !== null && affiliatedValue !== undefined) {
-          localStorage.setItem('affiliated', affiliatedValue.toString());
-        } else {
-          localStorage.removeItem('affiliated');
-        }
-      } catch (e) {
-        console.warn('LocalStorage blocked in iframe', e)
-      }
+      let val = affiliated === 'true' || affiliated === true;
+      state.affiliated = val;
+      storage.set('affiliated', val.toString());
     },
     SET_ACTIVATED: (state, activated) => {
       state.activated = activated
-      if (activated !== null && activated !== undefined) {
-        localStorage.setItem('activated', activated.toString())
-      } else {
-        localStorage.removeItem('activated')
-      }
+      storage.set('activated', activated.toString())
     },
     SET__ACTIVATED: (state, _activated) => {
       state._activated = _activated
-      if (_activated !== null && _activated !== undefined) {
-        localStorage.setItem('_activated', _activated.toString())
-      } else {
-        localStorage.removeItem('_activated')
-      }
+      storage.set('_activated', _activated.toString())
     },
     SET_PLAN: (state, plan) => {
       state.plan = plan
-      if (plan) {
-        localStorage.setItem('plan', plan)
-      } else {
-        localStorage.removeItem('plan')
-      }
+      storage.set('plan', plan)
     },
     SET_COUNTRY: (state, country) => {
       state.country = country
-      if (country) {
-        localStorage.setItem('country', country)
-      } else {
-        localStorage.removeItem('country')
-      }
+      storage.set('country', country)
     },
     SET_PHOTO: (state, photo) => {
       state.photo = photo
-      if (photo) {
-        localStorage.setItem('photo', photo)
-      } else {
-        localStorage.removeItem('photo')
-      }
+      storage.set('photo', photo)
     },
     SET_TREE: (state, tree) => {
       state.tree = tree
-      if (tree !== null && tree !== undefined) {
-        localStorage.setItem('tree', tree.toString())
-      } else {
-        localStorage.removeItem('tree')
-      }
+      storage.set('tree', tree.toString())
     },
     SET_EMAIL: (state, email) => {
       state.email = email
-      if (email) {
-        localStorage.setItem('email', email)
-      } else {
-        localStorage.removeItem('email')
-      }
+      storage.set('email', email)
     },
     SET_TOKEN: (state, token) => {
       state.token = token
-      if (token) {
-        localStorage.setItem('token', token)
-      } else {
-        localStorage.removeItem('token')
-      }
+      storage.set('token', token)
     },
     SET_DNI: (state, dni) => {
       state.dni = dni
-      if (dni) {
-        localStorage.setItem('dni', dni)
-      } else {
-        localStorage.removeItem('dni')
-      }
+      storage.set('dni', dni)
     },
     SET_ADDRESS: (state, address) => {
       state.address = address
-      if (address) {
-        localStorage.setItem('address', address)
-      } else {
-        localStorage.removeItem('address')
-      }
+      storage.set('address', address)
     },
     SET_CITY: (state, city) => {
       state.city = city
-      if (city) {
-        localStorage.setItem('city', city)
-      } else {
-        localStorage.removeItem('city')
-      }
+      storage.set('city', city)
     },
     SET_BIRTHDATE: (state, birthdate) => {
       state.birthdate = birthdate
-      if (birthdate) {
-        localStorage.setItem('birthdate', birthdate)
-      } else {
-        localStorage.removeItem('birthdate')
-      }
+      storage.set('birthdate', birthdate)
     },
     SET_TOTAL_POINTS: (state, total_points) => {
       state.total_points = total_points
-      if (total_points !== null && total_points !== undefined) {
-        localStorage.setItem('total_points', total_points.toString())
-      } else {
-        localStorage.removeItem('total_points')
-      }
+      storage.set('total_points', total_points.toString())
     },
     SET_BALANCE: (state, balance) => {
       state.balance = balance
-      if (balance !== null && balance !== undefined) {
-        localStorage.setItem('balance', balance.toString())
-      } else {
-        localStorage.removeItem('balance')
-      }
+      storage.set('balance', balance.toString())
     },
     SET__BALANCE: (state, _balance) => {
       state._balance = _balance
-      if (_balance !== null && _balance !== undefined) {
-        localStorage.setItem('_balance', _balance.toString())
-      } else {
-        localStorage.removeItem('_balance')
-      }
+      storage.set('_balance', _balance.toString())
     },
     setCartItems: (state, cartItems) => {
-      // Asegurar que cartItems siempre sea un array
       state.cartItems = Array.isArray(cartItems) ? cartItems : [];
     },
     setAffiliationCheckout: (state, { total, points, plan }) => {
@@ -258,160 +163,62 @@ export default new Vuex.Store({
       state.affiliationPlan = null
       state.isAffiliationCheckout = false
     },
-
-    // Mutaciones de menú
-    SET_OPEN: (state) => {
-      state.open = !state.open
-    },
+    SET_OPEN: (state) => { state.open = !state.open },
     SET_RESUME: (state) => {
       state.resume = !state.resume
-      state.buys = false
-      state.network = false
-      state.commissions = false
-      state.education = false
+      state.buys = state.network = state.commissions = state.education = false
     },
     SET_BUYS: (state) => {
-      state.resume = false
       state.buys = !state.buys
-      state.network = false
-      state.commissions = false
-      state.education = false
+      state.resume = state.network = state.commissions = state.education = false
     },
     SET_NETWORK: (state) => {
-      state.resume = false
-      state.buys = false
       state.network = !state.network
-      state.commissions = false
-      state.education = false
+      state.resume = state.buys = state.commissions = state.education = false
     },
     SET_COMMISSIONS: (state) => {
-      state.resume = false
-      state.buys = false
-      state.network = false
       state.commissions = !state.commissions
-      state.education = false
+      state.resume = state.buys = state.network = state.education = false
     },
     SET_EDUCATION: (state) => {
-      state.resume = false
-      state.buys = false
-      state.network = false
-      state.commissions = false
       state.education = !state.education
+      state.resume = state.buys = state.network = state.commissions = false
     },
     CLEAR_MENU_STATES: (state) => {
-      state.resume = false
-      state.buys = false
-      state.network = false
-      state.commissions = false
-      state.education = false
+      state.resume = state.buys = state.network = state.commissions = state.education = false
     },
   },
   actions: {
-    // Acción para restaurar el estado desde localStorage
     async restoreState({ commit }) {
-      try {
+      const keys = ['session', 'name', 'lastName', 'plan', 'country', 'photo', 'email', 'token', 'dni', 'address', 'city', 'birthdate'];
+      keys.forEach(k => {
+        const val = storage.get(k);
+        if (val) commit(`SET_${k.toUpperCase()}`, val);
+      });
 
-        const session = localStorage.getItem('session')
-        if (session) {
-          commit('SET_SESSION', session)
-        }
+      const office_id = storage.get('office_id');
+      const path = storage.get('path');
+      if (office_id) commit('SET_OFFICE_ID', { office_id, path });
 
-        const office_id = localStorage.getItem('office_id')
-        const path = localStorage.getItem('path')
-        if (office_id) {
-          commit('SET_OFFICE_ID', { office_id, path })
-        }
+      const boolKeys = ['affiliated', 'activated', '_activated', 'tree'];
+      boolKeys.forEach(k => {
+        const val = storage.get(k);
+        if (val !== null) commit(`SET_${k.toUpperCase()}`, val === 'true');
+      });
 
-        const name = localStorage.getItem('name')
-        if (name) commit('SET_NAME', name)
+      const numKeys = ['total_points', 'balance', '_balance'];
+      numKeys.forEach(k => {
+        const val = storage.get(k);
+        if (val !== null) commit(`SET_${k.toUpperCase()}`, parseFloat(val));
+      });
 
-        const lastName = localStorage.getItem('lastName')
-        if (lastName) commit('SET_LAST_NAME', lastName)
-
-        const affiliated = localStorage.getItem('affiliated')
-        if (affiliated !== null) {
-          const isAffiliated = affiliated === 'true'
-          commit('SET_AFFILIATED', isAffiliated)
-        }
-
-        const activated = localStorage.getItem('activated')
-        if (activated !== null) commit('SET_ACTIVATED', activated === 'true')
-
-        const _activated = localStorage.getItem('_activated')
-        if (_activated !== null) commit('SET__ACTIVATED', _activated === 'true')
-
-        const plan = localStorage.getItem('plan')
-        if (plan) commit('SET_PLAN', plan)
-
-        const country = localStorage.getItem('country')
-        if (country) commit('SET_COUNTRY', country)
-
-        const photo = localStorage.getItem('photo')
-        if (photo) commit('SET_PHOTO', photo)
-
-        const tree = localStorage.getItem('tree')
-        if (tree !== null) commit('SET_TREE', tree === 'true')
-
-        const email = localStorage.getItem('email')
-        if (email) commit('SET_EMAIL', email)
-
-        const token = localStorage.getItem('token')
-        if (token) commit('SET_TOKEN', token)
-
-        const dni = localStorage.getItem('dni')
-        if (dni) commit('SET_DNI', dni)
-
-        const address = localStorage.getItem('address')
-        if (address) commit('SET_ADDRESS', address)
-
-        const city = localStorage.getItem('city')
-        if (city) commit('SET_CITY', city)
-
-        const birthdate = localStorage.getItem('birthdate')
-        if (birthdate) commit('SET_BIRTHDATE', birthdate)
-
-        const total_points = localStorage.getItem('total_points')
-        if (total_points !== null) commit('SET_TOTAL_POINTS', parseInt(total_points))
-
-        const balance = localStorage.getItem('balance')
-        if (balance !== null) commit('SET_BALANCE', parseFloat(balance))
-
-        const _balance = localStorage.getItem('_balance')
-        if (_balance !== null) commit('SET__BALANCE', parseFloat(_balance))
-
-        // Limpiar estados de los menús al restaurar (no deben persistir entre sesiones)
-        commit('CLEAR_MENU_STATES')
-
-        return true;
-      } catch (error) {
-        console.error('Error al restaurar el estado:', error);
-        return false;
-      }
+      commit('CLEAR_MENU_STATES')
+      return true;
     },
-
-    // Acción para limpiar todo el estado
     clearState({ commit }) {
-      commit('SET_SESSION', null)
-      commit('SET_OFFICE_ID', { office_id: null, path: null })
-      commit('SET_NAME', null)
-      commit('SET_LAST_NAME', null)
-      commit('SET_AFFILIATED', null)
-      commit('SET_ACTIVATED', null)
-      commit('SET__ACTIVATED', null)
-      commit('SET_PLAN', null)
-      commit('SET_COUNTRY', null)
-      commit('SET_PHOTO', null)
-      commit('SET_TREE', null)
-      commit('SET_EMAIL', null)
-      commit('SET_TOKEN', null)
-      commit('SET_ADDRESS', null)
-      commit('SET_CITY', null)
-      commit('SET_BIRTHDATE', null)
-      commit('SET_TOTAL_POINTS', null)
-      commit('SET_BALANCE', null)
-      commit('SET__BALANCE', null)
-
-      // Limpiar estados de los menús
+      const keys = ['session', 'name', 'lastName', 'affiliated', 'activated', '_activated', 'plan', 'country', 'photo', 'tree', 'email', 'token', 'address', 'city', 'birthdate', 'total_points', 'balance', '_balance'];
+      keys.forEach(k => commit(`SET_${k.toUpperCase()}`, null));
+      commit('SET_OFFICE_ID', { office_id: null, path: null });
       commit('CLEAR_MENU_STATES')
     }
   }

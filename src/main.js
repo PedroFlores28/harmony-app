@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import api from "./api";
 import GAuth from "vue-google-oauth2";
+import storage from "@/utils/storage";
 
 Vue.config.productionTip = false;
 
@@ -52,7 +53,7 @@ Vue.mixin({
           window.scrollTo({
             top: 0,
             left: 0,
-            behavior: 'auto' // Cambiado a 'auto' para ser más inmediato
+            behavior: 'auto'
           });
         }
         
@@ -79,17 +80,17 @@ Vue.mixin({
       // Limpiar store
       this.$store.dispatch('clearState');
       
-      // Limpiar localStorage
-      localStorage.clear();
+      // Limpiar localStorage de forma segura
+      storage.clear();
       
       // Logout en API
       api.logout(this.session);
 
       // Redirigir según el tipo de usuario
-      const office = localStorage.getItem("office");
+      const office = storage.get("office");
       if (office == "true") {
-        const office_id = localStorage.getItem("office_id");
-        const path = localStorage.getItem("path");
+        const office_id = storage.get("office_id");
+        const path = storage.get("path");
         const url = `/login/${office_id}?path=${path}`;
         this.$router.push(url);
       } else {
@@ -108,8 +109,8 @@ Vue.mixin({
       // Limpiar store
       this.$store.dispatch('clearState');
       
-      // Limpiar localStorage
-      localStorage.clear();
+      // Limpiar localStorage de forma segura
+      storage.clear();
       
       // Logout en API
       api.logout(this.session);
@@ -141,17 +142,17 @@ function setTheme(theme) {
   if (theme === "dark") {
     document.body.classList.add("dark-mode");
     document.body.classList.remove("light-mode");
-    localStorage.setItem("theme", "dark");
+    storage.set("theme", "dark");
   } else {
     document.body.classList.remove("dark-mode");
     document.body.classList.add("light-mode");
-    localStorage.setItem("theme", "light");
+    storage.set("theme", "light");
   }
 }
 
 // Inicializar tema al cargar
 const savedTheme =
-  localStorage.getItem("theme") ||
+  storage.get("theme") ||
   (window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light");

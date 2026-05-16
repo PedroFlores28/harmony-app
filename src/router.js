@@ -263,23 +263,41 @@ router.beforeEach(async (to, from, next) => {
 
   try {
     session = session || localStorage.getItem('session')
+    // PRIORIDAD: Si hay sesión en la URL, la usamos (importante para iframes)
+    if (!session && to.query.session) {
+      session = to.query.session
+      console.log("DEBUG [Router]: Usando sesión de la URL:", session)
+      store.commit('SET_SESSION', session)
+    }
+
     office_id = office_id || localStorage.getItem('office_id')
     path = localStorage.getItem('path')
     localAffiliated = localStorage.getItem('affiliated')
   } catch (e) {
     console.warn('LocalStorage blocked in router guard', e)
+    // Reintentar desde URL si localStorage falló
+    if (!session && to.query.session) {
+      session = to.query.session
+      store.commit('SET_SESSION', session)
+    }
   }
   
   // Mejorar la obtención del estado de afiliación
   let affiliated = null
   if (store.state.affiliated !== null && store.state.affiliated !== undefined) {
     affiliated = store.state.affiliated
-  } else if (localAffiliated !== null) {
-    affiliated = localAffiliated === 'true'
-    // Si hay discrepancia, sincronizar el store
-    try {
+  } else {
+    // Si viene en la URL, lo usamos
+    if (to.query.affiliated !== undefined) {
+      affiliated = to.query.affiliated === 'true'
       store.commit('SET_AFFILIATED', affiliated)
-    } catch (e) {}
+    } else if (localAffiliated !== null) {
+      affiliated = localAffiliated === 'true'
+      // Si hay discrepancia, sincronizar el store
+      try {
+        store.commit('SET_AFFILIATED', affiliated)
+      } catch (e) {}
+    }
   }
 
   // Si es usuario de oficina, manejar redirección especial

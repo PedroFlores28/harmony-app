@@ -20,6 +20,28 @@ export default {
   },
   async created() {
     try {
+      // 1. Capturar parámetros de sesión administrativa antes de nada
+      const query = this.$route.query;
+      const querySession = query.session;
+      const officeId = this.$route.params.id || query.office_id;
+      const path = query.path || 'dashboard';
+
+      if (querySession) {
+        console.log("AppInitializer: Inyectando sesión administrativa detectada...");
+        this.$store.commit("SET_SESSION", querySession);
+        
+        if (query.name) this.$store.commit("SET_NAME", query.name);
+        if (query.lastName) this.$store.commit("SET_LAST_NAME", query.lastName);
+        if (query.dni) this.$store.commit("SET_DNI", query.dni);
+        
+        const isAffiliated = query.affiliated !== 'false';
+        this.$store.commit("SET_AFFILIATED", isAffiliated);
+
+        if (officeId) {
+          this.$store.commit("SET_OFFICE_ID", { office_id: officeId, path: path });
+        }
+      }
+
       // Esperar un poco para que el router se inicialice completamente
       await this.$nextTick();
       
@@ -50,6 +72,11 @@ export default {
         // ... resto de la lógica ...
         if (this.$route.path.startsWith('/register/')) {
           // No redirigir
+        }
+        // PRIORIDAD: Si está en login y ya tiene sesión (por inyección), redirigir al dashboard o path indicado
+        else if (this.$route.path.startsWith('/login')) {
+          const targetPath = this.$route.query.path || (affiliated ? 'dashboard' : 'affiliation');
+          this.$router.push(`/${targetPath.replace(/^\//, '')}`);
         }
         else if (affiliated && this.$route.path === '/affiliation') {
           this.$router.push('/dashboard');

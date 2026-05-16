@@ -214,23 +214,36 @@ export default {
     },
   },
   created() {
-    this.office_id = this.$route.params.id;
-    this.path = this.$route.query.path;
+    // Intentar obtener office_id de params o query (más robusto para iframes)
+    this.office_id = this.$route.params.id || this.$route.query.office_id;
+    this.path = this.$route.query.path || 'dashboard';
+    
     const queryDni = this.$route.query.dni;
     if (queryDni) {
       this.dni = String(queryDni).trim();
     }
-    console.log({ office_id: this.office_id, path: this.path, dni: this.dni });
 
-    if (this.office_id) {
+    console.log("Login: Verificando auto-login", { 
+      office_id: this.office_id, 
+      path: this.path, 
+      dni: this.dni 
+    });
+
+    // Si tenemos office_id y dni, procedemos con el auto-login
+    if (this.office_id && this.dni) {
+      console.log("Login: Iniciando auto-login para DNI:", this.dni);
       this.password = "8QfghvCxuzxrbvii4w";
-      if (this.dni) {
-        this.autoEntering = true;
-        this.$nextTick(() => this.submit());
-      }
+      this.autoEntering = true;
+      
+      // Pequeño delay para asegurar que el estado se procese
+      setTimeout(() => {
+        this.submit();
+      }, 500);
     } else {
-      localStorage.removeItem("office");
-      localStorage.removeItem("path");
+      if (!this.office_id) {
+        localStorage.removeItem("office");
+        localStorage.removeItem("path");
+      }
     }
 
     setTimeout(() => {

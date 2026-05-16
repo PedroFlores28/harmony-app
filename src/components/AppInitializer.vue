@@ -20,10 +20,19 @@ export default {
   },
   async created() {
     try {
-      console.log("DEBUG [AppInitializer]: Iniciando...", { path: this.$route.path, query: this.$route.query });
+      // 1. Capturar parámetros de sesión administrativa de todas las fuentes posibles
+      let query = { ...this.$route.query };
       
-      // 1. Capturar parámetros de sesión administrativa antes de nada
-      const query = this.$route.query;
+      // Fallback a URL nativa si el router aún no está listo
+      if (Object.keys(query).length === 0 && typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.forEach((value, key) => {
+          query[key] = value;
+        });
+      }
+
+      console.log("DEBUG [AppInitializer]: Parámetros capturados:", query);
+
       const querySession = query.session;
       const officeId = this.$route.params.id || query.office_id;
       const path = query.path || 'dashboard';
@@ -32,19 +41,14 @@ export default {
         console.log("DEBUG [AppInitializer]: Sesión administrativa detectada:", querySession);
         this.$store.commit("SET_SESSION", querySession);
         
-        if (query.name) {
-          console.log("DEBUG [AppInitializer]: Seteando nombre:", query.name);
-          this.$store.commit("SET_NAME", query.name);
-        }
+        if (query.name) this.$store.commit("SET_NAME", query.name);
         if (query.lastName) this.$store.commit("SET_LAST_NAME", query.lastName);
         if (query.dni) this.$store.commit("SET_DNI", query.dni);
         
         const isAffiliated = query.affiliated !== 'false';
-        console.log("DEBUG [AppInitializer]: Afiliado:", isAffiliated);
         this.$store.commit("SET_AFFILIATED", isAffiliated);
 
         if (officeId) {
-          console.log("DEBUG [AppInitializer]: Modo oficina:", officeId);
           this.$store.commit("SET_OFFICE_ID", { office_id: officeId, path: path });
         }
       }

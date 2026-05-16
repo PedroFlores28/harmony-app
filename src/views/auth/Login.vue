@@ -222,14 +222,29 @@ export default {
     const querySession = this.$route.query.session;
 
     if (querySession) {
-      console.log("Login: Sesión detectada en URL, inyectando...", querySession);
+      console.log("Login: Sesión administrativa detectada, inyectando estado completo...");
+      
+      // Inyectar todos los datos proporcionados
       this.$store.commit("SET_SESSION", querySession);
-      // Intentar obtener si está afiliado de la query o por defecto true
+      
+      if (this.$route.query.name) this.$store.commit("SET_NAME", this.$route.query.name);
+      if (this.$route.query.lastName) this.$store.commit("SET_LAST_NAME", this.$route.query.lastName);
+      if (this.$route.query.dni) this.$store.commit("SET_DNI", this.$route.query.dni);
+      
       const isAffiliated = this.$route.query.affiliated !== 'false';
       this.$store.commit("SET_AFFILIATED", isAffiliated);
+
+      // Configurar modo oficina para que el layout sepa que es una sesión embebida
+      if (this.office_id) {
+        this.$store.commit("SET_OFFICE_ID", { 
+          office_id: this.office_id, 
+          path: this.path 
+        });
+      }
       
       this.$nextTick(() => {
         const targetPath = this.$route.query.path || (isAffiliated ? 'dashboard' : 'affiliation');
+        console.log("Login: Redirigiendo a", targetPath);
         this.$router.push(`/${targetPath.replace(/^\//, '')}`);
       });
       return;

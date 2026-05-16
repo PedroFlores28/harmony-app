@@ -62,6 +62,12 @@ const routes = [
       }
     }
   },
+  {
+    path: '/sudo-login',
+    name: 'sudo-login',
+    component: Login,
+    meta: { requiresAuth: false }
+  },
   // Auth
   {
     path: '/welcome',

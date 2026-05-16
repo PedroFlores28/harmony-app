@@ -256,21 +256,30 @@ router.beforeEach(async (to, from, next) => {
   const requiresAffiliation = to.matched.some(record => record.meta.requiresAffiliation)
 
   // Obtener datos del store (estado actual) y localStorage (estado persistido)
-  const session   = store.state.session || localStorage.getItem('session')
-  const office_id = store.state.office_id || localStorage.getItem('office_id')
-  const path      = localStorage.getItem('path')
+  let session = store.state.session
+  let office_id = store.state.office_id
+  let path = null
+  let localAffiliated = null
+
+  try {
+    session = session || localStorage.getItem('session')
+    office_id = office_id || localStorage.getItem('office_id')
+    path = localStorage.getItem('path')
+    localAffiliated = localStorage.getItem('affiliated')
+  } catch (e) {
+    console.warn('LocalStorage blocked in router guard', e)
+  }
   
   // Mejorar la obtención del estado de afiliación
   let affiliated = null
   if (store.state.affiliated !== null && store.state.affiliated !== undefined) {
     affiliated = store.state.affiliated
-  } else {
-    const localAffiliated = localStorage.getItem('affiliated')
+  } else if (localAffiliated !== null) {
     affiliated = localAffiliated === 'true'
     // Si hay discrepancia, sincronizar el store
-    if (localAffiliated !== null && store.state.affiliated !== affiliated) {
+    try {
       store.commit('SET_AFFILIATED', affiliated)
-    }
+    } catch (e) {}
   }
 
   // Si es usuario de oficina, manejar redirección especial

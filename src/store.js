@@ -48,38 +48,54 @@ export default new Vuex.Store({
   mutations: {
     SET_SESSION: (state, session) => {
       state.session = session
-      if (session) {
-        localStorage.setItem('session', session)
-      } else {
-        localStorage.removeItem('session')
+      try {
+        if (session) {
+          localStorage.setItem('session', session)
+        } else {
+          localStorage.removeItem('session')
+        }
+      } catch (e) {
+        console.warn('LocalStorage blocked in iframe', e)
       }
     },
     SET_OFFICE_ID: (state, { office_id, path }) => {
       state.office_id = office_id
-      if (office_id) {
-        localStorage.setItem('office', 'true')
-        localStorage.setItem('office_id', office_id)
-        localStorage.setItem('path', path)
-      } else {
-        localStorage.removeItem('office')
-        localStorage.removeItem('office_id')
-        localStorage.removeItem('path')
+      try {
+        if (office_id) {
+          localStorage.setItem('office', 'true')
+          localStorage.setItem('office_id', office_id)
+          localStorage.setItem('path', path)
+        } else {
+          localStorage.removeItem('office')
+          localStorage.removeItem('office_id')
+          localStorage.removeItem('path')
+        }
+      } catch (e) {
+        console.warn('LocalStorage blocked in iframe', e)
       }
     },
     SET_NAME: (state, name) => {
       state.name = name
-      if (name) {
-        localStorage.setItem('name', name)
-      } else {
-        localStorage.removeItem('name')
+      try {
+        if (name) {
+          localStorage.setItem('name', name)
+        } else {
+          localStorage.removeItem('name')
+        }
+      } catch (e) {
+        console.warn('LocalStorage blocked in iframe', e)
       }
     },
     SET_LAST_NAME: (state, lastName) => {
       state.lastName = lastName
-      if (lastName) {
-        localStorage.setItem('lastName', lastName)
-      } else {
-        localStorage.removeItem('lastName')
+      try {
+        if (lastName) {
+          localStorage.setItem('lastName', lastName)
+        } else {
+          localStorage.removeItem('lastName')
+        }
+      } catch (e) {
+        console.warn('LocalStorage blocked in iframe', e)
       }
     },
     SET_AFFILIATED: (state, affiliated) => {
@@ -96,10 +112,14 @@ export default new Vuex.Store({
 
       state.affiliated = affiliatedValue;
 
-      if (affiliatedValue !== null && affiliatedValue !== undefined) {
-        localStorage.setItem('affiliated', affiliatedValue.toString());
-      } else {
-        localStorage.removeItem('affiliated');
+      try {
+        if (affiliatedValue !== null && affiliatedValue !== undefined) {
+          localStorage.setItem('affiliated', affiliatedValue.toString());
+        } else {
+          localStorage.removeItem('affiliated');
+        }
+      } catch (e) {
+        console.warn('LocalStorage blocked in iframe', e)
       }
     },
     SET_ACTIVATED: (state, activated) => {

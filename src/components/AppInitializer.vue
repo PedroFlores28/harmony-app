@@ -23,38 +23,40 @@ export default {
       // Esperar un poco para que el router se inicialice completamente
       await this.$nextTick();
       
-      // Verificar si hay una sesión activa
-      const session = this.$store.state.session || localStorage.getItem('session');
+      // Verificar si hay una sesión activa con try-catch para iframes
+      let session = this.$store.state.session;
+      let localAffiliated = null;
+
+      try {
+        session = session || localStorage.getItem('session');
+        localAffiliated = localStorage.getItem('affiliated');
+      } catch (e) {
+        console.warn('AppInitializer: LocalStorage blocked', e);
+      }
       
       if (session) {
-        
         // Verificar estado de afiliación con mejor sincronización
         let affiliated = null;
         if (this.$store.state.affiliated !== null && this.$store.state.affiliated !== undefined) {
           affiliated = this.$store.state.affiliated;
-        } else {
-          const localAffiliated = localStorage.getItem('affiliated');
+        } else if (localAffiliated !== null) {
           affiliated = localAffiliated === 'true';
           // Sincronizar el store si no está definido
-          if (affiliated !== null) {
+          try {
             this.$store.commit('SET_AFFILIATED', affiliated);
-          }
+          } catch (e) {}
         }
         
-        // Permitir acceso a registro con código de referido incluso con sesión activa
+        // ... resto de la lógica ...
         if (this.$route.path.startsWith('/register/')) {
           // No redirigir
         }
-        // Si está afiliado y está en la página de afiliación, redirigir al dashboard
         else if (affiliated && this.$route.path === '/affiliation') {
           this.$router.push('/dashboard');
         }
-        // Si está afiliado y está en la raíz, redirigir al dashboard
         else if (affiliated && this.$route.path === '/') {
           this.$router.push('/dashboard');
         }
-        // Solo redirigir si es necesario y no estamos ya en la ruta correcta
-        // Permitir acceso a checkout y activation para que usuarios nuevos puedan pagar su paquete de afiliación
         else if (!affiliated) {
           const allowedRoutesForNonAffiliated = ['/affiliation', '/profile', '/password', '/security', '/checkout', '/activation'];
           if (!allowedRoutesForNonAffiliated.includes(this.$route.path)) {
@@ -62,12 +64,9 @@ export default {
           }
         }
       } else {
-        
-        // Permitir acceso directo a registro con código de referido sin redireccionar
         if (this.$route.path.startsWith('/register/')) {
           // No redirigir
         }
-        // Si no hay sesión y no está en login, redirigir a login
         else if (this.$route.path !== '/login' && this.$route.path !== '/welcome' && this.$route.path !== '/register' && this.$route.path !== '/remember' && this.$route.path !== '/reset-password') {
           this.$router.push('/login');
         }
@@ -81,40 +80,31 @@ export default {
     }
   },
   
-  // También verificar cuando cambie la ruta
-  watch: {
-    '$route'(to, from) {
-      
-      // Solo verificar si ya está inicializado
-      if (this.initialized) {
-        this.checkAndRedirect();
-      }
-    }
-  },
-  
   methods: {
     checkAndRedirect() {
-      const session = this.$store.state.session || localStorage.getItem('session');
+      let session = this.$store.state.session;
+      let localAffiliated = null;
+
+      try {
+        session = session || localStorage.getItem('session');
+        localAffiliated = localStorage.getItem('affiliated');
+      } catch (e) {
+        console.warn('AppInitializer: LocalStorage blocked', e);
+      }
       
       if (session) {
         const affiliated = this.$store.state.affiliated !== null 
           ? this.$store.state.affiliated 
-          : (localStorage.getItem('affiliated') === 'true');
+          : (localAffiliated === 'true');
         
-        // Permitir acceso a registro con código de referido incluso con sesión activa
         if (this.$route.path.startsWith('/register/')) {
-          // No redirigir
           return;
         }
         
-        // Si no está afiliado y no está en una ruta permitida
-        // Permitir acceso a checkout y activation para que usuarios nuevos puedan pagar su paquete de afiliación
         const allowedRoutesForNonAffiliated = ['/affiliation', '/profile', '/password', '/security', '/checkout', '/activation'];
         if (!affiliated && !allowedRoutesForNonAffiliated.includes(this.$route.path)) {
           this.$router.push('/affiliation');
         }
-        // IMPORTANTE: NO redirigir usuarios afiliados desde afiliación
-        // Ellos pueden querer acceder para hacer upgrade o ver historial
       }
     }
   }

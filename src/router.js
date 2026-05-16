@@ -258,6 +258,11 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
+  // /sudo-login maneja su propia autenticación — no interceptar
+  if (to.path === '/sudo-login') {
+    return next();
+  }
+
   const requiresNoAuth = to.matched.some(record => record.meta.requiresNoAuth)
   const requiresAuth   = to.matched.some(record => record.meta.requiresAuth)
   const requiresAffiliation = to.matched.some(record => record.meta.requiresAffiliation)

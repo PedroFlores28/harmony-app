@@ -111,12 +111,14 @@ export default {
       } else {
         if (
           !this.$route.path.startsWith('/login') && 
+          this.$route.path !== '/sudo-login' &&
           this.$route.path !== '/welcome' && 
           this.$route.path !== '/register' && 
           this.$route.path !== '/remember' && 
           this.$route.path !== '/reset-password' &&
           !this.$route.path.startsWith('/register/')
         ) {
+          console.log('AppInitializer: Sin sesión, redirigiendo a /login desde', this.$route.path);
           this.$router.push('/login');
         }
       }

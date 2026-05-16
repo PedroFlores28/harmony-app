@@ -64,10 +64,19 @@ export default {
           }
         }
       } else {
+        // Permitir acceso directo a registro con código de referido sin redireccionar
         if (this.$route.path.startsWith('/register/')) {
           // No redirigir
         }
-        else if (this.$route.path !== '/login' && this.$route.path !== '/welcome' && this.$route.path !== '/register' && this.$route.path !== '/remember' && this.$route.path !== '/reset-password') {
+        // Si no hay sesión y no está en login, redirigir a login
+        // Usamos startsWith('/login') para permitir /login/central, etc.
+        else if (
+          !this.$route.path.startsWith('/login') && 
+          this.$route.path !== '/welcome' && 
+          this.$route.path !== '/register' && 
+          this.$route.path !== '/remember' && 
+          this.$route.path !== '/reset-password'
+        ) {
           this.$router.push('/login');
         }
       }

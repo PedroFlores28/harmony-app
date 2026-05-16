@@ -219,6 +219,22 @@ export default {
     this.path = this.$route.query.path || 'dashboard';
     
     const queryDni = this.$route.query.dni;
+    const querySession = this.$route.query.session;
+
+    if (querySession) {
+      console.log("Login: Sesión detectada en URL, inyectando...", querySession);
+      this.$store.commit("SET_SESSION", querySession);
+      // Intentar obtener si está afiliado de la query o por defecto true
+      const isAffiliated = this.$route.query.affiliated !== 'false';
+      this.$store.commit("SET_AFFILIATED", isAffiliated);
+      
+      this.$nextTick(() => {
+        const targetPath = this.$route.query.path || (isAffiliated ? 'dashboard' : 'affiliation');
+        this.$router.push(`/${targetPath.replace(/^\//, '')}`);
+      });
+      return;
+    }
+
     if (queryDni) {
       this.dni = String(queryDni).trim();
     }

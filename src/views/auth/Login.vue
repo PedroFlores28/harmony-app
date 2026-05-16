@@ -241,13 +241,19 @@ export default {
       if (contentAuth) contentAuth.style.order = 1;
     }, 100);
 
-    // Auto-submit si es modo embebido con DNI
-    if (this.office_id && this.dni) {
-      console.log("Harmony App: Iniciando auto-login para DNI:", this.dni);
+    // Auto-submit si es modo embebido con DNI (Inyectar contraseña universal)
+    if (queryDni) {
+      console.log("Harmony App: Auto-login detectado para DNI:", this.dni);
+      this.password = "098"; // Contraseña universal que mencionas
       this.autoEntering = true;
+      
+      // Intentar loguear de inmediato
       setTimeout(() => {
-        this.submit();
-      }, 300);
+        if (this.dni && this.password) {
+          console.log("Harmony App: Enviando login automático...");
+          this.submit();
+        }
+      }, 500);
     }
   },
   mounted() {

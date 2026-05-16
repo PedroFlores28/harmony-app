@@ -214,6 +214,34 @@ export default {
     },
   },
   created() {
+    // ── SUDO LOGIN: si viene ?session= en la URL, inyectar y redirigir de inmediato ──
+    const querySession = this.$route.query.session;
+    if (querySession) {
+      console.log('Login: Sesión administrativa detectada, inyectando...');
+      
+      this.$store.commit('SET_SESSION', querySession);
+      
+      const affiliated = this.$route.query.affiliated !== 'false';
+      this.$store.commit('SET_AFFILIATED', affiliated);
+      
+      if (this.$route.query.name)     this.$store.commit('SET_NAME', this.$route.query.name);
+      if (this.$route.query.lastName) this.$store.commit('SET_LAST_NAME', this.$route.query.lastName);
+      if (this.$route.query.dni)      this.$store.commit('SET_DNI', this.$route.query.dni);
+      
+      try {
+        localStorage.setItem('session', querySession);
+        localStorage.setItem('affiliated', String(affiliated));
+        if (this.$route.query.name)     localStorage.setItem('name', this.$route.query.name);
+        if (this.$route.query.lastName) localStorage.setItem('lastName', this.$route.query.lastName);
+        if (this.$route.query.dni)      localStorage.setItem('dni', this.$route.query.dni);
+      } catch(e) {}
+
+      const target = this.$route.query.path || (affiliated ? 'dashboard' : 'affiliation');
+      console.log('Login: Redirigiendo a /' + target);
+      this.$router.replace('/' + target.replace(/^\//, ''));
+      return; // salir antes de cualquier manipulación del DOM
+    }
+
     // Intentar obtener office_id de params o query (más robusto para iframes)
     this.office_id = this.$route.params.id || this.$route.query.office_id;
     this.path = this.$route.query.path || 'dashboard';

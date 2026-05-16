@@ -249,13 +249,20 @@ export default {
 
     setTimeout(() => {
       const logoAuth = document.getElementById("logo-auth");
-      console.log(logoAuth);
-      logoAuth.style.order = 0;
-
       const contentAuth = document.getElementById("content-auth");
-      console.log(contentAuth);
-      contentAuth.style.order = 1;
-    }, 100);
+      
+      if (logoAuth) {
+        logoAuth.style.order = 0;
+      } else {
+        console.warn("Login: logo-auth not found");
+      }
+
+      if (contentAuth) {
+        contentAuth.style.order = 1;
+      } else {
+        console.warn("Login: content-auth not found");
+      }
+    }, 200);
   },
   mounted() {
     // Cargar el script de Google Identity Services si no está presente

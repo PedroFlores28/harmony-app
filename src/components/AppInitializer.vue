@@ -148,7 +148,13 @@ export default {
       this.initialized = true; // Continuar aunque haya error
     }
   },
-  
+  mounted() {
+    // 3. Avisar al padre (Admin) que estamos listos para recibir el postMessage
+    if (typeof window !== 'undefined' && window.parent !== window) {
+      console.log("DEBUG [AppInitializer]: Enviando SIFRAH_IFRAME_READY al padre...");
+      window.parent.postMessage({ type: 'SIFRAH_IFRAME_READY' }, '*');
+    }
+  },
   methods: {
     checkAndRedirect() {
       let session = this.$store.state.session;

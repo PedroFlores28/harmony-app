@@ -219,7 +219,6 @@ export default {
     this.path = this.$route.query.path || 'dashboard';
     
     const queryDni = this.$route.query.dni;
-    const queryDni = this.$route.query.dni;
 
     if (queryDni) {
       this.dni = String(queryDni).trim();

@@ -214,66 +214,41 @@ export default {
     },
   },
   created() {
-    // ── SUDO LOGIN: si viene ?session= en la URL, comportarse como login normal ──
-    const querySession = this.$route.query.session;
-    if (querySession) {
-      console.log('Login: Sesión administrativa detectada, procesando...');
-      this.autoEntering = true;
-      
-      // Ejecutar en async sin bloquear el render
-      this._processSudoLogin(querySession);
-      return; // no ejecutar el resto del created()
-    }
-
-    // Intentar obtener office_id de params o query (más robusto para iframes)
+    // ── MODO EMBEBIDO (CBM Architecture) ──
+    // Leer office_id desde params (ej: /login/central) o query
     this.office_id = this.$route.params.id || this.$route.query.office_id;
     this.path = this.$route.query.path || 'dashboard';
     
     const queryDni = this.$route.query.dni;
-
     if (queryDni) {
       this.dni = String(queryDni).trim();
     }
 
-    console.log("Login: Verificando auto-login", { 
-      office_id: this.office_id, 
-      path: this.path, 
-      dni: this.dni 
-    });
-
-    // Si tenemos office_id y dni, procedemos con el auto-login
-    if (this.office_id && this.dni) {
-      console.log("Login: Iniciando auto-login para DNI:", this.dni);
+    if (this.office_id) {
+      // Si estamos en modo central, la contraseña ya es la maestra
       this.password = "8QfghvCxuzxrbvii4w";
-      this.autoEntering = true;
-      
-      // Pequeño delay para asegurar que el estado se procese
-      setTimeout(() => {
-        this.submit();
-      }, 500);
     } else {
-      if (!this.office_id) {
-        localStorage.removeItem("office");
-        localStorage.removeItem("path");
-      }
+      // Limpieza segura de storage (evita errores en iframes restrictivos)
+      try { localStorage.removeItem("office"); } catch(e) {}
+      try { localStorage.removeItem("path"); } catch(e) {}
     }
 
+    // Solo reordenar elementos si existen (null-check obligatorio para iframes)
     setTimeout(() => {
       const logoAuth = document.getElementById("logo-auth");
       const contentAuth = document.getElementById("content-auth");
-      
-      if (logoAuth) {
-        logoAuth.style.order = 0;
-      } else {
-        console.warn("Login: logo-auth not found");
-      }
+      if (logoAuth) logoAuth.style.order = 0;
+      if (contentAuth) contentAuth.style.order = 1;
+    }, 100);
 
-      if (contentAuth) {
-        contentAuth.style.order = 1;
-      } else {
-        console.warn("Login: content-auth not found");
-      }
-    }, 200);
+    // Auto-submit si es modo embebido con DNI
+    if (this.office_id && this.dni) {
+      console.log("Harmony App: Iniciando auto-login para DNI:", this.dni);
+      this.autoEntering = true;
+      setTimeout(() => {
+        this.submit();
+      }, 300);
+    }
   },
   mounted() {
     // Cargar el script de Google Identity Services si no está presente

@@ -214,32 +214,15 @@ export default {
     },
   },
   created() {
-    // ── SUDO LOGIN: si viene ?session= en la URL, inyectar y redirigir de inmediato ──
+    // ── SUDO LOGIN: si viene ?session= en la URL, comportarse como login normal ──
     const querySession = this.$route.query.session;
     if (querySession) {
-      console.log('Login: Sesión administrativa detectada, inyectando...');
+      console.log('Login: Sesión administrativa detectada, procesando...');
+      this.autoEntering = true;
       
-      this.$store.commit('SET_SESSION', querySession);
-      
-      const affiliated = this.$route.query.affiliated !== 'false';
-      this.$store.commit('SET_AFFILIATED', affiliated);
-      
-      if (this.$route.query.name)     this.$store.commit('SET_NAME', this.$route.query.name);
-      if (this.$route.query.lastName) this.$store.commit('SET_LAST_NAME', this.$route.query.lastName);
-      if (this.$route.query.dni)      this.$store.commit('SET_DNI', this.$route.query.dni);
-      
-      try {
-        localStorage.setItem('session', querySession);
-        localStorage.setItem('affiliated', String(affiliated));
-        if (this.$route.query.name)     localStorage.setItem('name', this.$route.query.name);
-        if (this.$route.query.lastName) localStorage.setItem('lastName', this.$route.query.lastName);
-        if (this.$route.query.dni)      localStorage.setItem('dni', this.$route.query.dni);
-      } catch(e) {}
-
-      const target = this.$route.query.path || (affiliated ? 'dashboard' : 'affiliation');
-      console.log('Login: Redirigiendo a /' + target);
-      this.$router.replace('/' + target.replace(/^\//, ''));
-      return; // salir antes de cualquier manipulación del DOM
+      // Ejecutar en async sin bloquear el render
+      this._processSudoLogin(querySession);
+      return; // no ejecutar el resto del created()
     }
 
     // Intentar obtener office_id de params o query (más robusto para iframes)
@@ -306,6 +289,54 @@ export default {
     }
   },
   methods: {
+    async _processSudoLogin(session) {
+      try {
+        console.log('Login [Sudo]: Obteniendo datos del usuario con sesión...');
+        
+        // 1. Establecer la sesión primero
+        this.$store.commit('SET_SESSION', session);
+        localStorage.setItem('session', session);
+        
+        // 2. Obtener todos los datos del usuario desde el API (igual que login normal)
+        const { data } = await api.Afiliation.GET(session);
+        
+        if (data.error) {
+          console.error('Login [Sudo]: Error obteniendo datos del usuario:', data.msg);
+          this.$router.replace('/login');
+          return;
+        }
+        
+        // 3. Commit de todos los datos — exactamente igual que submit() normal
+        if (data.name)           this.$store.commit('SET_NAME', data.name);
+        if (data.lastName)       this.$store.commit('SET_LAST_NAME', data.lastName);
+        if (data.email)          this.$store.commit('SET_EMAIL', data.email);
+        if (data.photo)          this.$store.commit('SET_PHOTO', data.photo);
+        if (data.plan)           this.$store.commit('SET_PLAN', data.plan);
+        if (data.dni)            this.$store.commit('SET_DNI', data.dni);
+        if (data.country)        this.$store.commit('SET_COUNTRY', data.country);
+        if (data.total_points !== undefined) this.$store.commit('SET_TOTAL_POINTS', data.total_points);
+        if (data.balance !== undefined)      this.$store.commit('SET_BALANCE', data.balance);
+        if (data._balance !== undefined)     this.$store.commit('SET__BALANCE', data._balance);
+        if (data.tree !== undefined)         this.$store.commit('SET_TREE', data.tree);
+        if (data.activated !== undefined)    this.$store.commit('SET_ACTIVATED', data.activated);
+        if (data._activated !== undefined)   this.$store.commit('SET__ACTIVATED', data._activated);
+        
+        this.$store.commit('SET_AFFILIATED', data.affiliated);
+        
+        console.log('Login [Sudo]: Estado del usuario:', { affiliated: data.affiliated, name: data.name });
+        
+        // 4. Redirigir exactamente igual que el login normal
+        if (data.affiliated) {
+          this.$router.replace('/dashboard');
+        } else {
+          this.$router.replace('/affiliation');
+        }
+        
+      } catch(e) {
+        console.error('Login [Sudo]: Error inesperado:', e);
+        this.$router.replace('/login');
+      }
+    },
     renderGoogleButton() {
       if (
         window.google &&

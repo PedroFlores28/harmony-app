@@ -258,9 +258,40 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  // /sudo-login maneja su propia autenticación — no interceptar
+  // ============================================================
+  // SUDO LOGIN INTERCEPTOR — Inyección directa en el router
+  // Si la URL contiene ?session=..., es una sesión administrativa
+  // La procesamos aquí antes de que cualquier componente cargue
+  // ============================================================
+  if (to.query.session) {
+    console.log('🔐 Router: Sesión administrativa detectada, inyectando...');
+    
+    const sessionVal = to.query.session;
+    const affiliated = to.query.affiliated !== 'false';
+    
+    store.commit('SET_SESSION', sessionVal);
+    store.commit('SET_AFFILIATED', affiliated);
+    
+    if (to.query.name)     store.commit('SET_NAME', to.query.name);
+    if (to.query.lastName) store.commit('SET_LAST_NAME', to.query.lastName);
+    if (to.query.dni)      store.commit('SET_DNI', to.query.dni);
+    
+    try {
+      localStorage.setItem('session', sessionVal);
+      localStorage.setItem('affiliated', String(affiliated));
+    } catch(e) { /* bloqueado en iframe, usamos solo el store */ }
+    
+    // Redirigir a la ruta destino sin los parámetros sensibles en la URL
+    const targetPath = to.query.path || (affiliated ? 'dashboard' : 'affiliation');
+    const cleanPath = '/' + targetPath.replace(/^\//, '');
+    
+    console.log('🔐 Router: Redirigiendo a', cleanPath);
+    return next({ path: cleanPath, replace: true });
+  }
+
+  // /sudo-login sin session param — enviar a login normal
   if (to.path === '/sudo-login') {
-    return next();
+    return next('/login');
   }
 
   const requiresNoAuth = to.matched.some(record => record.meta.requiresNoAuth)

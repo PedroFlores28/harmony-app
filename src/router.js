@@ -312,14 +312,18 @@ router.beforeEach(async (to, from, next) => {
     return
   }
   
+  console.log(`DEBUG [Router]: Navegando a ${to.path}`, { session: !!session, affiliated });
+
   // Si requiere autenticación y no está autenticado
   if (requiresAuth && !session) {
+    console.log("DEBUG [Router]: Acceso denegado, redirigiendo a login");
     next({ path: '/login' })
     return
   }
 
   // Si requiere afiliación y no está afiliado
   if (requiresAffiliation && !affiliated) {
+    console.log("DEBUG [Router]: Requiere afiliación, redirigiendo a /affiliation");
     next({ path: '/affiliation' })
     return
   }
@@ -328,12 +332,14 @@ router.beforeEach(async (to, from, next) => {
   // Esto permite que usuarios nuevos puedan pagar su paquete de afiliación
   const allowedRoutesForNonAffiliated = ['/affiliation', '/profile', '/password', '/security', '/checkout', '/activation']
   if (session && (affiliated === false || affiliated === null) && !allowedRoutesForNonAffiliated.includes(to.path)) {
+    console.log("DEBUG [Router]: Usuario no afiliado en ruta restringida, redirigiendo a /affiliation");
     next({ path: '/affiliation' })
     return
   }
 
   // Si está autenticado y afiliado y va a la raíz, redirigir al dashboard
   if (session && affiliated && to.path === '/') {
+    console.log("DEBUG [Router]: Sesión activa, redirigiendo de raíz a /dashboard");
     next({ path: '/dashboard' })
     return
   }

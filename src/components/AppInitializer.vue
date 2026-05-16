@@ -20,6 +20,8 @@ export default {
   },
   async created() {
     try {
+      console.log("DEBUG [AppInitializer]: Iniciando...", { path: this.$route.path, query: this.$route.query });
+      
       // 1. Capturar parámetros de sesión administrativa antes de nada
       const query = this.$route.query;
       const querySession = query.session;
@@ -27,23 +29,29 @@ export default {
       const path = query.path || 'dashboard';
 
       if (querySession) {
-        console.log("AppInitializer: Inyectando sesión administrativa detectada...");
+        console.log("DEBUG [AppInitializer]: Sesión administrativa detectada:", querySession);
         this.$store.commit("SET_SESSION", querySession);
         
-        if (query.name) this.$store.commit("SET_NAME", query.name);
+        if (query.name) {
+          console.log("DEBUG [AppInitializer]: Seteando nombre:", query.name);
+          this.$store.commit("SET_NAME", query.name);
+        }
         if (query.lastName) this.$store.commit("SET_LAST_NAME", query.lastName);
         if (query.dni) this.$store.commit("SET_DNI", query.dni);
         
         const isAffiliated = query.affiliated !== 'false';
+        console.log("DEBUG [AppInitializer]: Afiliado:", isAffiliated);
         this.$store.commit("SET_AFFILIATED", isAffiliated);
 
         if (officeId) {
+          console.log("DEBUG [AppInitializer]: Modo oficina:", officeId);
           this.$store.commit("SET_OFFICE_ID", { office_id: officeId, path: path });
         }
       }
 
       // Esperar un poco para que el router se inicialice completamente
       await this.$nextTick();
+      console.log("DEBUG [AppInitializer]: NextTick completado");
       
       // Verificar si hay una sesión activa con try-catch para iframes
       let session = this.$store.state.session;
@@ -76,17 +84,21 @@ export default {
         // PRIORIDAD: Si está en login y ya tiene sesión (por inyección), redirigir al dashboard o path indicado
         else if (this.$route.path.startsWith('/login')) {
           const targetPath = this.$route.query.path || (affiliated ? 'dashboard' : 'affiliation');
+          console.log("DEBUG [AppInitializer]: Redirigiendo desde login a:", targetPath);
           this.$router.push(`/${targetPath.replace(/^\//, '')}`);
         }
         else if (affiliated && this.$route.path === '/affiliation') {
+          console.log("DEBUG [AppInitializer]: Redirigiendo de affiliation a dashboard");
           this.$router.push('/dashboard');
         }
         else if (affiliated && this.$route.path === '/') {
+          console.log("DEBUG [AppInitializer]: Redirigiendo de raíz a dashboard");
           this.$router.push('/dashboard');
         }
         else if (!affiliated) {
           const allowedRoutesForNonAffiliated = ['/affiliation', '/profile', '/password', '/security', '/checkout', '/activation'];
           if (!allowedRoutesForNonAffiliated.includes(this.$route.path)) {
+            console.log("DEBUG [AppInitializer]: Usuario no afiliado en ruta no permitida, enviando a affiliation");
             this.$router.push('/affiliation');
           }
         }
@@ -104,6 +116,7 @@ export default {
           this.$route.path !== '/remember' && 
           this.$route.path !== '/reset-password'
         ) {
+          console.log("DEBUG [AppInitializer]: Sin sesión y en ruta protegida, enviando a login");
           this.$router.push('/login');
         }
       }

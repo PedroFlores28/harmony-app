@@ -162,7 +162,7 @@
                   <strong class="activity-membership-name">
                     {{ membershipDisplayName }}
                   </strong>
-                  <p>Membresía activa</p>
+                  <p>{{ membershipSubtitle }}</p>
                 </div>
               </div>
             </div>
@@ -304,32 +304,33 @@ export default {
       currentBanner: 0,
       bannerInterval: null,
       rankImages: {},
+      /** Evita parpadeo plan vs store: mismo valor que devuelve /app/dashboard */
+      dashboardPlanSnapshot: null,
     };
   },
   computed: {
     session() {
       return this.$store.state.session;
     },
-    plan() {
-      const p = this.$store.state.plan;
-      console.log("DEBUG [Dashboard Computed plan]: state.plan =", p);
-      if (!p || p === "default") return "Sin membresía";
-      
-      const id = typeof p === 'object' ? (p.id || p.plan_id) : p;
-      const name = typeof p === 'object' ? p.name : p;
-
-      if (id === "basic" || name === "EJECUTIVO" || name === "Ejecutivo") return "EJECUTIVO";
-      if (id === "standard" || name === "DISTRIBUIDOR" || name === "Distribuidor") return "DISTRIBUIDOR";
-      if (id === "master" || name === "EMPRESARIO" || name === "Empresario") return "EMPRESARIO";
-      if (id === "vip" || name === "VIP" || name === "Vip") return "VIP";
-      if (id === "early") return "CLIENTE PREFERENTE";
-      
-      return typeof p === 'object' ? (p.name || "Sin membresía") : p;
+    /** Plan tal como viene del último GET dashboard (preferido sobre store hasta hidratar). */
+    effectivePlanRaw() {
+      const snap = this.dashboardPlanSnapshot;
+      if (snap !== null && snap !== undefined && snap !== "") {
+        return snap;
+      }
+      return this.$store.state.plan;
     },
-    userPlan() {
-      if (!this.plans) return null;
-      // Buscar por nombre o id según corresponda
-      return this.plans.find(p => p.name === this.plan || p.id === this.plan);
+    membershipDisplayName() {
+      return this.mapPlanToMembershipLabel(this.effectivePlanRaw);
+    },
+    membershipSubtitle() {
+      const label = this.membershipDisplayName;
+      if (label === "Sin membresía") {
+        return this.$store.state.affiliated
+          ? "Afiliación sin plan sincronizado en tu cuenta"
+          : "Sin plan de afiliación";
+      }
+      return "Plan de afiliación activo";
     },
     title() {
       return "Dashboard";
@@ -368,9 +369,6 @@ export default {
     },
     activityStatusText() {
       return this.activated ? "ACTIVO" : "INACTIVO";
-    },
-    membershipDisplayName() {
-      return this.plan || "Sin membresía";
     },
     directsCount() {
       return Array.isArray(this.directs) ? this.directs.length : 0;
@@ -471,15 +469,41 @@ export default {
         maximumFractionDigits: 2,
       })}`;
     },
+    /** Etiqueta de membresía alineada con PAQUETE (Status) e ids en BD (business, empresario…). */
+    mapPlanToMembershipLabel(raw) {
+      if (raw == null || raw === "" || raw === "default") return "Sin membresía";
+      if (typeof raw === "object" && raw !== null) {
+        const id = String(raw.id || raw.plan_id || "").toLowerCase();
+        const nm = String(raw.name || "").toLowerCase();
+        const fromId = this.labelFromPlanKey(id);
+        if (fromId) return fromId;
+        const fromName = this.labelFromPlanKey(nm);
+        if (fromName) return fromName;
+        if (raw.name) return String(raw.name).toUpperCase();
+        return "Sin membresía";
+      }
+      const key = String(raw).toLowerCase();
+      return this.labelFromPlanKey(key) || String(raw).toUpperCase();
+    },
+    labelFromPlanKey(key) {
+      if (!key) return null;
+      if (key === "basic" || key === "ejecutivo") return "EJECUTIVO";
+      if (key === "standard" || key === "business" || key === "distribuidor")
+        return "DISTRIBUIDOR";
+      if (key === "master" || key === "empresario") return "EMPRESARIO";
+      if (key === "vip") return "VIP";
+      if (key === "early") return "CLIENTE PREFERENTE";
+      return null;
+    },
   },
   async created() {
     // GET data
     const { data } = await api.dashboard(this.session);
-    console.log("DEBUG [Dashboard created]: Received data from api.dashboard:", data);
-    this.loading = false;
+    this.dashboardPlanSnapshot = data.plan;
 
     // error
     if (data.error && data.msg == "invalid session") {
+      this.loading = false;
       this.$router.push("/login");
       return;
     }
@@ -503,6 +527,7 @@ export default {
 
     // Verificar afiliación
     if (!data.affiliated) {
+      this.loading = false;
       this.$router.push("/affiliation");
       return;
     }
@@ -529,6 +554,7 @@ export default {
     // Iniciar autoplay del banner si corresponde
     this.setupBannerAutoplay();
     this.loadRankImages();
+    this.loading = false;
   },
   beforeDestroy() {
     if (this.bannerInterval) clearInterval(this.bannerInterval);

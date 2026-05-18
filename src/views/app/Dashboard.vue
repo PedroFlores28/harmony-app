@@ -294,7 +294,6 @@ export default {
       frontals: [],
       loading: true,
       plans: null,
-      plan: null ,
       total_points: null,
       travelBonusText: null,
 
@@ -312,11 +311,13 @@ export default {
       return this.$store.state.session;
     },
     plan() {
-      if (this.$store.state.plan == "early") return "CLIENTE PREFERENTE";
-      if (this.$store.state.plan == "basic") return "EJECUTIVO";
-      if (this.$store.state.plan == "standard") return "DISTRIBUIDOR";
-      if (this.$store.state.plan == "master") return "EMPRESARIO";
-      return this.$store.state.plan;
+      const p = this.$store.state.plan;
+      if (p === "basic") return "DISTRIBUIDOR";
+      if (p === "standard" || p === "business") return "EMPRESARIO";
+      if (p === "master") return "MASTER";
+      if (p === "vip") return "VIP";
+      if (p === "early") return "CLIENTE PREFERENTE";
+      return p;
     },
     userPlan() {
       if (!this.plans) return null;

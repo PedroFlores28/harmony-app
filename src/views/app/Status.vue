@@ -69,6 +69,7 @@ export default {
       team: null,
       activateds: null,
       unactivateds: null,
+      plan: null,
 
       loading: true,
     }

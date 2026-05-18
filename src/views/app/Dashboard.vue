@@ -312,12 +312,18 @@ export default {
     },
     plan() {
       const p = this.$store.state.plan;
-      if (p === "basic") return "DISTRIBUIDOR";
-      if (p === "standard" || p === "business") return "EMPRESARIO";
-      if (p === "master") return "MASTER";
-      if (p === "vip") return "VIP";
-      if (p === "early") return "CLIENTE PREFERENTE";
-      return p;
+      if (!p) return "Sin membresía";
+      
+      const id = typeof p === 'object' ? (p.id || p.plan_id) : p;
+      const name = typeof p === 'object' ? p.name : p;
+
+      if (id === "basic" || name === "EJECUTIVO" || name === "Ejecutivo" || name === "DISTRIBUIDOR") return "DISTRIBUIDOR";
+      if (id === "standard" || id === "business" || name === "EMPRESARIO" || name === "Empresario" || name === "Distribuidor") return "EMPRESARIO";
+      if (id === "master" || name === "MASTER" || name === "Master") return "MASTER";
+      if (id === "vip" || name === "VIP" || name === "Vip") return "VIP";
+      if (id === "early") return "CLIENTE PREFERENTE";
+      
+      return typeof p === 'object' ? (p.name || "Sin membresía") : p;
     },
     userPlan() {
       if (!this.plans) return null;

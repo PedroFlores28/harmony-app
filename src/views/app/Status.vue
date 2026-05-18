@@ -127,10 +127,13 @@ export default {
       return rankFilter(val)
     },
     plan(val) {
-      if (val == 'basic') return 'EMPRENDEDOR'
-      if (val == 'standard') return 'EMPRENDEDOR'
-      if (val == 'business') return 'EMPRESARIAL'
-      if (val == 'business-vip') return 'EMPRESARIAL VIP'
+      if (val === 'basic') return 'EJECUTIVO'
+      if (val === 'standard') return 'DISTRIBUIDOR'
+      if (val === 'master') return 'EMPRESARIO'
+      if (val === 'vip') return 'VIP'
+      if (val === 'early') return 'CLIENTE PREFERENTE'
+      if (val === 'default') return 'Sin membresía'
+      return val
     },
   },
 };

@@ -312,14 +312,15 @@ export default {
     },
     plan() {
       const p = this.$store.state.plan;
-      if (!p) return "Sin membresía";
+      console.log("DEBUG [Dashboard Computed plan]: state.plan =", p);
+      if (!p || p === "default") return "Sin membresía";
       
       const id = typeof p === 'object' ? (p.id || p.plan_id) : p;
       const name = typeof p === 'object' ? p.name : p;
 
-      if (id === "basic" || name === "EJECUTIVO" || name === "Ejecutivo" || name === "DISTRIBUIDOR") return "DISTRIBUIDOR";
-      if (id === "standard" || id === "business" || name === "EMPRESARIO" || name === "Empresario" || name === "Distribuidor") return "EMPRESARIO";
-      if (id === "master" || name === "MASTER" || name === "Master") return "MASTER";
+      if (id === "basic" || name === "EJECUTIVO" || name === "Ejecutivo") return "EJECUTIVO";
+      if (id === "standard" || name === "DISTRIBUIDOR" || name === "Distribuidor") return "DISTRIBUIDOR";
+      if (id === "master" || name === "EMPRESARIO" || name === "Empresario") return "EMPRESARIO";
       if (id === "vip" || name === "VIP" || name === "Vip") return "VIP";
       if (id === "early") return "CLIENTE PREFERENTE";
       
@@ -474,6 +475,7 @@ export default {
   async created() {
     // GET data
     const { data } = await api.dashboard(this.session);
+    console.log("DEBUG [Dashboard created]: Received data from api.dashboard:", data);
     this.loading = false;
 
     // error
@@ -495,6 +497,9 @@ export default {
     this.$store.commit("SET_EMAIL", data.email);
     this.$store.commit("SET_TOKEN", data.token);
     this.$store.commit("SET_TOTAL_POINTS", data.total_points);
+
+    // Asignar planes recibidos
+    this.plans = data.plans || [];
 
     // Verificar afiliación
     if (!data.affiliated) {

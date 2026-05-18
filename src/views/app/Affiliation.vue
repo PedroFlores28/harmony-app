@@ -1572,6 +1572,12 @@ export default {
       
       const { data } = await api.Afiliation.POST(this.session, payload);
 
+      if (data.error) {
+        this.error = data.msg || "Ocurrió un error al procesar tu solicitud.";
+        this.sending = false;
+        return;
+      }
+
       this.sending = false;
       this.pending = true;
       this.affiliation = {

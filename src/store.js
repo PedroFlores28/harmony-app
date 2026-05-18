@@ -98,7 +98,11 @@ export default new Vuex.Store({
     },
     SET_PLAN: (state, plan) => {
       state.plan = plan
-      storage.set('plan', plan)
+      if (typeof plan === 'object' && plan !== null) {
+        storage.set('plan', JSON.stringify(plan))
+      } else {
+        storage.set('plan', plan)
+      }
     },
     SET_COUNTRY: (state, country) => {
       state.country = country
@@ -193,7 +197,17 @@ export default new Vuex.Store({
       const keys = ['session', 'name', 'lastName', 'plan', 'country', 'photo', 'email', 'token', 'dni', 'address', 'city', 'birthdate'];
       keys.forEach(k => {
         const val = storage.get(k);
-        if (val) commit(`SET_${k.toUpperCase()}`, val);
+        if (val) {
+          if (k === 'plan' && val.startsWith('{')) {
+            try {
+              commit('SET_PLAN', JSON.parse(val));
+            } catch (e) {
+              commit('SET_PLAN', val);
+            }
+          } else {
+            commit(`SET_${k.toUpperCase()}`, val);
+          }
+        }
       });
 
       const office_id = storage.get('office_id');

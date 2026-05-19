@@ -271,6 +271,7 @@ import {
   rankFilter,
   rankImageKey as getRankImageKey,
 } from "@/utils/rankFilter";
+import { getPlanDisplayLabel } from "@/utils/planLabel";
 
 export default {
   components: {
@@ -306,6 +307,8 @@ export default {
       rankImages: {},
       /** Evita parpadeo plan vs store: mismo valor que devuelve /app/dashboard */
       dashboardPlanSnapshot: null,
+      /** Etiqueta calculada en API (misma lógica que admin) */
+      dashboardPlanLabel: null,
     };
   },
   computed: {
@@ -334,18 +337,14 @@ export default {
       return String(raw);
     },
     membershipDisplayName() {
-      const id = this.resolvedPlanId;
-      if (id && id !== "default" && Array.isArray(this.plans)) {
-        const row = this.plans.find(
-          (p) => p && String(p.id).toLowerCase() === String(id).toLowerCase()
-        );
-        if (row && row.name) return String(row.name).toUpperCase();
+      if (this.dashboardPlanLabel) {
+        return this.dashboardPlanLabel;
       }
-      return this.mapPlanToMembershipLabel(this.effectivePlanRaw);
+      return getPlanDisplayLabel(this.effectivePlanRaw, this.plans);
     },
     membershipSubtitle() {
-      const label = this.membershipDisplayName;
-      if (label === "Sin membresía") {
+      const label = String(this.membershipDisplayName || "").toUpperCase();
+      if (label === "SIN MEMBRESÍA" || label === "SIN MEMBRESIA") {
         return this.$store.state.affiliated
           ? "Afiliación sin plan sincronizado en tu cuenta"
           : "Sin plan de afiliación";
@@ -489,37 +488,6 @@ export default {
         maximumFractionDigits: 2,
       })}`;
     },
-    /** Etiqueta de membresía alineada con PAQUETE (Status) e ids en BD (business, empresario…). */
-    mapPlanToMembershipLabel(raw) {
-      if (
-        raw == null ||
-        raw === "" ||
-        String(raw).trim().toLowerCase() === "default"
-      )
-        return "Sin membresía";
-      if (typeof raw === "object" && raw !== null) {
-        const id = String(raw.id || raw.plan_id || "").toLowerCase();
-        const nm = String(raw.name || "").toLowerCase();
-        const fromId = this.labelFromPlanKey(id);
-        if (fromId) return fromId;
-        const fromName = this.labelFromPlanKey(nm);
-        if (fromName) return fromName;
-        if (raw.name) return String(raw.name).toUpperCase();
-        return "Sin membresía";
-      }
-      const key = String(raw).toLowerCase();
-      return this.labelFromPlanKey(key) || String(raw).toUpperCase();
-    },
-    labelFromPlanKey(key) {
-      if (!key) return null;
-      if (key === "basic" || key === "ejecutivo") return "EJECUTIVO";
-      if (key === "standard" || key === "business" || key === "distribuidor")
-        return "DISTRIBUIDOR";
-      if (key === "master" || key === "empresario") return "EMPRESARIO";
-      if (key === "vip") return "VIP";
-      if (key === "early") return "CLIENTE PREFERENTE";
-      return null;
-    },
   },
   async created() {
     const planUnset = (p) => {
@@ -554,6 +522,9 @@ export default {
     }
 
     this.dashboardPlanSnapshot = payload.plan;
+    this.dashboardPlanLabel = payload.planLabel
+      ? String(payload.planLabel).toUpperCase()
+      : null;
 
     if (payload.error && payload.msg == "invalid session") {
       this.loading = false;
@@ -575,8 +546,14 @@ export default {
     this.$store.commit("SET_TOKEN", payload.token);
     this.$store.commit("SET_TOTAL_POINTS", payload.total_points);
 
-    // Asignar planes recibidos
     this.plans = payload.plans || [];
+
+    if (!this.dashboardPlanLabel) {
+      this.dashboardPlanLabel = getPlanDisplayLabel(
+        payload.plan,
+        this.plans
+      );
+    }
 
     // Verificar afiliación
     if (!payload.affiliated) {

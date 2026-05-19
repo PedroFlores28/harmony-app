@@ -55,6 +55,7 @@
 import App from '@/views/layouts/App'
 import api from '@/api'
 import { rankFilter } from '@/utils/rankFilter'
+import { getPlanDisplayLabel } from '@/utils/planLabel'
 
 export default {
   components: {
@@ -128,13 +129,7 @@ export default {
       return rankFilter(val)
     },
     plan(val) {
-      if (val === "basic") return "EJECUTIVO";
-      if (val === "standard" || val === "business") return "DISTRIBUIDOR";
-      if (val === "master" || val === "empresario") return "EMPRESARIO";
-      if (val === "vip") return "VIP";
-      if (val === "early") return "CLIENTE PREFERENTE";
-      if (val === "default") return "Sin membresía";
-      return val;
+      return getPlanDisplayLabel(val);
     },
   },
 };

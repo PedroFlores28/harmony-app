@@ -55,7 +55,7 @@
 import App from '@/views/layouts/App'
 import api from '@/api'
 import { rankFilter } from '@/utils/rankFilter'
-import { getPlanDisplayLabel } from '@/utils/planLabel'
+import { resolveMembershipLabel } from '@/utils/planLabel'
 
 export default {
   components: {
@@ -109,7 +109,7 @@ export default {
 
     this.date = data.date
     this.affiliationDate = data.affiliationDate
-    this.plan = data.plan
+    this.plan = data.planLabel || data.plan
     this.rank = data.rank
     this.team = data.team
     this.activateds = data.activateds
@@ -129,7 +129,13 @@ export default {
       return rankFilter(val)
     },
     plan(val) {
-      return getPlanDisplayLabel(val);
+      return resolveMembershipLabel({
+        planLabel: null,
+        planRaw: val,
+        planResolved: val,
+        plansCatalog: null,
+        affiliationPlan: null,
+      });
     },
   },
 };

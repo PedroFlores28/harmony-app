@@ -271,7 +271,10 @@ import {
   rankFilter,
   rankImageKey as getRankImageKey,
 } from "@/utils/rankFilter";
-import { getPlanDisplayLabel } from "@/utils/planLabel";
+import {
+  resolveMembershipLabel,
+  isPlanLabelEmpty,
+} from "@/utils/planLabel";
 
 export default {
   components: {
@@ -309,6 +312,9 @@ export default {
       dashboardPlanSnapshot: null,
       /** Etiqueta calculada en API (misma lógica que admin) */
       dashboardPlanLabel: null,
+      /** Plan crudo en BD (user.plan), como en tabla admin */
+      dashboardUserPlanRaw: null,
+      dashboardAffiliationPlan: null,
     };
   },
   computed: {
@@ -337,10 +343,13 @@ export default {
       return String(raw);
     },
     membershipDisplayName() {
-      if (this.dashboardPlanLabel) {
-        return this.dashboardPlanLabel;
-      }
-      return getPlanDisplayLabel(this.effectivePlanRaw, this.plans);
+      return resolveMembershipLabel({
+        planLabel: this.dashboardPlanLabel,
+        planRaw: this.dashboardUserPlanRaw ?? this.effectivePlanRaw,
+        planResolved: this.dashboardPlanSnapshot ?? this.effectivePlanRaw,
+        plansCatalog: this.plans,
+        affiliationPlan: this.dashboardAffiliationPlan,
+      });
     },
     membershipSubtitle() {
       const label = String(this.membershipDisplayName || "").toUpperCase();
@@ -505,16 +514,29 @@ export default {
     const { data } = await api.dashboard(this.session);
 
     let payload = data;
-    if (payload && payload.affiliated && planUnset(payload.plan)) {
+    let affiliationPlan = null;
+    if (payload && payload.affiliated) {
       try {
         const { data: aff } = await api.Afiliation.GET(this.session);
-        if (aff && !aff.error && aff.plan != null && !planUnset(aff.plan)) {
-          const p = aff.plan;
-          const normalized =
-            typeof p === "object" && p !== null && (p.id != null || p.plan_id != null)
-              ? p.id != null ? p.id : p.plan_id
-              : p;
-          payload = { ...payload, plan: normalized };
+        if (aff && !aff.error) {
+          if (aff.affiliation && aff.affiliation.plan) {
+            affiliationPlan = aff.affiliation.plan;
+          }
+          if (planUnset(payload.plan) && aff.plan != null && !planUnset(aff.plan)) {
+            const p = aff.plan;
+            const normalized =
+              typeof p === "object" &&
+              p !== null &&
+              (p.id != null || p.plan_id != null)
+                ? p.id != null
+                  ? p.id
+                  : p.plan_id
+                : p;
+            payload = { ...payload, plan: normalized };
+          }
+          if (isPlanLabelEmpty(payload.planLabel) && aff.planLabel) {
+            payload = { ...payload, planLabel: aff.planLabel };
+          }
         }
       } catch (_) {
         /* segunda fuente opcional */
@@ -522,7 +544,9 @@ export default {
     }
 
     this.dashboardPlanSnapshot = payload.plan;
-    this.dashboardPlanLabel = payload.planLabel
+    this.dashboardUserPlanRaw = payload.userPlanRaw ?? null;
+    this.dashboardAffiliationPlan = affiliationPlan;
+    this.dashboardPlanLabel = !isPlanLabelEmpty(payload.planLabel)
       ? String(payload.planLabel).toUpperCase()
       : null;
 
@@ -548,11 +572,15 @@ export default {
 
     this.plans = payload.plans || [];
 
-    if (!this.dashboardPlanLabel) {
-      this.dashboardPlanLabel = getPlanDisplayLabel(
-        payload.plan,
-        this.plans
-      );
+    const resolved = resolveMembershipLabel({
+      planLabel: this.dashboardPlanLabel,
+      planRaw: this.dashboardUserPlanRaw ?? payload.plan,
+      planResolved: payload.plan,
+      plansCatalog: this.plans,
+      affiliationPlan: this.dashboardAffiliationPlan,
+    });
+    if (!isPlanLabelEmpty(resolved) && resolved !== "Sin membresía") {
+      this.dashboardPlanLabel = resolved;
     }
 
     // Verificar afiliación

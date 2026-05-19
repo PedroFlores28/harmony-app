@@ -322,17 +322,23 @@ export default {
     },
     resolvedPlanId() {
       const raw = this.effectivePlanRaw;
-      if (raw == null || raw === "" || raw === "default") return null;
+      if (raw == null || raw === "") return null;
       if (typeof raw === "object" && raw !== null) {
         const id = raw.id || raw.plan_id;
-        return id ? String(id) : null;
+        const idNorm = id != null ? String(id).trim().toLowerCase() : "";
+        if (!idNorm || idNorm === "default") return null;
+        return String(id);
       }
+      const s = String(raw).trim().toLowerCase();
+      if (s === "default" || s === "none") return null;
       return String(raw);
     },
     membershipDisplayName() {
       const id = this.resolvedPlanId;
       if (id && id !== "default" && Array.isArray(this.plans)) {
-        const row = this.plans.find((p) => p && p.id === id);
+        const row = this.plans.find(
+          (p) => p && String(p.id).toLowerCase() === String(id).toLowerCase()
+        );
         if (row && row.name) return String(row.name).toUpperCase();
       }
       return this.mapPlanToMembershipLabel(this.effectivePlanRaw);
@@ -485,7 +491,12 @@ export default {
     },
     /** Etiqueta de membresía alineada con PAQUETE (Status) e ids en BD (business, empresario…). */
     mapPlanToMembershipLabel(raw) {
-      if (raw == null || raw === "" || raw === "default") return "Sin membresía";
+      if (
+        raw == null ||
+        raw === "" ||
+        String(raw).trim().toLowerCase() === "default"
+      )
+        return "Sin membresía";
       if (typeof raw === "object" && raw !== null) {
         const id = String(raw.id || raw.plan_id || "").toLowerCase();
         const nm = String(raw.name || "").toLowerCase();
@@ -511,59 +522,89 @@ export default {
     },
   },
   async created() {
-    // GET data
-    const { data } = await api.dashboard(this.session);
-    this.dashboardPlanSnapshot = data.plan;
+    const planUnset = (p) => {
+      if (p == null || p === "") return true;
+      const raw =
+        typeof p === "object" && p !== null
+          ? p.id !== undefined && p.id !== null
+            ? p.id
+            : p.plan_id
+          : p;
+      if (raw == null || raw === "") return true;
+      return String(raw).trim().toLowerCase() === "default";
+    };
 
-    // error
-    if (data.error && data.msg == "invalid session") {
+    const { data } = await api.dashboard(this.session);
+
+    let payload = data;
+    if (payload && payload.affiliated && planUnset(payload.plan)) {
+      try {
+        const { data: aff } = await api.Afiliation.GET(this.session);
+        if (aff && !aff.error && aff.plan != null && !planUnset(aff.plan)) {
+          const p = aff.plan;
+          const normalized =
+            typeof p === "object" && p !== null && (p.id != null || p.plan_id != null)
+              ? p.id != null ? p.id : p.plan_id
+              : p;
+          payload = { ...payload, plan: normalized };
+        }
+      } catch (_) {
+        /* segunda fuente opcional */
+      }
+    }
+
+    this.dashboardPlanSnapshot = payload.plan;
+
+    if (payload.error && payload.msg == "invalid session") {
       this.loading = false;
       this.$router.push("/login");
       return;
     }
 
     // success - actualizar store
-    this.$store.commit("SET_NAME", data.name);
-    this.$store.commit("SET_LAST_NAME", data.lastName);
-    this.$store.commit("SET_AFFILIATED", data.affiliated);
-    this.$store.commit("SET__ACTIVATED", data._activated);
-    this.$store.commit("SET_ACTIVATED", data.activated);
-    this.$store.commit("SET_PLAN", data.plan);
-    this.$store.commit("SET_COUNTRY", data.country);
-    this.$store.commit("SET_PHOTO", data.photo);
-    this.$store.commit("SET_TREE", data.tree);
-    this.$store.commit("SET_EMAIL", data.email);
-    this.$store.commit("SET_TOKEN", data.token);
-    this.$store.commit("SET_TOTAL_POINTS", data.total_points);
+    this.$store.commit("SET_NAME", payload.name);
+    this.$store.commit("SET_LAST_NAME", payload.lastName);
+    this.$store.commit("SET_AFFILIATED", payload.affiliated);
+    this.$store.commit("SET__ACTIVATED", payload._activated);
+    this.$store.commit("SET_ACTIVATED", payload.activated);
+    this.$store.commit("SET_PLAN", payload.plan);
+    this.$store.commit("SET_COUNTRY", payload.country);
+    this.$store.commit("SET_PHOTO", payload.photo);
+    this.$store.commit("SET_TREE", payload.tree);
+    this.$store.commit("SET_EMAIL", payload.email);
+    this.$store.commit("SET_TOKEN", payload.token);
+    this.$store.commit("SET_TOTAL_POINTS", payload.total_points);
 
     // Asignar planes recibidos
-    this.plans = data.plans || [];
+    this.plans = payload.plans || [];
 
     // Verificar afiliación
-    if (!data.affiliated) {
+    if (!payload.affiliated) {
       this.loading = false;
       this.$router.push("/affiliation");
       return;
     }
 
     // Cargar datos del dashboard
-    this.banner = data.banner;
-    this.ins = data.ins;
-    this.insVirtual = data.insVirtual;
-    this.outs = data.outs ? data.outs.toFixed(2) : "0.00";
-    this.balance = data.balance ? data.balance.toFixed(2) : "0.00";
-    this._balance = data._balance ? data._balance.toFixed(2) : "0.00";
-    this.team = data.team;
-    this.activated = Boolean(data.activated);
-    this.rank = data.rank || "";
-    this.maxRank = data.maxRank || data.rank || "";
-    this.points = data.points;
-    this.node = data.node || {};
-    this.n_affiliates = data.n_affiliates;
-    this.directs = data.directs || [];
-    this.frontals = data.frontals || [];
-    this.total_points = data.total_points;
-    this.travelBonusText = data.travelBonusText || 'Tu progreso hacia el Bono Viaje se actualizará próximamente. ¡Sigue trabajando para alcanzar tus objetivos!';
+    this.banner = payload.banner;
+    this.ins = payload.ins;
+    this.insVirtual = payload.insVirtual;
+    this.outs = payload.outs ? payload.outs.toFixed(2) : "0.00";
+    this.balance = payload.balance ? payload.balance.toFixed(2) : "0.00";
+    this._balance = payload._balance ? payload._balance.toFixed(2) : "0.00";
+    this.team = payload.team;
+    this.activated = Boolean(payload.activated);
+    this.rank = payload.rank || "";
+    this.maxRank = payload.maxRank || payload.rank || "";
+    this.points = payload.points;
+    this.node = payload.node || {};
+    this.n_affiliates = payload.n_affiliates;
+    this.directs = payload.directs || [];
+    this.frontals = payload.frontals || [];
+    this.total_points = payload.total_points;
+    this.travelBonusText =
+      payload.travelBonusText ||
+      "Tu progreso hacia el Bono Viaje se actualizará próximamente. ¡Sigue trabajando para alcanzar tus objetivos!";
 
     // Iniciar autoplay del banner si corresponde
     this.setupBannerAutoplay();

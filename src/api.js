@@ -9,11 +9,14 @@ const getBaseURL = () => {
     return baseUrl + "/api";
   }
 
-  // Si no, usar la configuración por defecto según el entorno
-  const isDevelopment = process.env.NODE_ENV === 'development';
-  return isDevelopment
-    ? "http://localhost:3000/api"
-    : "https://tu-app-backend.herokuapp.com/api"; // URL de ejemplo de Heroku
+  const isDevelopment = process.env.NODE_ENV === "development";
+  if (isDevelopment) {
+    return "http://localhost:3000/api";
+  }
+  console.error(
+    "[Harmony App] Falta VUE_APP_SERVER en el build. El dashboard no recibirá plan ni datos del API correcto."
+  );
+  return "http://localhost:3000/api";
 };
 
 

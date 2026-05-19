@@ -312,6 +312,8 @@ export default {
       dashboardPlanSnapshot: null,
       /** Etiqueta calculada en API (misma lógica que admin) */
       dashboardPlanLabel: null,
+      /** Nombre listo para la card (prioridad sobre planLabel) */
+      membershipName: null,
       /** Plan crudo en BD (user.plan), como en tabla admin */
       dashboardUserPlanRaw: null,
       dashboardAffiliationPlan: null,
@@ -344,6 +346,7 @@ export default {
     },
     membershipDisplayName() {
       return resolveMembershipLabel({
+        membershipName: this.membershipName,
         planLabel: this.dashboardPlanLabel,
         planRaw: this.dashboardUserPlanRaw ?? this.effectivePlanRaw,
         planResolved: this.dashboardPlanSnapshot ?? this.effectivePlanRaw,
@@ -513,9 +516,16 @@ export default {
 
     const { data } = await api.dashboard(this.session);
 
-    let payload = data;
+    let payload = data || {};
+
+    if (payload.error && payload.msg == "invalid session") {
+      this.loading = false;
+      this.$router.push("/login");
+      return;
+    }
+
     let affiliationPlan = null;
-    if (payload && payload.affiliated) {
+    if (payload.affiliated) {
       try {
         const { data: aff } = await api.Afiliation.GET(this.session);
         if (aff && !aff.error) {
@@ -537,6 +547,9 @@ export default {
           if (isPlanLabelEmpty(payload.planLabel) && aff.planLabel) {
             payload = { ...payload, planLabel: aff.planLabel };
           }
+          if (isPlanLabelEmpty(payload.membershipName) && aff.planLabel) {
+            payload = { ...payload, membershipName: aff.planLabel };
+          }
         }
       } catch (_) {
         /* segunda fuente opcional */
@@ -544,16 +557,32 @@ export default {
     }
 
     this.dashboardPlanSnapshot = payload.plan;
-    this.dashboardUserPlanRaw = payload.userPlanRaw ?? null;
+    this.dashboardUserPlanRaw =
+      payload.userPlanRaw != null ? payload.userPlanRaw : null;
     this.dashboardAffiliationPlan = affiliationPlan;
     this.dashboardPlanLabel = !isPlanLabelEmpty(payload.planLabel)
       ? String(payload.planLabel).toUpperCase()
       : null;
+    this.membershipName = !isPlanLabelEmpty(payload.membershipName)
+      ? String(payload.membershipName).toUpperCase()
+      : null;
 
-    if (payload.error && payload.msg == "invalid session") {
-      this.loading = false;
-      this.$router.push("/login");
-      return;
+    if (payload.affiliated && isPlanLabelEmpty(this.membershipName)) {
+      try {
+        const { data: prof } = await api.Profile.GET(this.session);
+        if (prof && !prof.error) {
+          if (prof.userPlanRaw != null) {
+            this.dashboardUserPlanRaw = prof.userPlanRaw;
+          }
+          if (!isPlanLabelEmpty(prof.membershipName)) {
+            this.membershipName = String(prof.membershipName).toUpperCase();
+          } else if (!isPlanLabelEmpty(prof.planLabel)) {
+            this.membershipName = String(prof.planLabel).toUpperCase();
+          }
+        }
+      } catch (_) {
+        /* perfil opcional */
+      }
     }
 
     // success - actualizar store
@@ -573,6 +602,7 @@ export default {
     this.plans = payload.plans || [];
 
     const resolved = resolveMembershipLabel({
+      membershipName: this.membershipName,
       planLabel: this.dashboardPlanLabel,
       planRaw: this.dashboardUserPlanRaw ?? payload.plan,
       planResolved: payload.plan,
@@ -580,7 +610,7 @@ export default {
       affiliationPlan: this.dashboardAffiliationPlan,
     });
     if (!isPlanLabelEmpty(resolved) && resolved !== "Sin membresía") {
-      this.dashboardPlanLabel = resolved;
+      this.membershipName = resolved;
     }
 
     // Verificar afiliación

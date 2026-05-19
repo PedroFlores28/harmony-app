@@ -320,7 +320,21 @@ export default {
       }
       return this.$store.state.plan;
     },
+    resolvedPlanId() {
+      const raw = this.effectivePlanRaw;
+      if (raw == null || raw === "" || raw === "default") return null;
+      if (typeof raw === "object" && raw !== null) {
+        const id = raw.id || raw.plan_id;
+        return id ? String(id) : null;
+      }
+      return String(raw);
+    },
     membershipDisplayName() {
+      const id = this.resolvedPlanId;
+      if (id && id !== "default" && Array.isArray(this.plans)) {
+        const row = this.plans.find((p) => p && p.id === id);
+        if (row && row.name) return String(row.name).toUpperCase();
+      }
       return this.mapPlanToMembershipLabel(this.effectivePlanRaw);
     },
     membershipSubtitle() {

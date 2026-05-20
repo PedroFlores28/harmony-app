@@ -1,9 +1,12 @@
 <template>
-  <div v-if="!initialized" class="app-loader">
-    <div class="loader-content">
-      <div class="logo-spinner"></div>
-      <p>Cargando Harmony...</p>
+  <div class="app-initializer">
+    <div v-if="!initialized" class="app-loader">
+      <div class="loader-content">
+        <div class="logo-spinner"></div>
+        <p>Cargando Harmony...</p>
+      </div>
     </div>
+    <slot v-else />
   </div>
 </template>
 

@@ -348,8 +348,8 @@ export default {
       return resolveMembershipLabel({
         membershipName: this.membershipName,
         planLabel: this.dashboardPlanLabel,
-        planRaw: this.dashboardUserPlanRaw ?? this.effectivePlanRaw,
-        planResolved: this.dashboardPlanSnapshot ?? this.effectivePlanRaw,
+        planRaw: this.dashboardUserPlanRaw != null ? this.dashboardUserPlanRaw : this.effectivePlanRaw,
+        planResolved: this.dashboardPlanSnapshot != null ? this.dashboardPlanSnapshot : this.effectivePlanRaw,
         plansCatalog: this.plans,
         affiliationPlan: this.dashboardAffiliationPlan,
       });
@@ -604,7 +604,7 @@ export default {
     const resolved = resolveMembershipLabel({
       membershipName: this.membershipName,
       planLabel: this.dashboardPlanLabel,
-      planRaw: this.dashboardUserPlanRaw ?? payload.plan,
+      planRaw: this.dashboardUserPlanRaw != null ? this.dashboardUserPlanRaw : payload.plan,
       planResolved: payload.plan,
       plansCatalog: this.plans,
       affiliationPlan: this.dashboardAffiliationPlan,

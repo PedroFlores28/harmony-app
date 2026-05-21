@@ -23,9 +23,9 @@
       <!-- Contenido principal (siempre visible, pero opaco durante carga) -->
       <div class="tienda-harmony-container" :class="{ 'content-loading': loading || !products || (Array.isArray(products) && products.length === 0) }">
         
-        <!-- Sistema de banners con Grid - Izquierda separada, Derecha con centro integrado -->
+        <!-- Sistema de banners con Grid - Dos banners de igual proporción y tamaño -->
         <div class="banners-grid-wrapper">
-          <!-- Banner izquierda - Columna izquierda -->
+          <!-- Banner izquierda -->
           <div class="banner-left">
             <div v-if="getBannerImg('left')" class="banner-image-container" @click="onBannerClick('left')" style="cursor: pointer;">
               <img :src="getBannerImg('left')" alt="Banner Izquierda" class="banner-image" />
@@ -35,18 +35,13 @@
             </div>
           </div>
           
-          <!-- Banner derecha con centro integrado - Columna derecha -->
-          <div class="banner-right-with-center">
-          <!-- Banners del centro uno debajo del otro - ELIMINADOS -->
-            
-            <!-- Banner derecha principal -->
-            <div class="banner-right-main">
-              <div v-if="getBannerImg('right')" class="banner-image-container" @click="onBannerClick('right')" style="cursor: pointer;">
-                <img :src="getBannerImg('right')" alt="Banner Derecha" class="banner-image" />
-              </div>
-              <div v-else class="banner-placeholder">
-                <span class="banner-text">Banner Derecha</span>
-              </div>
+          <!-- Banner derecha -->
+          <div class="banner-right">
+            <div v-if="getBannerImg('right')" class="banner-image-container" @click="onBannerClick('right')" style="cursor: pointer;">
+              <img :src="getBannerImg('right')" alt="Banner Derecha" class="banner-image" />
+            </div>
+            <div v-else class="banner-placeholder">
+              <span class="banner-text">Banner Derecha</span>
             </div>
           </div>
         </div>

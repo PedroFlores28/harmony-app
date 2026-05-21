@@ -1415,7 +1415,7 @@
   grid-template-columns: 3.8fr 3.8fr; /* Dos columnas de igual proporción */
   gap: 15px;
   width: 100%;
-  margin: 0;
+  margin: 0 0 25px 0;
   padding: 0;
   position: relative;
   background: transparent;
@@ -1436,7 +1436,16 @@
   align-self: stretch;
 }
 
-.banner-left .banner-placeholder {
+/* Banner derecha - Columna derecha del grid */
+.banner-right {
+  grid-column: 2;
+  min-width: 0;
+  position: relative;
+  align-self: stretch;
+}
+
+.banner-left .banner-placeholder,
+.banner-right .banner-placeholder {
   height: 400px;
 }
 
@@ -4341,7 +4350,7 @@
 }
 
 /* Estilos adicionales para mejorar la experiencia del zoom */
-.banner-left, .banner-right-with-center {
+.banner-left, .banner-right, .banner-right-with-center {
   transform-origin: center;
   /* will-change: transform; */
   backface-visibility: hidden;
@@ -4365,7 +4374,7 @@
 }
 
 /* Asegurar que los banners mantengan su proporción en todos los niveles de zoom */
-.banner-left, .banner-right-with-center {
+.banner-left, .banner-right, .banner-right-with-center {
   min-width: 0;
   max-width: 100%;
 }
@@ -4410,40 +4419,19 @@
     display: grid;
     grid-template-columns: 1fr; /* Una sola columna en móvil */
     grid-template-rows: auto auto; /* Banner izquierdo arriba, derecho abajo */
-    gap: 6px; /* Separación reducida entre banner izquierdo y derecho */
+    gap: 15px; /* Separación consistente entre banners */
   }
   
   .banner-left {
     grid-column: 1;
     grid-row: 1;
     width: 100%;
-/* Altura reducida para mejor proporción en móvil */
   }
   
-  .banner-right-with-center {
+  .banner-right {
     grid-column: 1;
     grid-row: 2;
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Banners del centro y derecho lado a lado en móvil */
-    gap: 8px;
-    width: 100%; /* Separación reducida para crear menos espacio visual */
-  }
-  
-  .banner-center-column {
-    grid-column: 1;
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    gap: 6px; /* Gap más pequeño para mejor proporción */
-  }
-  
-  .banner-center-top,
-  .banner-center-bottom {
-    height: px; /* Altura reducida para móvil */
-  }
-  
-  .banner-right-main {
-    grid-column: 2;
-/* Altura reducida que coincida con los dos banners del centro + gap */
+    width: 100%;
   }
   
   /* Ajustar alturas de contenedores de imágenes en móvil */
@@ -4980,6 +4968,7 @@
 /* Estilos para las imágenes de banners */
 .banner-image-container {
   width: 100%;
+  aspect-ratio: 2.33 / 1; /* Forzar proporción idéntica para ambos banners */
   position: relative;
   overflow: hidden;
   border-radius: 12px;
@@ -4989,6 +4978,8 @@
 
 .banner-image {
   width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ajustar y recortar la imagen más alta sin distorsión */
   object-position: center;
   border-radius: 12px;
   transition: all 0.3s ease;

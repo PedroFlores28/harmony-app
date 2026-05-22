@@ -90,11 +90,19 @@ export default new Vuex.Store({
     },
     SET_ACTIVATED: (state, activated) => {
       state.activated = activated
-      storage.set('activated', activated.toString())
+      if (activated !== undefined && activated !== null) {
+        storage.set('activated', activated.toString())
+      } else {
+        storage.remove('activated')
+      }
     },
     SET__ACTIVATED: (state, _activated) => {
       state._activated = _activated
-      storage.set('_activated', _activated.toString())
+      if (_activated !== undefined && _activated !== null) {
+        storage.set('_activated', _activated.toString())
+      } else {
+        storage.remove('_activated')
+      }
     },
     SET_PLAN: (state, plan) => {
       state.plan = plan

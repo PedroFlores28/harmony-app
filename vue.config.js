@@ -1,5 +1,4 @@
 module.exports = {
-  transpileDependencies: ['fast-png', 'jspdf'],
   configureWebpack: {
     resolve: {
       alias: {

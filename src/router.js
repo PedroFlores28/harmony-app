@@ -37,6 +37,7 @@ import Security     from './views/app/Security.vue'
 import Resume       from './views/app/Resume.vue'
 import frontales from './views/app/frontales.vue'
 import Checkout from './views/app/Checkout.vue'
+import BoletaView from './views/app/BoletaView.vue'
 
 
 Vue.use(Router)
@@ -244,6 +245,12 @@ const routes = [
     path: '/checkout',
     component: Checkout,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/boleta',
+    component: BoletaView,
+    // Pública: el admin accede sin sesión de usuario, usa admin_session en query
+    meta: { requiresAuth: false }
   }
 ]
 

@@ -508,12 +508,149 @@ body
   border-radius 12px
   border 1px solid rgba(255, 140, 0, 0.1)
   flex-shrink 0
+
+.confirmation-modal
+  position fixed
+  top 0
+  left 0
+  right 0
+  bottom 0
+  background rgba(0,0,0,0.75)
+  display flex
+  align-items center
+  justify-content center
+  z-index 1000
+  backdrop-filter blur(4px)
+
+.modal-content
+  background white
+  border-radius 15px
+  padding 40px
+  text-align center
+  max-width 500px
+  width 90%
+
+// Boleta modal — pantalla completa scrollable
+.boleta-modal-content
+  padding 0 !important
+  max-width 620px !important
+  width 95% !important
+  max-height 92vh
+  display flex
+  flex-direction column
+  border-radius 18px !important
+  overflow hidden
+  box-shadow 0 25px 80px rgba(0,0,0,0.4)
+
+.boleta-modal-header
+  display flex
+  align-items center
+  justify-content space-between
+  padding 16px 22px
+  background #6B1A38
+  color white
+  flex-shrink 0
+
+  .boleta-modal-header-left
+    display flex
+    align-items center
+    gap 12px
+    font-size 15px
+    font-weight 600
+
+  .boleta-modal-close-btn
+    background rgba(255,255,255,0.15)
+    border none
+    color white
+    width 32px
+    height 32px
+    border-radius 50%
+    cursor pointer
+    display flex
+    align-items center
+    justify-content center
+    font-size 16px
+    transition background 0.2s
+    &:hover
+      background rgba(255,255,255,0.3)
+
+.boleta-modal-body
+  flex 1
+  overflow-y auto
+  -webkit-overflow-scrolling touch
+  background #f0f0f0
+  padding 0
+
+.boleta-modal-footer
+  padding 14px 20px
+  background white
+  border-top 1px solid #e8e8e8
+  display flex
+  justify-content center
+  flex-shrink 0
+
+.boleta-loading
+  display flex
+  flex-direction column
+  align-items center
+  justify-content center
+  padding 60px 20px
+  gap 16px
+  color #6B1A38
+  font-size 16px
+
+.boleta-spinner-sm
+  width 40px
+  height 40px
+  border 4px solid #f0d6e2
+  border-top-color #6B1A38
+  border-radius 50%
+  animation boleta-spin 0.7s linear infinite
+
+@keyframes boleta-spin
+  to
+    transform rotate(360deg)
+
+.modal-header
+  margin-bottom 25px
+  
+  i
+    font-size 4rem
+    color #fff
+    margin-bottom 15px
+  
+  h3
+    color #fff
+    font-size 1.5rem
+
+.modal-body
+  margin-bottom 30px
   
   p
-    margin-bottom 20px
-    color #555
-    font-size 1.05rem
-    font-weight 500
+    margin-bottom 10px
+    color #666
+    
+    strong
+      color #333
+
+.dashboard-btn
+  background #450b2b
+  color white
+  border none
+  padding 12px 30px
+  border-radius 8px
+  font-weight 600
+  cursor pointer
+  transition all 0.3s ease
+  display inline-flex
+  align-items center
+  gap 8px
+  font-size 15px
+  
+  &:hover
+    background #5c0f39
+    transform translateY(-3px)
+    box-shadow #450b2b33
 
 .return-btn
   background #450b2b

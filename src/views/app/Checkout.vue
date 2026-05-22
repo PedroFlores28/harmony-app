@@ -589,19 +589,40 @@
         </div>
       </div>
       
-      <!-- Modal de confirmación -->
+      <!-- Modal de confirmación con Boleta Digital -->
       <div v-if="showConfirmation" class="confirmation-modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <i class="fas fa-check-circle"></i>
-            <h3>¡Orden Confirmada!</h3>
+        <div class="modal-content boleta-modal-content">
+          <!-- Header fijo -->
+          <div class="boleta-modal-header">
+            <div class="boleta-modal-header-left">
+              <i class="fas fa-check-circle" style="color:#25D366; font-size:22px;"></i>
+              <span>¡Orden Confirmada! Aquí está tu comprobante</span>
+            </div>
+            <button class="boleta-modal-close-btn" @click="goToDashboard">
+              <i class="fas fa-times"></i>
+            </button>
           </div>
-          <div class="modal-body">
-            <p>Tu orden ha sido procesada exitosamente.</p>
+
+          <!-- Boleta Digital -->
+          <div class="boleta-modal-body">
+            <BoletaDigital
+              v-if="orderReceipt"
+              :order-data="orderReceipt.orderData"
+              :client-data="orderReceipt.clientData"
+              :products="orderReceipt.products"
+              :social-links="orderReceipt.socialLinks"
+              :show-actions="true"
+            />
+            <div v-else class="boleta-loading">
+              <div class="boleta-spinner-sm"></div>
+              <p>Cargando comprobante...</p>
+            </div>
           </div>
-          <div class="modal-actions">
+
+          <!-- Footer con acción principal -->
+          <div class="boleta-modal-footer">
             <button @click="goToDashboard" class="dashboard-btn">
-              Ir al Dashboard
+              <i class="fas fa-home"></i> Ir al Dashboard
             </button>
           </div>
         </div>
@@ -615,11 +636,13 @@
 import App from "@/views/layouts/App";
 import api from "@/api";
 import lib from "@/lib";
+import BoletaDigital from "@/components/BoletaDigital.vue";
 
 export default {
   name: 'Checkout',
   components: {
-    App
+    App,
+    BoletaDigital
   },
   data() {
     return {
@@ -628,6 +651,7 @@ export default {
       selectedPickupPoint: '',
       pay_method: "",
       showConfirmation: false,
+      orderReceipt: null, // datos para la boleta digital
       
       // Datos de facturación
       billingData: {
@@ -1158,6 +1182,7 @@ export default {
     goToDashboard() {
       // Limpiar estado de afiliación al ir al dashboard
       this.$store.commit('clearAffiliationCheckout');
+      this.orderReceipt = null;
       this.$router.push('/dashboard');
     },
     
@@ -1692,8 +1717,13 @@ export default {
           // Éxito en la afiliación
           this.activationSuccess = true;
           this.showConfirmation = true;
-          this.$store.commit('setCartItems', []); // Limpiar el carrito en el store
-          this.$store.commit('clearAffiliationCheckout'); // Limpiar el estado de afiliación
+          this.$store.commit('setCartItems', []);
+          this.$store.commit('clearAffiliationCheckout');
+
+          // Cargar datos de boleta
+          if (data && data.affiliation_id) {
+            await this._loadOrderReceipt(data.affiliation_id, 'affiliation')
+          }
         } else {
           // Es una activación normal
           const { data } = await api.Activation.POST(session, payload);
@@ -1705,8 +1735,13 @@ export default {
           // Éxito en la activación
           this.activationSuccess = true;
           this.showConfirmation = true;
-          this.$store.commit('setCartItems', []); // Limpiar el carrito en el store
-          this.$store.commit('clearAffiliationCheckout'); // Limpiar el estado de afiliación
+          this.$store.commit('setCartItems', []);
+          this.$store.commit('clearAffiliationCheckout');
+
+          // Cargar datos de boleta
+          if (data && data.activation_id) {
+            await this._loadOrderReceipt(data.activation_id, 'activation')
+          }
         }
         // Opcional: limpiar los datos del formulario aquí si no se va a redirigir
         // this.$router.push('/dashboard'); // Redirigir al dashboard o a una página de éxito
@@ -1716,6 +1751,27 @@ export default {
         this.activationError = error.message || 'Error al procesar la orden. Intenta nuevamente.';
       } finally {
         this.sending = false;
+      }
+    },
+
+    async _loadOrderReceipt(id, type) {
+      try {
+        const session = this.$store.state.session || localStorage.getItem('session')
+        const { data } = await api.getBoleta({ session, id, type })
+        if (!data.error) {
+          this.orderReceipt = {
+            orderData:   data.orderData,
+            clientData:  data.clientData,
+            products:    data.products || [],
+            socialLinks: {
+              facebook:  this.$store.state.fb  || 'https://www.facebook.com',
+              instagram: this.$store.state.is  || 'https://www.instagram.com',
+              whatsapp:  this.$store.state.wsp_pe || 'https://wa.me/'
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('No se pudo cargar la boleta:', e)
       }
     },
   },

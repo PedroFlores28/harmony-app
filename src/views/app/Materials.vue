@@ -144,14 +144,14 @@ export default {
 .materials-title {
   font-size: 28px;
   font-weight: 700;
-  color: #333333;
+  color: #000000;
   margin: 0 0 6px;
   line-height: 1.2;
 }
 
 .materials-subtitle {
   font-size: 15px;
-  color: #777777;
+  color: #000000;
   margin: 0;
   line-height: 1.4;
 }
@@ -259,7 +259,7 @@ export default {
 .card-title {
   font-size: 18px;
   font-weight: 700;
-  color: #333333;
+  color: #000;
   margin: 0 0 5px;
   line-height: 1.25;
   word-break: break-word;

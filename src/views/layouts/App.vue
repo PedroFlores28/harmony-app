@@ -263,6 +263,14 @@
         </div>
 
         <router-link
+          to="/materials"
+          @click.native="close"
+          v-if="office_id == null"
+        >
+          <i class="fas fa-folder-open"></i> MATERIALES
+        </router-link>
+
+        <router-link
           to="/profile"
           @click.native="close"
           v-if="office_id == null"
@@ -469,6 +477,16 @@
               <span>CIERRES</span>
             </router-link>
           </div>
+
+          <router-link
+            to="/materials"
+            @click.native="handleNavigationClickAndClose"
+            v-if="office_id == null"
+            class="mobile-menu-item"
+          >
+            <i class="fas fa-folder-open" style="width: 20px; margin-right: 12px;"></i>
+            <span>MATERIALES</span>
+          </router-link>
 
           <router-link
             to="/profile"

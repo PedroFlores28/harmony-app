@@ -38,6 +38,7 @@ import Resume       from './views/app/Resume.vue'
 import frontales from './views/app/frontales.vue'
 import Checkout from './views/app/Checkout.vue'
 import BoletaView from './views/app/BoletaView.vue'
+import Materials from './views/app/Materials.vue'
 
 
 Vue.use(Router)
@@ -234,6 +235,11 @@ const routes = [
   {
     path: '/resume',
     component: Resume,
+    meta: { requiresAuth: true, requiresAffiliation: true }
+  },
+  {
+    path: '/materials',
+    component: Materials,
     meta: { requiresAuth: true, requiresAffiliation: true }
   },
   {

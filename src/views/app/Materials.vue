@@ -41,7 +41,9 @@
           </div>
           
           <!-- Download / View Button -->
-          <a v-if="material.link" :href="material.link" target="_blank" class="ver-button">Ver</a>
+          <div v-if="material.link" class="card-action">
+            <a :href="material.link" target="_blank" rel="noopener noreferrer" class="ver-button">Ver</a>
+          </div>
         </div>
       </div>
     </div>
@@ -127,13 +129,15 @@ export default {
 
 <style scoped>
 .materials-view-container {
-  padding: 24px 20px;
+  padding: 20px 16px 32px;
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .materials-header {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   text-align: left;
 }
 
@@ -141,12 +145,15 @@ export default {
   font-size: 28px;
   font-weight: 700;
   color: #333333;
-  margin-bottom: 6px;
+  margin: 0 0 6px;
+  line-height: 1.2;
 }
 
 .materials-subtitle {
   font-size: 15px;
   color: #777777;
+  margin: 0;
+  line-height: 1.4;
 }
 
 .no-materials-container {
@@ -161,32 +168,36 @@ export default {
 
 .materials-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
 }
 
 .material-card {
   display: flex;
   align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  border: 1px solid #f2f2f2;
-  padding: 18px;
-  transition: all 0.3s ease;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eeeeee;
+  padding: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-align: left;
 }
 
 .material-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .card-thumbnail {
   width: 80px;
   height: 80px;
-  border-radius: 12px;
-  margin-right: 18px;
+  border-radius: 8px;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
@@ -236,63 +247,138 @@ export default {
 }
 
 .announcements-bg {
-  background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
+  background: linear-gradient(135deg, #7A1A4E 0%, #5C0F39 100%);
 }
 
 .card-content {
-  flex-grow: 1;
-  padding-right: 16px;
-  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+  padding-right: 8px;
 }
 
 .card-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   color: #333333;
-  margin-bottom: 6px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin: 0 0 5px;
+  line-height: 1.25;
+  word-break: break-word;
 }
 
 .card-text {
-  font-size: 13px;
-  color: #777777;
+  font-size: 14px;
+  color: #666666;
   line-height: 1.4;
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-/* Premium Pill "Ver" button in deep Harmony brand wine color */
+.card-action {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
 .ver-button {
-  background-color: #450B2B;
+  display: inline-block;
+  background-color: #5c0f39;
   color: #ffffff !important;
   padding: 8px 24px;
-  border-radius: 20px;
-  font-weight: 600;
+  border-radius: 6px;
+  font-weight: 700;
   font-size: 14px;
   text-decoration: none;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
+  transition: background 0.2s ease;
   border: none;
   cursor: pointer;
   text-align: center;
+  white-space: nowrap;
 }
 
 .ver-button:hover {
-  background-color: #5C0F39;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(8C, 15, 57, 0.2);
+  background-color: #450b2b;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .materials-grid {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .materials-view-container {
+    padding: 16px 12px 28px;
+  }
+
+  .materials-header {
+    margin-bottom: 20px;
+  }
+
+  .materials-title {
+    font-size: 24px;
+  }
+
+  .materials-subtitle {
+    font-size: 14px;
+  }
+
+  .material-card {
+    padding: 16px 14px;
+    gap: 12px;
+    border-radius: 12px;
+  }
+
+  .card-thumbnail {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+  }
+
+  .thumbnail-svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .card-content {
+    padding-right: 4px;
+  }
+
+  .card-title {
+    font-size: 16px;
+  }
+
+  .card-text {
+    font-size: 13px;
+    -webkit-line-clamp: 3;
+  }
+
+  .ver-button {
+    padding: 8px 18px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 360px) {
+  .material-card {
+    padding: 14px 12px;
+    gap: 10px;
+  }
+
+  .card-thumbnail {
+    width: 56px;
+    height: 56px;
+  }
+
+  .card-title {
+    font-size: 15px;
+  }
+
+  .ver-button {
+    padding: 7px 14px;
+    font-size: 12px;
   }
 }
 </style>

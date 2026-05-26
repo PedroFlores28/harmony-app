@@ -269,7 +269,7 @@ export default {
   font-size: 1.18rem;
   font-weight: 600;
   color: #fff;
-  background: #BE9FB0;
+  background: #8B6B80;
   border-radius: 18px;
   padding: 10px 28px;
   margin: 0 6px;

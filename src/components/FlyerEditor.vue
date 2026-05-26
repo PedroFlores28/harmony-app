@@ -570,7 +570,7 @@ export default {
       
       ctx.save();
       handles.forEach(handle => {
-        ctx.fillStyle = '#9f00ad';
+        ctx.fillStyle = '#5c0f39';
         ctx.strokeStyle = '#FFFFFF';
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -989,7 +989,7 @@ export default {
 
   &:focus
     outline none
-    border-color #9f00ad
+    border-color #5c0f39
 
 .font-select
   width 100%
@@ -1003,7 +1003,7 @@ export default {
 
   &:focus
     outline none
-    border-color #9f00ad
+    border-color #5c0f39
 
 .select-flyer
   width 100%
@@ -1017,12 +1017,12 @@ export default {
 
   &:focus
     outline none
-    border-color #9f00ad
+    border-color #5c0f39
 
 .loading-flyers
   padding 10px
   text-align center
-  color #9f00ad
+  color #5c0f39
 
   i
     margin-right 8px
@@ -1035,7 +1035,7 @@ export default {
 
 .upload-button
   padding 10px 20px
-  background-color #9f00ad
+  background-color #5c0f39
   color white
   border none
   border-radius 6px
@@ -1050,7 +1050,7 @@ export default {
   &:hover
     background-color #7d0088
     transform translateY(-2px)
-    box-shadow 0 4px 12px rgba(159, 0, 173, 0.3)
+    box-shadow 0 4px 12px rgba(92, 15, 57, 0.3)
 
   i
     font-size 16px
@@ -1084,7 +1084,7 @@ export default {
   max-width 200px
   max-height 200px
   border-radius 50%
-  border 3px solid #9f00ad
+  border 3px solid #5c0f39
   object-fit cover
   box-shadow 0 4px 12px rgba(0, 0, 0, 0.2)
 
@@ -1102,8 +1102,8 @@ export default {
   flex 1
   padding 8px 16px
   background-color #f3e5f5
-  color #9f00ad
-  border 2px solid #9f00ad
+  color #5c0f39
+  border 2px solid #5c0f39
   border-radius 6px
   font-size 13px
   font-weight 600
@@ -1115,10 +1115,10 @@ export default {
   gap 6px
 
   &:hover
-    background-color #9f00ad
+    background-color #5c0f39
     color white
     transform translateY(-2px)
-    box-shadow 0 4px 12px rgba(159, 0, 173, 0.3)
+    box-shadow 0 4px 12px rgba(92, 15, 57, 0.3)
 
   i
     font-size 14px
@@ -1143,7 +1143,7 @@ export default {
 
   &:focus
     outline none
-    border-color #9f00ad
+    border-color #5c0f39
 
 .input-range
   flex 1
@@ -1158,14 +1158,14 @@ export default {
     width 18px
     height 18px
     border-radius 50%
-    background #9f00ad
+    background #5c0f39
     cursor pointer
 
   &::-moz-range-thumb
     width 18px
     height 18px
     border-radius 50%
-    background #9f00ad
+    background #5c0f39
     cursor pointer
     border none
 
@@ -1179,7 +1179,7 @@ export default {
     width 40px
     height 40px
     padding 0
-    background-color #9f00ad
+    background-color #5c0f39
     color white
     border none
     border-radius 6px
@@ -1194,7 +1194,7 @@ export default {
     &:hover:not(:disabled)
       background-color #7d0088
       transform translateY(-2px)
-      box-shadow 0 4px 12px rgba(159, 0, 173, 0.3)
+      box-shadow 0 4px 12px rgba(92, 15, 57, 0.3)
 
     &:disabled
       opacity 0.5
@@ -1210,7 +1210,7 @@ export default {
 
     &:focus
       outline none
-      border-color #9f00ad
+      border-color #5c0f39
 
 .size-buttons
   display flex
@@ -1223,8 +1223,8 @@ export default {
   min-width 120px
   padding 8px 12px
   background-color #f3e5f5
-  color #9f00ad
-  border 2px solid #9f00ad
+  color #5c0f39
+  border 2px solid #5c0f39
   border-radius 6px
   font-size 13px
   font-weight 600
@@ -1232,10 +1232,10 @@ export default {
   transition all 0.3s ease
 
   &:hover
-    background-color #9f00ad
+    background-color #5c0f39
     color white
     transform translateY(-2px)
-    box-shadow 0 4px 12px rgba(159, 0, 173, 0.3)
+    box-shadow 0 4px 12px rgba(92, 15, 57, 0.3)
 
 .input-color
   width 60px
@@ -1256,7 +1256,7 @@ export default {
   flex 1
   min-width 120px
   padding 12px 20px
-  background-color #9f00ad
+  background-color #5c0f39
   color white
   border none
   border-radius 6px
@@ -1272,7 +1272,7 @@ export default {
   &:hover
     background-color #7d0088
     transform translateY(-2px)
-    box-shadow 0 4px 12px rgba(159, 0, 173, 0.3)
+    box-shadow 0 4px 12px rgba(92, 15, 57, 0.3)
 
   &:active
     transform translateY(0)
@@ -1313,7 +1313,7 @@ export default {
   bottom 10px
   left 50%
   transform translateX(-50%)
-  background rgba(159, 0, 173, 0.9)
+  background rgba(92, 15, 57, 0.9)
   color white
   padding 10px 20px
   border-radius 20px
@@ -1380,8 +1380,8 @@ export default {
 
   &:focus
     outline none
-    border-color #9f00ad
-    box-shadow 0 0 0 3px rgba(159, 0, 173, 0.1)
+    border-color #5c0f39
+    box-shadow 0 0 0 3px rgba(92, 15, 57, 0.1)
 
 .loading-container
   display flex
@@ -1389,7 +1389,7 @@ export default {
   align-items center
   justify-content center
   padding 60px 20px
-  color #9f00ad
+  color #5c0f39
 
   i
     font-size 48px

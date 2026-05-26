@@ -136,7 +136,7 @@ export default {
   font-size: 1.18rem;
   font-weight: 600;
   color: #fff;
-  background: #BE9FB0;
+  background: #8B6B80;
   border-radius: 18px;
   padding: 10px 28px;
   margin: 0 6px;
@@ -180,16 +180,16 @@ export default {
   padding: 14px 12px;
   text-align: left;
   font-size: 15px;
-  border-bottom: 1.5px solid #BE9FB0;
+  border-bottom: 1.5px solid #8B6B80;
 }
 .collects-table td {
   color: #450b2b;
 }
 .collects-table tbody tr:nth-child(even) {
-  background: #BE9FB0;
+  background: #8B6B80;
 }
 .collects-table tbody tr:hover {
-  background: #BE9FB0;
+  background: #8B6B80;
   transition: background 0.2s;
 }
 .collects-bank,
@@ -214,7 +214,7 @@ export default {
   box-shadow: 0 1px 4px rgba(255, 152, 0, 0.07);
 }
 .status-badge.pending {
-  background: #BE9FB0;
+  background: #8B6B80;
   color: #450b2b;
 }
 .status-badge.approved {

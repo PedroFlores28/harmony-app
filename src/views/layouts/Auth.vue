@@ -154,7 +154,7 @@ export default {
   border-bottom-right-radius: 0;
 }
 .tab.active {
-  background-color: #BE9FB0;
+  background-color: #8B6B80;
   color: #450B2B;
 }
 

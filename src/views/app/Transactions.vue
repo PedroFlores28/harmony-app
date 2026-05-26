@@ -164,10 +164,10 @@ export default {
   color: #450b2b;
 }
 .collects-table tbody tr:nth-child(even) {
-  background: #be9fb0;
+  background: #8b6b80;
 }
 .collects-table tbody tr:hover {
-  background: #be9fb0 !important;
+  background: #8b6b80 !important;
   transition: background 0.2s;
 }
 .in {

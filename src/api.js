@@ -100,6 +100,9 @@ class API {
   tools(session) {
     return axios.get(`/app/tools?session=${session}`);
   }
+  materials(session) {
+    return axios.get(`/app/materials?session=${session}`);
+  }
   branch(session, data) {
     return axios.post(`/app/branch?session=${session}`, data);
   }

@@ -9,147 +9,39 @@
         <p class="materials-subtitle">Recursos útiles para el negocio</p>
       </div>
 
-      <!-- Two-Column Responsive Grid -->
-      <div class="materials-grid">
-        <!-- Card 1: Presentación -->
-        <div class="material-card">
-          <div class="card-thumbnail presentation-bg">
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="thumbnail-svg">
+      <!-- No materials registered fallback -->
+      <div v-if="materials.length === 0" class="no-materials-container">
+        <span class="icon is-large has-text-grey-light" style="font-size: 3rem;">
+          <i class="fas fa-folder-open"></i>
+        </span>
+        <p class="title is-5 mt-4">No hay materiales disponibles</p>
+        <p class="subtitle is-6 has-text-grey">Tu administrador actualizará los recursos descargables muy pronto.</p>
+      </div>
+
+      <!-- Two-Column Dynamic Grid -->
+      <div v-else class="materials-grid">
+        <div v-for="(material, index) in materials" :key="material.id" class="material-card">
+          <!-- Thumbnail Cover Image or Fallback SVG Gradient -->
+          <div class="card-thumbnail" :class="getCardBgClass(index)">
+            <img v-if="material.img" :src="material.img" alt="Portada de material" class="card-img" />
+            
+            <!-- Fallback SVG based on index to keep vector art styling -->
+            <svg v-else viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="thumbnail-svg">
               <rect x="8" y="12" width="48" height="32" rx="4" fill="white" fill-opacity="0.2"/>
               <path d="M6 10H58V42C58 44.2091 56.2091 46 54 46H10C7.79086 46 6 44.2091 6 42V10Z" stroke="white" stroke-width="3"/>
               <line x1="32" y1="46" x2="32" y2="54" stroke="white" stroke-width="4" stroke-linecap="round"/>
               <line x1="20" y1="54" x2="44" y2="54" stroke="white" stroke-width="4" stroke-linecap="round"/>
-              <path d="M18 20L32 34L46 20" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
+          
+          <!-- Card content -->
           <div class="card-content">
-            <h5 class="card-title">Presentación</h5>
-            <p class="card-text">Descarga y comparte la presentación oficial de Harmony.</p>
+            <h5 class="card-title">{{ material.title }}</h5>
+            <p class="card-text">{{ material.description }}</p>
           </div>
-          <a :href="presentationLink" target="_blank" class="ver-button">Ver</a>
-        </div>
-
-        <!-- Card 2: Catálogo de productos -->
-        <div class="material-card">
-          <div class="card-thumbnail catalog-bg">
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="thumbnail-svg">
-              <path d="M12 10H32V54H12C9.79086 54 8 52.2091 8 50V14C8 11.7909 9.79086 10 12 10Z" fill="white" fill-opacity="0.2" stroke="white" stroke-width="3"/>
-              <path d="M32 10H52C54.2091 10 56 11.7909 56 14V50C56 52.2091 54.2091 54 52 54H32V10Z" fill="white" fill-opacity="0.1" stroke="white" stroke-width="3"/>
-              <path d="M16 20H24" stroke="white" stroke-width="3" stroke-linecap="round"/>
-              <path d="M16 28H24" stroke="white" stroke-width="3" stroke-linecap="round"/>
-              <path d="M16 36H24" stroke="white" stroke-width="3" stroke-linecap="round"/>
-              <path d="M40 20H48" stroke="white" stroke-width="3" stroke-linecap="round"/>
-              <path d="M40 28H48" stroke="white" stroke-width="3" stroke-linecap="round"/>
-              <path d="M40 36H48" stroke="white" stroke-width="3" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="card-content">
-            <h5 class="card-title">Catálogo de productos</h5>
-            <p class="card-text">Explora nuestro catálogo completo de productos.</p>
-          </div>
-          <a :href="toolsLink" target="_blank" class="ver-button">Ver</a>
-        </div>
-
-        <!-- Card 3: Testimonios de Producto -->
-        <div class="material-card">
-          <div class="card-thumbnail product-testimonials-bg">
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="thumbnail-svg">
-              <path d="M32 12C20 12 10 20 10 32C10 38 12.5 43 17 46.5L14 54L22.5 50.5C25.5 51.5 28.5 52 32 52C44 52 54 44 54 32C54 20 44 12 32 12Z" fill="white" fill-opacity="0.2" stroke="white" stroke-width="3" stroke-linejoin="round"/>
-              <path d="M22 30L29 36L42 22" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="card-content">
-            <h5 class="card-title">Testimonios de Producto</h5>
-            <p class="card-text">Mira y comparte los mejores testimonios de producto.</p>
-          </div>
-          <a :href="videosLink" target="_blank" class="ver-button">Ver</a>
-        </div>
-
-        <!-- Card 4: Testimonios de Negocio -->
-        <div class="material-card">
-          <div class="card-thumbnail business-testimonials-bg">
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="thumbnail-svg">
-              <rect x="8" y="16" width="48" height="32" rx="6" fill="white" fill-opacity="0.2" stroke="white" stroke-width="3"/>
-              <circle cx="24" cy="28" r="5" stroke="white" stroke-width="3"/>
-              <path d="M14 42C14 37 18 36 24 36C30 36 34 37 34 42" stroke="white" stroke-width="3" stroke-linecap="round"/>
-              <line x1="38" y1="24" x2="48" y2="24" stroke="white" stroke-width="3" stroke-linecap="round"/>
-              <line x1="38" y1="32" x2="48" y2="32" stroke="white" stroke-width="3" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="card-content">
-            <h5 class="card-title">Testimonios de Negocio</h5>
-            <p class="card-text">Descubre los testimonios de negocio.</p>
-          </div>
-          <a :href="videosLink" target="_blank" class="ver-button">Ver</a>
-        </div>
-
-        <!-- Card 5: Hoja de Precios -->
-        <div class="material-card">
-          <div class="card-thumbnail price-sheet-bg">
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="thumbnail-svg">
-              <rect x="8" y="8" width="48" height="48" rx="6" fill="white" fill-opacity="0.2" stroke="white" stroke-width="3"/>
-              <line x1="8" y1="22" x2="56" y2="22" stroke="white" stroke-width="2"/>
-              <line x1="8" y1="36" x2="56" y2="36" stroke="white" stroke-width="2"/>
-              <line x1="26" y1="8" x2="26" y2="56" stroke="white" stroke-width="2"/>
-              <circle cx="17" cy="15" r="2" fill="white"/>
-              <circle cx="17" cy="29" r="2" fill="white"/>
-              <circle cx="17" cy="46" r="2" fill="white"/>
-              <line x1="34" y1="29" x2="46" y2="29" stroke="white" stroke-width="3" stroke-linecap="round"/>
-              <line x1="34" y1="46" x2="46" y2="46" stroke="white" stroke-width="3" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="card-content">
-            <h5 class="card-title">Hoja de Precios</h5>
-            <p class="card-text">Consulta la hoja de precios actualizada.</p>
-          </div>
-          <a :href="presentationLink" target="_blank" class="ver-button">Ver</a>
-        </div>
-
-        <!-- Card 6: Productos -->
-        <div class="material-card">
-          <div class="card-thumbnail products-bg">
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="thumbnail-svg">
-              <rect x="18" y="24" width="28" height="28" rx="4" fill="white" fill-opacity="0.2" stroke="white" stroke-width="3"/>
-              <path d="M24 24V16C24 11.5817 27.5817 8 32 8C36.4183 8 40 11.5817 40 16V24" stroke="white" stroke-width="3" stroke-linecap="round"/>
-              <circle cx="32" cy="38" r="6" stroke="white" stroke-width="3"/>
-            </svg>
-          </div>
-          <div class="card-content">
-            <h5 class="card-title">Productos</h5>
-            <p class="card-text">Accede a la lista de compras de productos disponibles.</p>
-          </div>
-          <a :href="toolsLink" target="_blank" class="ver-button">Ver</a>
-        </div>
-
-        <!-- Card 7: Herramientas Harmony Corp -->
-        <div class="material-card">
-          <div class="card-thumbnail tools-corp-bg">
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="thumbnail-svg">
-              <path d="M32 10C20 10 10 20 10 32C10 37.5 12 42.5 15.5 46.5L12 56L22 52.5C25 53.5 28.5 54 32 54C44 54 54 44 54 32C54 20 44 10 32 10Z" fill="white" fill-opacity="0.2" stroke="white" stroke-width="3" stroke-linejoin="round"/>
-              <path d="M24 24C28 22 36 22 40 24C42 26 42 32 40 34C38 36 34 38 32 40V44" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="card-content">
-            <h5 class="card-title">Herramientas Harmony Corp</h5>
-            <p class="card-text">Encuentra útiles herramientas para tu negocio.</p>
-          </div>
-          <a :href="toolsLink" target="_blank" class="ver-button">Ver</a>
-        </div>
-
-        <!-- Card 8: Anuncios Harmony Corp -->
-        <div class="material-card">
-          <div class="card-thumbnail announcements-bg">
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="thumbnail-svg">
-              <path d="M12 20H20L36 8V56L20 44H12C9.79086 44 8 42.2091 8 40V24C8 21.7909 9.79086 20 12 20Z" fill="white" fill-opacity="0.2" stroke="white" stroke-width="3" stroke-linejoin="round"/>
-              <path d="M44 22C47 25 49 28.5 49 32C49 35.5 47 39 44 42" stroke="white" stroke-width="3" stroke-linecap="round"/>
-              <path d="M52 14C57 19 60 25 60 32C60 39 57 45 52 50" stroke="white" stroke-width="3" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="card-content">
-            <h5 class="card-title">Anuncios Harmony Corp</h5>
-            <p class="card-text">Accede a los anuncios y recursos de marketing.</p>
-          </div>
-          <a :href="toolsLink" target="_blank" class="ver-button">Ver</a>
+          
+          <!-- Download / View Button -->
+          <a v-if="material.link" :href="material.link" target="_blank" class="ver-button">Ver</a>
         </div>
       </div>
     </div>
@@ -170,9 +62,7 @@ export default {
   data() {
     return {
       loading: true,
-      presentationLink: "https://drive.google.com/drive/folders/1qwooLRceDXMxMr3I_Sm2K6QpUQmyJoZ5?usp=share_link",
-      toolsLink: "https://drive.google.com/drive/folders/12Vd2jVrn7QUNhe3G0NTideUfK4NiI5mK?usp=share_link",
-      videosLink: "https://drive.google.com/drive/folders/1aUs465WhQnoOPl6cMeHgnLT9j8wZz6IG?usp=share_link"
+      materials: []
     };
   },
   computed: {
@@ -185,9 +75,9 @@ export default {
   },
   async created() {
     try {
+      // Validate session and sync user details
       const { data } = await api.tools(this.session);
-      this.loading = false;
-
+      
       if (data.error && data.msg === "invalid session") {
         this.$router.push("/login");
         return;
@@ -206,9 +96,30 @@ export default {
       this.$store.commit("SET_COUNTRY", data.country);
       this.$store.commit("SET_PHOTO", data.photo);
       this.$store.commit("SET_TREE", data.tree);
+
+      // Fetch dynamic materials list
+      const res = await api.materials(this.session);
+      this.materials = res.data.materials || [];
+      
+      this.loading = false;
     } catch (e) {
       console.error("Error loading user info in materials", e);
       this.loading = false;
+    }
+  },
+  methods: {
+    getCardBgClass(index) {
+      const bgs = [
+        "presentation-bg",
+        "catalog-bg",
+        "product-testimonials-bg",
+        "business-testimonials-bg",
+        "price-sheet-bg",
+        "products-bg",
+        "tools-corp-bg",
+        "announcements-bg"
+      ];
+      return bgs[index % bgs.length];
     }
   }
 };
@@ -236,6 +147,16 @@ export default {
 .materials-subtitle {
   font-size: 15px;
   color: #777777;
+}
+
+.no-materials-container {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px dashed #cccccc;
+  margin-top: 24px;
 }
 
 .materials-grid {
@@ -271,6 +192,13 @@ export default {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  position: relative;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .thumbnail-svg {
@@ -278,7 +206,7 @@ export default {
   height: 44px;
 }
 
-/* Premium Gradient Backgrounds for Icons */
+/* Premium Gradient Backgrounds for Fallback Icons */
 .presentation-bg {
   background: linear-gradient(135deg, #7A1A4E 0%, #450B2B 100%);
 }
@@ -314,6 +242,7 @@ export default {
 .card-content {
   flex-grow: 1;
   padding-right: 16px;
+  overflow: hidden;
 }
 
 .card-title {
@@ -321,6 +250,9 @@ export default {
   font-weight: 700;
   color: #333333;
   margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card-text {
@@ -328,6 +260,11 @@ export default {
   color: #777777;
   line-height: 1.4;
   margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Premium Pill "Ver" button in deep Harmony brand wine color */

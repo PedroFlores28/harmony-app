@@ -589,40 +589,27 @@
         </div>
       </div>
       
-      <!-- Modal de confirmación con Boleta Digital -->
+      <!-- Modal de confirmación -->
       <div v-if="showConfirmation" class="confirmation-modal">
-        <div class="modal-content boleta-modal-content">
-          <!-- Header fijo -->
-          <div class="boleta-modal-header">
-            <div class="boleta-modal-header-left">
-              <i class="fas fa-check-circle" style="color:#25D366; font-size:22px;"></i>
-              <span>¡Orden Confirmada! Aquí está tu comprobante</span>
+        <div class="modal-content success-modal-content">
+          <div class="success-banner">
+            <div class="success-icon">
+              <i class="fas fa-check"></i>
             </div>
-            <button class="boleta-modal-close-btn" @click="goToDashboard">
-              <i class="fas fa-times"></i>
-            </button>
+            <h2>¡Orden Confirmada!</h2>
+          </div>
+          
+          <div class="success-modal-body">
+            <p class="success-subtitle">Tu orden ha sido procesada exitosamente.</p>
+            <p class="success-order">
+              Número de orden: <strong>{{ orderReceipt && orderReceipt.orderData && orderReceipt.orderData.orderNumber ? orderReceipt.orderData.orderNumber : 'N/A' }}</strong>
+            </p>
+            <p class="success-notice">Te enviaremos un email con los detalles de tu compra.</p>
           </div>
 
-          <!-- Boleta Digital -->
-          <div class="boleta-modal-body">
-            <BoletaDigital
-              v-if="orderReceipt"
-              :order-data="orderReceipt.orderData"
-              :client-data="orderReceipt.clientData"
-              :products="orderReceipt.products"
-              :social-links="orderReceipt.socialLinks"
-              :show-actions="true"
-            />
-            <div v-else class="boleta-loading">
-              <div class="boleta-spinner-sm"></div>
-              <p>Cargando comprobante...</p>
-            </div>
-          </div>
-
-          <!-- Footer con acción principal -->
-          <div class="boleta-modal-footer">
-            <button @click="goToDashboard" class="dashboard-btn">
-              <i class="fas fa-home"></i> Ir al Dashboard
+          <div class="success-modal-footer">
+            <button @click="goToDashboard" class="success-dashboard-btn">
+              Ir al Dashboard
             </button>
           </div>
         </div>

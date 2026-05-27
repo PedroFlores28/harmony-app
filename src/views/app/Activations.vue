@@ -79,14 +79,14 @@
                       </span>
                     </td>
                     <td>
-                      <a
-                        :href="`${INVOICE_ROOT}?id=${activation.id}${activation.type === 'affiliation' ? '&type=affiliation' : ''}`"
+                      <router-link
+                        :to="`/boleta?id=${activation.id}${activation.type === 'affiliation' ? '&type=affiliation' : ''}`"
                         target="_blank"
                         class="invoice-link-btn"
                         v-if="activation.status == 'approved'"
                       >
                         <span class="invoice-icon">🧾</span> Boleta
-                      </a>
+                      </router-link>
                     </td>
                   </tr>
                 </tbody>

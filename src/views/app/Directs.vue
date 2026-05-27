@@ -65,16 +65,7 @@
       <!-- Tabs y botón Ver toda Mi Red -->
       <div class="tabs-section">
         <div class="tabs">
-          <button
-            @click="activeTab = 'frontales'"
-            :class="['tab', { active: activeTab === 'frontales' }]"
-          >
-            Frontales
-          </button>
-          <button
-            @click="activeTab = 'directos'"
-            :class="['tab', { active: activeTab === 'directos' }]"
-          >
+          <button class="tab active">
             Directos
           </button>
         </div>
@@ -84,57 +75,8 @@
         </button>
       </div>
 
-      <!-- Tabla de Frontales -->
-      <div v-if="activeTab === 'frontales'" class="table-container">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Usuario</th>
-              <th>E-mail</th>
-              <th>Teléfono</th>
-              <th>Afiliado</th>
-              <th>Activo</th>
-              <th>Puntaje</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="frontal in filteredFrontals" :key="frontal.id">
-              <td>{{ frontal.name }} {{ frontal.lastName }}</td>
-              <td>{{ frontal.email || '-' }}</td>
-              <td>{{ frontal.phone || '-' }}</td>
-              <td>
-                <span :class="['status-badge', { 'affiliated': frontal.affiliated, 'not-affiliated': !frontal.affiliated }]">
-                  <i :class="['fas', frontal.affiliated ? 'fa-check' : 'fa-times']"></i>
-                  {{ frontal.affiliated ? 'Sí' : 'NO' }}
-                </span>
-              </td>
-              <td>
-                <span :class="['status-badge', { 'activated': frontal.activated, 'not-activated': !frontal.activated }]">
-                  <i :class="['fas', frontal.activated ? 'fa-check' : 'fa-times']"></i>
-                  {{ frontal.activated ? 'Sí' : 'NO' }}
-                </span>
-              </td>
-              <td>
-                <span class="score-cell">
-                  {{ formatPoints(frontal.points) }}
-                  <i 
-                    class="fab fa-whatsapp whatsapp-icon" 
-                    @click.stop="openWhatsApp(frontal.phone)"
-                    :class="{ 'disabled': !frontal.phone }"
-                    :title="frontal.phone ? `Abrir WhatsApp: ${frontal.phone}` : 'Sin teléfono'"
-                  ></i>
-                </span>
-              </td>
-            </tr>
-            <tr v-if="filteredFrontals.length === 0">
-              <td colspan="6" class="no-data">No hay frontales disponibles</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
       <!-- Tabla de Directos -->
-      <div v-if="activeTab === 'directos'" class="table-container">
+      <div class="table-container">
         <table class="data-table">
           <thead>
             <tr>
@@ -213,7 +155,6 @@ export default {
       // Nuevos campos para el diseño
       searchTerm: '',
       selectedState: '',
-      activeTab: 'frontales',
     };
   },
   computed: {
@@ -230,37 +171,7 @@ export default {
       return "Organización";
     },
     
-    // Filtrar frontales
-    filteredFrontals() {
-      let filtered = this.frontals || [];
-      
-      // Filtro por búsqueda
-      if (this.searchTerm) {
-        const search = this.searchTerm.toLowerCase();
-        filtered = filtered.filter(f => 
-          (f.name && f.name.toLowerCase().includes(search)) ||
-          (f.lastName && f.lastName.toLowerCase().includes(search)) ||
-          (f.email && f.email.toLowerCase().includes(search)) ||
-          (f.phone && f.phone.toString().includes(search))
-        );
-      }
-      
-      // Filtro por estado
-      if (this.selectedState) {
-        if (this.selectedState === 'affiliated') {
-          filtered = filtered.filter(f => f.affiliated);
-        } else if (this.selectedState === 'activated') {
-          filtered = filtered.filter(f => f.activated);
-        } else if (this.selectedState === 'both') {
-          filtered = filtered.filter(f => f.affiliated && f.activated);
-        } else if (this.selectedState === 'none') {
-          filtered = filtered.filter(f => !f.affiliated && !f.activated);
-        }
-      }
-      
-      return filtered;
-    },
-    
+
     // Filtrar directos
     filteredDirects() {
       let filtered = this.directs || [];
@@ -329,7 +240,7 @@ export default {
     // this.coverage = data.coverage; // Removido - ya no se usa
     // this.directs  = data.directs.reverse()
     this.directs = data.directs;
-    this.frontals = data.frontals;
+
     // this.childs = data.childs
     // this.names  = data.names
   },

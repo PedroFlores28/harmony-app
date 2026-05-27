@@ -1,49 +1,48 @@
 <template>
   <App :session="session" :office_id="office_id">
     <!-- Selector de modo - aparece primero -->
-    <div v-if="!selectedMode" class="mode-selector">
-        <h2 class="mode-title" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }">SELECCIONAR MODO</h2>
-        <div class="cards-container" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }">
-          <div class="card" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }" @click="selectMode('red')">
-            <p class="card-text" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }">Red</p>
-            <div class="card-icon">
-              <!-- Nueva imagen de red jerárquica -->
-              <img src="@/assets/img/red-hierarchy.svg" alt="Red" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }" style="width: 135px; height: 135px; object-fit: contain;">
-            </div>
+    <div v-if="!selectedMode" class="mode-selector-new">
+      <div class="mode-header-new">
+        <div class="mode-header-icon-new">
+          <i class="fas fa-sitemap"></i>
+        </div>
+        <h2 class="mode-title-new">SELECCIONAR MODO</h2>
+        <div class="mode-divider-new">
+          <span class="mode-divider-icon">
+            <i class="fas fa-infinity"></i>
+          </span>
+        </div>
+        <p class="mode-subtitle-new">Elige la opción que deseas consultar<br>para visualizar información de tu red.</p>
+      </div>
+
+      <div class="mode-cards-container-new">
+        <!-- Card Red -->
+        <div class="mode-card-new" @click="selectMode('red')">
+          <div class="mode-card-icon-wrapper-new">
+            <i class="fas fa-sitemap mode-card-img-icon"></i>
           </div>
-          <div class="card" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }" @click="selectMode('frontales')">
-            <p class="card-text" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }">Frontales</p>
-            <div class="card-icon">
-              <!-- Nueva imagen de frontales -->
-              <img src="@/assets/img/frontales-hierarchy.svg" alt="Frontales" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }" style="width: 135px; height: 135px; object-fit: contain;">
-            </div>
-          </div>
-          <div class="card" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }" @click="selectMode('niveles')">
-            <p class="card-text" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }">Niveles</p>
-            <div class="card-icon">
-              <!-- Nueva imagen de niveles -->
-              <img src="@/assets/img/niveles-hierarchy.svg" alt="Niveles" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }" style="width: 135px; height: 135px; object-fit: contain;">
-            </div>
-          </div>
-          <div class="card" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }" @click="selectMode('actividad')">
-            <p class="card-text" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }">Actividad</p>
-            <div class="card-icon">
-              <!-- Nueva imagen de actividad -->
-              <img src="@/assets/img/actividad-hierarchy.svg" alt="Actividad" :class="{ 'mobile': isMobile, 'mobile-small': isMobileSmall }" style="width: 135px; height: 135px; object-fit: contain;">
-            </div>
+          <h3 class="mode-card-title-new">RED</h3>
+          <div class="mode-card-divider-new red-divider"></div>
+          <p class="mode-card-desc-new">Visualiza tu estructura<br>completa en forma de árbol.</p>
+          <div class="mode-card-btn-new">
+            <i class="fas fa-arrow-right"></i>
           </div>
         </div>
-        <div class="buttons-container">
-          <div class="top-buttons">
-            <button class="btn btn-green">Periodos Históricos</button>
-            <button class="btn btn-green">Recuperar Historial</button>
-          </div>
-          <div class="bottom-button">
-            <button class="btn btn-orange" @click="goToRedMap">MAPA DE LA RED</button>
-          </div>
 
+        <!-- Card Frontales -->
+        <div class="mode-card-new" @click="selectMode('frontales')">
+          <div class="mode-card-icon-wrapper-new frontales-wrapper">
+            <i class="fas fa-users mode-card-img-icon"></i>
+          </div>
+          <h3 class="mode-card-title-new">FRONTALES</h3>
+          <div class="mode-card-divider-new frontales-divider"></div>
+          <p class="mode-card-desc-new">Consulta la lista de todos<br>tus afiliados directos.</p>
+          <div class="mode-card-btn-new frontales-btn">
+            <i class="fas fa-arrow-right"></i>
+          </div>
         </div>
       </div>
+    </div>
 
     <!-- Vista de Red - árbol de afiliados -->
     <div v-if="selectedMode === 'red'">
@@ -230,148 +229,7 @@
       </div>
     </div>
 
-    <!-- Placeholder para otros modos -->
-    <div v-if="selectedMode === 'niveles'">
-      <div class="niveles-header">
-        <h2 class="niveles-title">Resumen de Jerarquía</h2>
-        <button @click="$router.push('/tree')" class="btn-volver">
-          <i class="fas fa-arrow-left"></i>
-          Volver al selector
-        </button>
-      </div>
-      
-      <div v-if="loading" class="loading-container">
-        <i class="load"></i>
-        <p>Cargando resumen de jerarquía...</p>
-        <div class="loading-progress">
-          <div class="progress-bar">
-            <div class="progress-fill" :style="{ width: loadingProgress + '%' }"></div>
-          </div>
-          <span class="progress-text">{{ loadingProgress }}% completado</span>
-        </div>
-      </div>
-<div v-if="!loading" class="hierarchy-summary">
-  
-        <!-- Mensaje informativo -->
-        <!-- <div class="info-message">
-          <i class="fas fa-info-circle"></i>
-          <span>Se cargan todos los niveles de la red en una sola consulta para mostrar estadísticas completas y precisas.</span>
-        </div> -->
-        
-        <!-- Mensaje de éxito cuando se completa la carga -->
-        <!-- <div v-if="!loading && loadingProgress === 100" class="success-message">
-          <i class="fas fa-check-circle"></i>
-          <span>Árbol completo cargado exitosamente. Las estadísticas muestran información completa de toda la jerarquía.</span>
-        </div>  -->
-        
-        <!-- Tarjetas de resumen -->
-        <div class="summary-cards">
-          <div class="summary-card">
-            <div class="card-icon">
-              <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="18" cy="18" r="18" fill="#5C0F39"/>
-                <circle cx="18" cy="18" r="18" fill="#5C0F39"/>
-                <circle cx="18" cy="18" r="18" fill="#5C0F39"/>
-                <path d="M18 19.0667C20.5037 19.0667 22.5333 17.037 22.5333 14.5333C22.5333 12.0296 20.5037 10 18 10C15.4963 10 13.4667 12.0296 13.4667 14.5333C13.4667 17.037 15.4963 19.0667 18 19.0667Z" fill="white"/>
-                <path d="M23.6666 17.9333C25.5444 17.9333 27.0666 16.4111 27.0666 14.5333C27.0666 12.6556 25.5444 11.1333 23.6666 11.1333C21.7889 11.1333 20.2667 12.6556 20.2667 14.5333C20.2667 16.4111 21.7889 17.9333 23.6666 17.9333Z" fill="white"/>
-                <path d="M12.3334 17.9333C14.2111 17.9333 15.7333 16.4111 15.7333 14.5333C15.7333 12.6556 14.2111 11.1333 12.3334 11.1333C10.4556 11.1333 8.93339 12.6556 8.93339 14.5333C8.93339 16.4111 10.4556 17.9333 12.3334 17.9333Z" fill="white"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M24.3115 24.7333H26.9476C27.6185 24.7333 28.1319 24.1553 27.9699 23.5048C27.5517 21.8388 26.441 19.0667 23.6666 19.0667C22.6625 19.0667 21.876 19.4293 21.2617 19.9733C22.9708 21.0806 23.8548 23.022 24.3115 24.7333ZM14.7383 19.9733C14.0799 19.3782 13.2207 19.0543 12.3334 19.0667C9.55898 19.0667 8.44832 21.8388 8.03013 23.5048C7.86806 24.1553 8.38146 24.7333 9.05239 24.7333H11.6896C12.1464 23.022 13.0292 21.0806 14.7383 19.9733Z" fill="white"/>
-                <path d="M18 20.2C22.2035 20.2 23.2881 23.9411 23.5692 25.8735C23.6598 26.4934 23.1589 27 22.5333 27H13.4667C12.8411 27 12.3413 26.4934 12.4308 25.8735C12.7119 23.9411 13.7965 20.2 18 20.2Z" fill="white"/>
-              </svg>
-            </div>
-            <div class="card-content">
-              <div class="card-value">{{ hierarchyStats.totalMembers }}</div>
-              <div class="card-label">Miembros Totales</div>
-            </div>
-          </div>
-          
-          <div class="summary-card">
-            <div class="card-icon">
-              <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="18" cy="18" r="18" fill="#5C0F39"/>
-                <circle cx="18" cy="18" r="18" fill="#5C0F39"/>
-                <circle cx="18" cy="18" r="18" fill="#5C0F39"/>
-                <path d="M18 19.0667C20.5037 19.0667 22.5333 17.037 22.5333 14.5333C22.5333 12.0296 20.5037 10 18 10C15.4963 10 13.4667 12.0296 13.4667 14.5333C13.4667 17.037 15.4963 19.0667 18 19.0667Z" fill="white"/>
-                <path d="M23.6666 17.9333C25.5444 17.9333 27.0666 16.4111 27.0666 14.5333C27.0666 12.6556 25.5444 11.1333 23.6666 11.1333C21.7889 11.1333 20.2667 12.6556 20.2667 14.5333C20.2667 16.4111 21.7889 17.9333 23.6666 17.9333Z" fill="white"/>
-                <path d="M12.3334 17.9333C14.2111 17.9333 15.7333 16.4111 15.7333 14.5333C15.7333 12.6556 14.2111 11.1333 12.3334 11.1333C10.4556 11.1333 8.93339 12.6556 8.93339 14.5333C8.93339 16.4111 10.4556 17.9333 12.3334 17.9333Z" fill="white"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M24.3115 24.7333H26.9476C27.6185 24.7333 28.1319 24.1553 27.9699 23.5048C27.5517 21.8388 26.441 19.0667 23.6666 19.0667C22.6625 19.0667 21.876 19.4293 21.2617 19.9733C22.9708 21.0806 23.8548 23.022 24.3115 24.7333ZM14.7383 19.9733C14.0799 19.3782 13.2207 19.0543 12.3334 19.0667C9.55898 19.0667 8.44832 21.8388 8.03013 23.5048C7.86806 24.1553 8.38146 24.7333 9.05239 24.7333H11.6896C12.1464 23.022 13.0292 21.0806 14.7383 19.9733Z" fill="white"/>
-                <path d="M18 20.2C22.2035 20.2 23.2881 23.9411 23.5692 25.8735C23.6598 26.4934 23.1589 27 22.5333 27H13.4667C12.8411 27 12.3413 26.4934 12.4308 25.8735C12.7119 23.9411 13.7965 20.2 18 20.2Z" fill="white"/>
-              </svg>
-            </div>
-            <div class="card-content">
-              <div class="card-value">{{ hierarchyStats.directAffiliates }}</div>
-              <div class="card-label">Afiliados Directos</div>
-            </div>
-          </div>
-          
-          <div class="summary-card">
-            <div class="card-icon">
-              <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="18" cy="18" r="18" fill="#5C0F39"/>
-                <circle cx="18" cy="18" r="18" fill="#5C0F39"/>
-                <circle cx="18" cy="18" r="18" fill="#5C0F39"/>
-                <path d="M18 19.0667C20.5037 19.0667 22.5333 17.037 22.5333 14.5333C22.5333 12.0296 20.5037 10 18 10C15.4963 10 13.4667 12.0296 13.4667 14.5333C13.4667 17.037 15.4963 19.0667 18 19.0667Z" fill="white"/>
-                <path d="M23.6666 17.9333C25.5444 17.9333 27.0666 16.4111 27.0666 14.5333C27.0666 12.6556 25.5444 11.1333 23.6666 11.1333C21.7889 11.1333 20.2667 12.6556 20.2667 14.5333C20.2667 16.4111 21.7889 17.9333 23.6666 17.9333Z" fill="white"/>
-                <path d="M12.3334 17.9333C14.2111 17.9333 15.7333 16.4111 15.7333 14.5333C15.7333 12.6556 14.2111 11.1333 12.3334 11.1333C10.4556 11.1333 8.93339 12.6556 8.93339 14.5333C8.93339 16.4111 10.4556 17.9333 12.3334 17.9333Z" fill="white"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M24.3115 24.7333H26.9476C27.6185 24.7333 28.1319 24.1553 27.9699 23.5048C27.5517 21.8388 26.441 19.0667 23.6666 19.0667C22.6625 19.0667 21.876 19.4293 21.2617 19.9733C22.9708 21.0806 23.8548 23.022 24.3115 24.7333ZM14.7383 19.9733C14.0799 19.3782 13.2207 19.0543 12.3334 19.0667C9.55898 19.0667 8.44832 21.8388 8.03013 23.5048C7.86806 24.1553 8.38146 24.7333 9.05239 24.7333H11.6896C12.1464 23.022 13.0292 21.0806 14.7383 19.9733Z" fill="white"/>
-                <path d="M18 20.2C22.2035 20.2 23.2881 23.9411 23.5692 25.8735C23.6598 26.4934 23.1589 27 22.5333 27H13.4667C12.8411 27 12.3413 26.4934 12.4308 25.8735C12.7119 23.9411 13.7965 20.2 18 20.2Z" fill="white"/>
-              </svg>
-            </div>
-            <div class="card-content">
-              <div class="card-value">{{ hierarchyStats.maxDepth }}</div>
-              <div class="card-label">Niveles de Profundidad</div>
-            </div>
-          </div>
-          
-          <div class="summary-card">
-            <div class="card-icon">
-              <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="18" cy="18" r="18" fill="#5C0F39"/>
-                <circle cx="18" cy="18" r="18" fill="#5C0F39"/>
-                <circle cx="18" cy="18" r="18" fill="#5C0F39"/>
-                <path d="M18 19.0667C20.5037 19.0667 22.5333 17.037 22.5333 14.5333C22.5333 12.0296 20.5037 10 18 10C15.4963 10 13.4667 12.0296 13.4667 14.5333C13.4667 17.037 15.4963 19.0667 18 19.0667Z" fill="white"/>
-                <path d="M23.6666 17.9333C25.5444 17.9333 27.0666 16.4111 27.0666 14.5333C27.0666 12.6556 25.5444 11.1333 23.6666 11.1333C21.7889 11.1333 20.2667 12.6556 20.2667 14.5333C20.2667 16.4111 21.7889 17.9333 23.6666 17.9333Z" fill="white"/>
-                <path d="M12.3334 17.9333C14.2111 17.9333 15.7333 16.4111 15.7333 14.5333C15.7333 12.6556 14.2111 11.1333 12.3334 11.1333C10.4556 11.1333 8.93339 12.6556 8.93339 14.5333C8.93339 16.4111 10.4556 17.9333 12.3334 17.9333Z" fill="white"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M24.3115 24.7333H26.9476C27.6185 24.7333 28.1319 24.1553 27.9699 23.5048C27.5517 21.8388 26.441 19.0667 23.6666 19.0667C22.6625 19.0667 21.876 19.4293 21.2617 19.9733C22.9708 21.0806 23.8548 23.022 24.3115 24.7333ZM14.7383 19.9733C14.0799 19.3782 13.2207 19.0543 12.3334 19.0667C9.55898 19.0667 8.44832 21.8388 8.03013 23.5048C7.86806 24.1553 8.38146 24.7333 9.05239 24.7333H11.6896C12.1464 23.022 13.0292 21.0806 14.7383 19.9733Z" fill="white"/>
-                <path d="M18 20.2C22.2035 20.2 23.2881 23.9411 23.5692 25.8735C23.6598 26.4934 23.1589 27 22.5333 27H13.4667C12.8411 27 12.3413 26.4934 12.4308 25.8735C12.7119 23.9411 13.7965 20.2 18 20.2Z" fill="white"/>
-              </svg>
-            </div>
-            <div class="card-content">
-              <div class="card-value">{{ hierarchyStats.highPerformance }}</div>
-              <div class="card-label">Alto Rendimiento</div>
-            </div>
-          </div>
-        </div>
-        
-                 <!-- Distribución por niveles -->
-         <div class="levels-distribution">
-           <div class="distribution-header">
-             <h3 class="distribution-title">Distribución por Niveles</h3>
-           </div>
-           <div class="levels-chart">
-             <div v-for="(count, level) in hierarchyStats.levelDistribution" :key="level" class="level-row">
-               <div class="level-label">Nivel {{ level }}</div>
-               <div class="level-bar-container">
-                 <div class="level-bar" :style="{ width: getBarWidth(count) }"></div>
-               </div>
-               <div class="level-count">{{ count }}</div>
-             </div>
-           </div>
-         </div>
-      </div>
-    </div>
-    
-    <div v-if="selectedMode === 'actividad'">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="color: #666;">Vista "{{ selectedMode }}" en construcción 🚧</h3>
-        <button @click="$router.push('/tree')" style="padding: 8px 16px; background: #0476D9; border: none; border-radius: 6px; color: white;">
-          Volver al selector
-        </button>
-      </div>
-      <div style="text-align:center; margin-top:20px;">
-        <p>Esta funcionalidad estará disponible próximamente</p>
-      </div>
-    </div>
+
    <!-- vista frontales-->
    <div v-if="selectedMode === 'frontales'">
      <div class="frontales-header">

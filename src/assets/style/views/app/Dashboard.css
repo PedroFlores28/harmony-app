@@ -505,10 +505,10 @@
   color: #2b93bb;
 }
 
-.network-box.niveles,
-.network-box.niveles .network-box-label,
-.network-box.niveles > i,
-.network-box.niveles strong {
+.network-box.organizacion,
+.network-box.organizacion .network-box-label,
+.network-box.organizacion > i,
+.network-box.organizacion strong {
   color: #2f78a8;
 }
 
@@ -738,11 +738,11 @@
     min-height: 54px;
   }
 
-  .dashboard-overview-grid .network-box.niveles .network-box-label {
+  .dashboard-overview-grid .network-box.organizacion .network-box-label {
     transform: translateY(-10px);
   }
 
-  .dashboard-overview-grid .network-box.niveles p {
+  .dashboard-overview-grid .network-box.organizacion p {
     transform: translateY(-6px);
   }
 }

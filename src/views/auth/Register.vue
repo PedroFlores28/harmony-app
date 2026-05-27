@@ -918,18 +918,14 @@ export default {
         this.alert = "El apellido se requiere";
         return;
       }
-      if (!email) {
-        this.error.email = true;
-        this.alert = "El correo se requiere";
-        return;
-      }
-      
-      // Validar formato de email
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        this.error.email = true;
-        this.alert = "El correo no tiene un formato válido";
-        return;
+      // Validar formato de email si se proporcionó uno
+      if (email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          this.error.email = true;
+          this.alert = "El correo no tiene un formato válido";
+          return;
+        }
       }
       if (!birthDate) {
         this.error.birthDate = true;

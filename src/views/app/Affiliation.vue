@@ -708,62 +708,7 @@
                 >
               </div>
             </div>
-          <!-- Boletas -->
-          <div class="card-section invoices-section">
-            <div
-              v-for="(affiliation, i) in affiliations"
-              :key="affiliation.id"
-              class="invoice-history-block"
-            >
-              <a
-                :href="`${INVOICE_ROOT}?id=${affiliation.id}`"
-                target="_blank"
-                class="invoice-link"
-              >
-                Boleta {{ i + 1 }}
-                <span v-if="affiliation.type === 'upgrade'" class="tag-upgrade"
-                  >Upgrade</span
-                >
-              </a>
-              <div
-                v-if="affiliation.type === 'upgrade'"
-                class="upgrade-details-block"
-              >
-                <div><b>Upgrade de plan</b></div>
-                <div>
-                  Plan anterior:
-                  <b>{{
-                    affiliation.previousPlan && affiliation.previousPlan.name
-                  }}</b>
-                </div>
-                <div>
-                  Diferencia pagada:
-                  <b
-                    >S/
-                    {{
-                      affiliation.difference && affiliation.difference.amount
-                    }}</b
-                  >
-                </div>
-                <div>
-                  Productos adicionales:
-                  <span
-                    v-if="
-                      affiliation.difference && affiliation.difference.products
-                    "
-                  >
-                    {{
-                      affiliation.difference.products
-                        .filter((p) => p.total > 0)
-                        .map((p) => `${p.total} ${p.name}`)
-                        .join(", ")
-                    }}
-                  </span>
-                  <span v-else>N/A</span>
-                </div>
-              </div>
-            </div>
-          </div>
+
       </div>
     </div>
     </div>

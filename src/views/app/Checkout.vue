@@ -654,7 +654,7 @@ export default {
       // Datos de delivery
       deliveryData: {
         recipientName: '',
-        document: '',
+        document: this.$store.state.dni || '',
         recipientPhone: '',
         department: '',
         province: '',
@@ -665,7 +665,7 @@ export default {
       // Datos del comprobante
       proofData: {
         type: 'boleta',
-        document: '',
+        document: this.$store.state.dni || '',
         ruc: '',
         razonSocial: '',
         direccionFiscal: ''

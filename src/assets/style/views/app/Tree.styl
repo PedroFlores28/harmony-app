@@ -989,4 +989,143 @@
     .btn-close
       width 100%
 
+  /* New Selector Styles */
+  .mode-selector-new
+    display flex
+    flex-direction column
+    align-items center
+    padding 40px 20px
+    font-family 'Roboto', sans-serif
 
+  .mode-header-new
+    text-align center
+    margin-bottom 40px
+
+  .mode-header-icon-new i
+    font-size 40px
+    color #d4af37
+
+  .mode-title-new
+    font-size 32px
+    font-weight 800
+    color #450b2b
+    margin 15px 0 5px
+    letter-spacing 1px
+
+  .mode-divider-new
+    display flex
+    justify-content center
+    margin-bottom 20px
+    position relative
+    &::before, &::after
+      content ''
+      width 60px
+      height 2px
+      background #d4af37
+      position absolute
+      top 50%
+    &::before
+      margin-left -80px
+    &::after
+      margin-left 80px
+
+  .mode-divider-icon i
+    color #d4af37
+    font-size 20px
+
+  .mode-subtitle-new
+    color #666
+    font-size 16px
+    line-height 1.5
+
+  .mode-cards-container-new
+    display flex
+    gap 30px
+    justify-content center
+    flex-wrap wrap
+
+  .mode-card-new
+    background #fff
+    border-radius 24px
+    padding 40px 30px
+    text-align center
+    width 340px
+    box-shadow 0 10px 40px rgba(0,0,0,0.08)
+    cursor pointer
+    transition all 0.3s ease
+    position relative
+    overflow hidden
+    display flex
+    flex-direction column
+    align-items center
+    &::after
+      content ''
+      position absolute
+      bottom 0
+      left 0
+      right 0
+      height 100px
+      background radial-gradient(circle at center bottom, rgba(212, 175, 55, 0.1) 0%, transparent 70%)
+      pointer-events none
+    &:hover
+      transform translateY(-5px)
+      box-shadow 0 15px 50px rgba(0,0,0,0.12)
+
+  .mode-card-icon-wrapper-new
+    width 140px
+    height 140px
+    border-radius 50%
+    background radial-gradient(circle, #f9f0f4 0%, #fff 70%)
+    display flex
+    align-items center
+    justify-content center
+    margin-bottom 25px
+    box-shadow inset 0 0 20px rgba(0,0,0,0.02)
+    &.frontales-wrapper
+      background radial-gradient(circle, #fcf6e3 0%, #fff 70%)
+
+  .mode-card-img-icon
+    font-size 60px
+    color #450b2b
+  .frontales-wrapper .mode-card-img-icon
+    color #d4af37
+
+  .mode-card-title-new
+    font-size 24px
+    font-weight 800
+    color #450b2b
+    margin 0 0 10px
+
+  .mode-card-divider-new
+    width 50px
+    height 3px
+    margin 0 auto 20px
+    &.red-divider
+      background linear-gradient(90deg, #450b2b, #d4af37)
+    &.frontales-divider
+      background linear-gradient(90deg, #450b2b, #d4af37)
+
+  .mode-card-desc-new
+    color #777
+    font-size 15px
+    line-height 1.6
+    margin-bottom 30px
+
+  .mode-card-btn-new
+    width 45px
+    height 45px
+    border-radius 50%
+    background #f9f0f4
+    display flex
+    align-items center
+    justify-content center
+    color #450b2b
+    transition all 0.3s ease
+    i
+      font-size 18px
+    &.frontales-btn
+      background #fcf6e3
+      color #d4af37
+    
+  .mode-card-new:hover .mode-card-btn-new
+    transform scale(1.1)

@@ -76,7 +76,12 @@ Vue.mixin({
           notification.remove();
         }
       });
-      
+
+      // Obtener variables de redirección ANTES de limpiar el storage
+      const office = storage.get("office");
+      const office_id = storage.get("office_id");
+      const path = storage.get("path");
+
       // Limpiar store
       this.$store.dispatch('clearState');
       
@@ -84,17 +89,15 @@ Vue.mixin({
       storage.clear();
       
       // Logout en API
-      api.logout(this.session);
+      if (this.$store && this.$store.state.session) {
+        api.logout(this.$store.state.session).catch(() => {});
+      }
 
-      // Redirigir según el tipo de usuario
-      const office = storage.get("office");
+      // Redirigir según el tipo de usuario forzando recarga de página (window.location.href)
       if (office == "true") {
-        const office_id = storage.get("office_id");
-        const path = storage.get("path");
-        const url = `/login/${office_id}?path=${path}`;
-        this.$router.push(url);
+        window.location.href = `/login/${office_id}?path=${path}`;
       } else {
-        this.$router.push("/login");
+        window.location.href = "/login";
       }
     },
     logout2() {
@@ -113,10 +116,12 @@ Vue.mixin({
       storage.clear();
       
       // Logout en API
-      api.logout(this.session);
+      if (this.$store && this.$store.state.session) {
+        api.logout(this.$store.state.session).catch(() => {});
+      }
 
-      // Redirigir a login
-      this.$router.push("/login");
+      // Redirigir a login forzando recarga
+      window.location.href = "/login";
     },
   },
   

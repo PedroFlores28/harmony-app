@@ -192,7 +192,7 @@
                   </div>
                 </div>
 
-                <div class="network-box grupales">
+                <div class="network-box grupales" @click="$router.push('/tree')" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                   <i class="fas fa-network-wired"></i>
                   <div>
                     <span class="network-box-label">PUNTOS GRUPALES</span>
@@ -201,12 +201,12 @@
                   </div>
                 </div>
 
-                <div class="network-box niveles">
-                  <i class="fas fa-layer-group"></i>
+                <div class="network-box organizacion">
+                  <i class="fas fa-sitemap"></i>
                   <div>
-                    <span class="network-box-label">NIVELES DE PROFUNDIDAD</span>
-                    <strong>{{ depthLevels }}</strong>
-                    <p>Niveles alcanzados<br />(según tu rango)</p>
+                    <span class="network-box-label">MI ORGANIZACIÓN</span>
+                    <strong>{{ n_affiliates || 0 }}</strong>
+                    <p>Total de usuarios dentro de tu red</p>
                   </div>
                 </div>
               </div>

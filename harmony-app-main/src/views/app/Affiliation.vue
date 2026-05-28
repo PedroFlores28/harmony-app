@@ -113,7 +113,7 @@
               <div class="master-trophy-container">
                 <img
                   class="master-trophy-img"
-                  src="https://ik.imagekit.io/asu/sifrah/Trofeo%20sifrah_sIeu2fnie.png"
+                  :src="vipTrophyImage"
                 />
                 <h2 class="master-trophy-title">¡Felicidades!</h2>
                 <p class="master-trophy-msg">
@@ -783,6 +783,7 @@ import lib from "@/lib";
 import Spinner from "@/components/Spinner.vue";
 import MigrationBlockedModal from "@/components/MigrationBlockedModal.vue";
 import { planDisplayName } from "@/utils/rankFilter";
+import vipTrophyImage from "@/assets/img/vip-harmony.png";
 
 const INVOICE_ROOT = process.env.VUE_APP_INVOICE_ROOT;
 
@@ -843,6 +844,7 @@ export default {
        selectedProduct: null,
        imageLoaded: false,
        showCartDetailModal: false,
+      vipTrophyImage,
      };
    },
   computed: {

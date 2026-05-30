@@ -1,41 +1,44 @@
 <template>
-  <div class="boleta-view-page">
-    <!-- Estado: Cargando -->
-    <div v-if="loading" class="boleta-state boleta-state--loading">
-      <div class="boleta-spinner"></div>
-      <p>Cargando comprobante...</p>
-    </div>
+  <component :is="layoutTag" v-bind="layoutProps">
+    <div class="boleta-view-page" :class="{ 'boleta-view-page--embedded': useAppLayout }">
+      <!-- Estado: Cargando -->
+      <div v-if="loading" class="boleta-state boleta-state--loading">
+        <div class="boleta-spinner"></div>
+        <p>Cargando comprobante...</p>
+      </div>
 
-    <!-- Estado: Error -->
-    <div v-else-if="error" class="boleta-state boleta-state--error">
-      <i class="fas fa-exclamation-triangle"></i>
-      <h2>Error al cargar el comprobante</h2>
-      <p>{{ error }}</p>
-      <button @click="loadBoleta" class="boleta-retry-btn">
-        <i class="fas fa-redo"></i> Reintentar
-      </button>
-    </div>
+      <!-- Estado: Error -->
+      <div v-else-if="error" class="boleta-state boleta-state--error">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h2>Error al cargar el comprobante</h2>
+        <p>{{ error }}</p>
+        <button @click="loadBoleta" class="boleta-retry-btn">
+          <i class="fas fa-redo"></i> Reintentar
+        </button>
+      </div>
 
-    <!-- Boleta cargada -->
-    <div v-else-if="orderData">
-      <BoletaDigital
-        :order-data="orderData"
-        :client-data="clientData"
-        :products="products"
-        :social-links="socialLinks"
-        :show-actions="true"
-      />
+      <!-- Boleta cargada -->
+      <div v-else-if="orderData" class="boleta-view-content">
+        <BoletaDigital
+          :order-data="orderData"
+          :client-data="clientData"
+          :products="products"
+          :social-links="socialLinks"
+          :show-actions="true"
+        />
+      </div>
     </div>
-  </div>
+  </component>
 </template>
 
 <script>
+import App from '@/views/layouts/App.vue'
 import BoletaDigital from '@/components/BoletaDigital.vue'
 import api from '@/api'
 
 export default {
   name: 'BoletaView',
-  components: { BoletaDigital },
+  components: { App, BoletaDigital },
   data() {
     return {
       loading: true,
@@ -54,6 +57,23 @@ export default {
     queryId()           { return this.$route.query.id },
     queryType()         { return this.$route.query.type || 'activation' },
     queryAdminSession() { return this.$route.query.admin_session || null },
+    session() {
+      return this.$store.state.session
+    },
+    useAppLayout() {
+      if (this.queryAdminSession) return false
+      return Boolean(this.session || (typeof localStorage !== 'undefined' && localStorage.getItem('session')))
+    },
+    layoutTag() {
+      return this.useAppLayout ? 'App' : 'div'
+    },
+    layoutProps() {
+      if (!this.useAppLayout) return {}
+      return {
+        session: this.session,
+        title: 'Comprobante'
+      }
+    }
   },
   async mounted() {
     await this.loadBoleta()
@@ -103,15 +123,38 @@ export default {
   background: #f0f0f0;
 }
 
+.boleta-view-page--embedded {
+  min-height: auto;
+  padding: 8px 0 32px;
+  background: #f5f5f7;
+}
+
+.boleta-view-page--embedded >>> .boleta-wrapper {
+  background: transparent;
+  min-height: auto;
+  padding-top: 0;
+}
+
+.boleta-view-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 /* ── Estados ── */
 .boleta-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 60vh;
   gap: 20px;
   font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+.boleta-view-page:not(.boleta-view-page--embedded) .boleta-state {
+  min-height: 100vh;
 }
 
 .boleta-state--loading {

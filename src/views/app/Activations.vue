@@ -81,7 +81,6 @@
                     <td>
                       <router-link
                         :to="`/boleta?id=${activation.id}${activation.type === 'affiliation' ? '&type=affiliation' : ''}`"
-                        target="_blank"
                         class="invoice-link-btn"
                         v-if="activation.status == 'approved'"
                       >

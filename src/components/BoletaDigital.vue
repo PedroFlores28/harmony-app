@@ -6,9 +6,9 @@
         <i class="fas" :class="generating ? 'fa-spinner fa-spin' : 'fa-file-pdf'"></i>
         {{ generating ? 'Generando...' : 'Descargar PDF' }}
       </button>
-      <button class="boleta-btn boleta-btn--whatsapp" @click="shareWhatsApp">
-        <i class="fab fa-whatsapp"></i>
-        Compartir WhatsApp
+      <button class="boleta-btn boleta-btn--whatsapp" @click="shareWhatsApp" :disabled="generating">
+        <i class="fas" :class="generating ? 'fa-spinner fa-spin' : 'fab fa-whatsapp'"></i>
+        {{ generating ? 'Preparando PDF...' : 'Compartir WhatsApp' }}
       </button>
     </div>
 
@@ -326,20 +326,22 @@ export default {
       return n.toFixed(2)
     },
 
-    async downloadPDF() {
-      this.generating = true
+    getPdfFileName() {
+      return `boleta-harmony-${this.orderData.id || 'compra'}.pdf`
+    },
+
+    async renderBoletaCanvas() {
+      const html2canvas = (await import('html2canvas')).default
+      const el = this.$refs.boletaCard
+      const scaleWrap = this.$refs.scaleWrap
+      const prevTransform = el.style.transform
+      const prevParentHeight = scaleWrap ? scaleWrap.style.height : undefined
+
+      el.style.transform = 'none'
+      if (scaleWrap) scaleWrap.style.height = 'auto'
+
       try {
-        const html2canvas = (await import('html2canvas')).default
-        const jsPDF = (await import('jspdf')).default
-
-        const el = this.$refs.boletaCard
-        const prevTransform = el.style.transform
-        const scaleWrap = this.$refs.scaleWrap
-        const prevParentHeight = scaleWrap ? scaleWrap.style.height : undefined
-        el.style.transform = 'none'
-        if (scaleWrap) scaleWrap.style.height = 'auto'
-
-        const canvas = await html2canvas(el, {
+        return await html2canvas(el, {
           scale: 2,
           useCORS: true,
           backgroundColor: '#ffffff',
@@ -347,21 +349,44 @@ export default {
           scrollX: 0,
           scrollY: 0
         })
-
+      } finally {
         el.style.transform = prevTransform
         if (scaleWrap && prevParentHeight !== undefined) {
           scaleWrap.style.height = prevParentHeight
         }
         this.scheduleScaleUpdate()
+      }
+    },
 
-        const imgData = canvas.toDataURL('image/png')
-        const pdf = new jsPDF({
-          orientation: 'portrait',
-          unit: 'px',
-          format: [1080, canvas.height / 2]
-        })
-        pdf.addImage(imgData, 'PNG', 0, 0, 1080, canvas.height / 2)
-        pdf.save(`boleta-harmony-${this.orderData.id || 'compra'}.pdf`)
+    async buildPDFBlob() {
+      const jsPDF = (await import('jspdf')).default
+      const canvas = await this.renderBoletaCanvas()
+      const imgData = canvas.toDataURL('image/png')
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'px',
+        format: [1080, canvas.height / 2]
+      })
+      pdf.addImage(imgData, 'PNG', 0, 0, 1080, canvas.height / 2)
+      return pdf.output('blob')
+    },
+
+    savePDFBlob(blob, fileName) {
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = fileName
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+    },
+
+    async downloadPDF() {
+      this.generating = true
+      try {
+        const blob = await this.buildPDFBlob()
+        this.savePDFBlob(blob, this.getPdfFileName())
       } catch (e) {
         console.error('Error al generar PDF:', e)
         alert('Error al generar el PDF. Por favor intenta nuevamente.')
@@ -370,17 +395,39 @@ export default {
       }
     },
 
-    shareWhatsApp() {
-      const text = encodeURIComponent(
-        `🛒 *COMPROBANTE DE COMPRA - HARMONY*\n` +
-        `📋 Comprobante N°: ${this.orderData.id}\n` +
-        `📅 Fecha: ${this.formattedDate} ${this.formattedTime}\n` +
-        `👤 Cliente: ${this.clientData.fullName}\n` +
-        `💰 Total: S/ ${this.formatAmount(this.orderData.total)}\n` +
-        `💳 Método de pago: ${this.paymentMethodLabel}\n` +
-        `\n¡Gracias por tu compra! Tu bienestar es nuestra prioridad. 💚`
-      )
-      window.open(`https://wa.me/?text=${text}`, '_blank')
+    async shareWhatsApp() {
+      this.generating = true
+      try {
+        const fileName = this.getPdfFileName()
+        const blob = await this.buildPDFBlob()
+        const file = new File([blob], fileName, { type: 'application/pdf' })
+        const shareData = {
+          files: [file],
+          title: 'Comprobante Harmony',
+          text: `Comprobante de compra HARMONY N° ${this.orderData.id}`
+        }
+
+        if (navigator.share && (!navigator.canShare || navigator.canShare(shareData))) {
+          await navigator.share(shareData)
+          return
+        }
+
+        this.savePDFBlob(blob, fileName)
+        const msg = encodeURIComponent(
+          `Comprobante de compra HARMONY\n` +
+          `N°: ${this.orderData.id}\n` +
+          `Total: S/ ${this.formatAmount(this.orderData.total)}\n\n` +
+          `Se descargo el PDF. Abre WhatsApp y adjunta el archivo desde Descargas.`
+        )
+        window.open(`https://wa.me/?text=${msg}`, '_blank')
+      } catch (e) {
+        if (e.name !== 'AbortError') {
+          console.error('Error al compartir PDF:', e)
+          alert('No se pudo compartir el PDF. Usa "Descargar PDF" y adjuntalo manualmente en WhatsApp.')
+        }
+      } finally {
+        this.generating = false
+      }
     }
   }
 }

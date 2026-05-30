@@ -84,9 +84,14 @@ export default new Vuex.Store({
       }
     },
     SET_AFFILIATED: (state, affiliated) => {
-      let val = affiliated === 'true' || affiliated === true;
-      state.affiliated = val;
-      storage.set('affiliated', val.toString());
+      if (affiliated === null || affiliated === undefined) {
+        state.affiliated = null
+        storage.remove('affiliated')
+        return
+      }
+      const val = affiliated === 'true' || affiliated === true
+      state.affiliated = val
+      storage.set('affiliated', val.toString())
     },
     SET_ACTIVATED: (state, activated) => {
       state.activated = activated
@@ -122,7 +127,11 @@ export default new Vuex.Store({
     },
     SET_TREE: (state, tree) => {
       state.tree = tree
-      storage.set('tree', tree.toString())
+      if (tree == null) {
+        storage.remove('tree')
+      } else {
+        storage.set('tree', tree.toString())
+      }
     },
     SET_EMAIL: (state, email) => {
       state.email = email
@@ -150,15 +159,27 @@ export default new Vuex.Store({
     },
     SET_TOTAL_POINTS: (state, total_points) => {
       state.total_points = total_points
-      storage.set('total_points', total_points.toString())
+      if (total_points == null) {
+        storage.remove('total_points')
+      } else {
+        storage.set('total_points', total_points.toString())
+      }
     },
     SET_BALANCE: (state, balance) => {
       state.balance = balance
-      storage.set('balance', balance.toString())
+      if (balance == null) {
+        storage.remove('balance')
+      } else {
+        storage.set('balance', balance.toString())
+      }
     },
     SET__BALANCE: (state, _balance) => {
       state._balance = _balance
-      storage.set('_balance', _balance.toString())
+      if (_balance == null) {
+        storage.remove('_balance')
+      } else {
+        storage.set('_balance', _balance.toString())
+      }
     },
     setCartItems: (state, cartItems) => {
       state.cartItems = Array.isArray(cartItems) ? cartItems : [];
@@ -199,6 +220,39 @@ export default new Vuex.Store({
     CLEAR_MENU_STATES: (state) => {
       state.resume = state.buys = state.network = state.commissions = state.education = false
     },
+    RESET_AUTH(state) {
+      state.session = null
+      state.office_id = null
+      state.name = null
+      state.lastName = null
+      state.affiliated = null
+      state.activated = null
+      state._activated = null
+      state.plan = null
+      state.country = null
+      state.photo = null
+      state.tree = null
+      state.email = null
+      state.token = null
+      state.dni = null
+      state.address = null
+      state.city = null
+      state.birthdate = null
+      state.total_points = null
+      state.balance = null
+      state._balance = null
+      state.cartItems = []
+      state.affiliationTotal = null
+      state.affiliationPoints = null
+      state.affiliationPlan = null
+      state.isAffiliationCheckout = false
+      state.open = false
+      state.resume = false
+      state.buys = false
+      state.network = false
+      state.commissions = false
+      state.education = false
+    },
   },
   actions: {
     async restoreState({ commit }) {
@@ -238,10 +292,29 @@ export default new Vuex.Store({
       return true;
     },
     clearState({ commit }) {
-      const keys = ['session', 'name', 'lastName', 'affiliated', 'activated', '_activated', 'plan', 'country', 'photo', 'tree', 'email', 'token', 'address', 'city', 'birthdate', 'total_points', 'balance', '_balance'];
-      keys.forEach(k => commit(`SET_${k.toUpperCase()}`, null));
-      commit('SET_OFFICE_ID', { office_id: null, path: null });
-      commit('CLEAR_MENU_STATES')
+      commit('RESET_AUTH')
+      storage.remove('session')
+      storage.remove('office')
+      storage.remove('office_id')
+      storage.remove('path')
+      storage.remove('affiliated')
+      storage.remove('activated')
+      storage.remove('_activated')
+      storage.remove('tree')
+      storage.remove('name')
+      storage.remove('lastName')
+      storage.remove('plan')
+      storage.remove('country')
+      storage.remove('photo')
+      storage.remove('email')
+      storage.remove('token')
+      storage.remove('dni')
+      storage.remove('address')
+      storage.remove('city')
+      storage.remove('birthdate')
+      storage.remove('total_points')
+      storage.remove('balance')
+      storage.remove('_balance')
     }
   }
 })

@@ -1,10 +1,9 @@
 <template>
-  <div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#fff;">
-    <div style="text-align:center;">
-      <div style="width:50px;height:50px;border:3px solid #f3f3f3;border-top:3px solid #5c0f39;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;"></div>
-      <p style="color:#5c0f39;font-family:sans-serif;">Iniciando sesión...</p>
+  <div class="sudo-login">
+    <div class="sudo-login__content">
+      <div class="sudo-login__spinner"></div>
+      <p class="sudo-login__text">Iniciando sesión...</p>
     </div>
-    <style>@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style>
   </div>
 </template>
 
@@ -56,3 +55,37 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.sudo-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #fff;
+}
+
+.sudo-login__content {
+  text-align: center;
+}
+
+.sudo-login__spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #5c0f39;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+.sudo-login__text {
+  color: #5c0f39;
+  font-family: sans-serif;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>

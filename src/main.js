@@ -2,9 +2,49 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import api from "./api";
 import GAuth from "vue-google-oauth2";
 import storage from "@/utils/storage";
+import api from "./api";
+
+function performLogout(store) {
+  document
+    .querySelectorAll(".affiliation-required-notification, .affiliation-notification")
+    .forEach((notification) => {
+      if (notification.parentElement) {
+        notification.remove();
+      }
+    });
+
+  const session = (store && store.state.session) || storage.get("session");
+  const office = storage.get("office");
+  const officeId = storage.get("office_id");
+  const path = storage.get("path");
+
+  if (session) {
+    api.logout(session).catch(() => {});
+  }
+
+  if (store) {
+    store.dispatch("clearState");
+    store.commit("setCartItems", []);
+    store.commit("clearAffiliationCheckout");
+  }
+
+  storage.clear();
+
+  try {
+    sessionStorage.clear();
+  } catch (error) {
+    // noop
+  }
+
+  let target = "/login";
+  if (office === "true" && officeId) {
+    target = `/login/${officeId}?path=${encodeURIComponent(path || "")}`;
+  }
+
+  window.location.replace(target);
+}
 
 Vue.config.productionTip = false;
 
@@ -69,59 +109,10 @@ Vue.mixin({
     },
     
     logout() {
-      // Limpiar todos los mensajes de notificación del DOM
-      const notifications = document.querySelectorAll('.affiliation-required-notification, .affiliation-notification');
-      notifications.forEach(notification => {
-        if (notification.parentElement) {
-          notification.remove();
-        }
-      });
-
-      // Obtener variables de redirección ANTES de limpiar el storage
-      const office = storage.get("office");
-      const office_id = storage.get("office_id");
-      const path = storage.get("path");
-
-      // Limpiar store
-      this.$store.dispatch('clearState');
-      
-      // Limpiar localStorage de forma segura
-      storage.clear();
-      
-      // Logout en API
-      if (this.$store && this.$store.state.session) {
-        api.logout(this.$store.state.session).catch(() => {});
-      }
-
-      // Redirigir según el tipo de usuario forzando recarga de página (window.location.href)
-      if (office == "true") {
-        window.location.href = `/login/${office_id}?path=${path}`;
-      } else {
-        window.location.href = "/login";
-      }
+      performLogout(this.$store);
     },
     logout2() {
-      // Limpiar todos los mensajes de notificación del DOM
-      const notifications = document.querySelectorAll('.affiliation-required-notification, .affiliation-notification');
-      notifications.forEach(notification => {
-        if (notification.parentElement) {
-          notification.remove();
-        }
-      });
-      
-      // Limpiar store
-      this.$store.dispatch('clearState');
-      
-      // Limpiar localStorage de forma segura
-      storage.clear();
-      
-      // Logout en API
-      if (this.$store && this.$store.state.session) {
-        api.logout(this.$store.state.session).catch(() => {});
-      }
-
-      // Redirigir a login forzando recarga
-      window.location.href = "/login";
+      performLogout(this.$store);
     },
   },
   

@@ -296,6 +296,7 @@ export default {
       points: null,
       directs: [],
       frontals: [],
+      n_affiliates: 0,
       loading: true,
       plans: null,
       total_points: null,

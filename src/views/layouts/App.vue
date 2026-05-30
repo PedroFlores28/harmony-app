@@ -279,7 +279,7 @@
         </router-link>
 
         <br />
-        <a @click="logout" style="background-color: #450b2b">
+        <a @click.prevent="logout" style="background-color: #450b2b">
           <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
         </a>
       </div>
@@ -498,7 +498,7 @@
             <span>PERFIL</span>
           </router-link>
 
-          <a @click="handleLogoutAndClose" class="mobile-menu-item mobile-menu-item-logout">
+          <a @click.prevent="handleLogoutAndClose" class="mobile-menu-item mobile-menu-item-logout">
             <i class="fas fa-sign-out-alt" style="width: 20px; margin-right: 12px;"></i>
             <span>CERRAR SESIÓN</span>
           </a>

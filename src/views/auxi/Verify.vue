@@ -7,7 +7,7 @@
     <section v-if="!loading">
       <h3>Confirmar Email</h3> <br>
       <h4>Se envió un email a {{ email }}</h4> <br>
-      <small @click="logout" style="cursor: pointer">Cerar sesión</small>
+      <small @click.prevent="logout" style="cursor: pointer">Cerar sesión</small>
     </section>
   </div>
 </template>

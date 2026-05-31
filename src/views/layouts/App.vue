@@ -254,9 +254,6 @@
           <router-link to="/bonuses" @click.native="close" v-if="affiliated">
             <img src="@/assets/img/bonuses-desktop-icon.svg" alt="Bonificaciones" style="width: 16px; height: 16px; margin-right: 8px;"> BONIFICACIONES
           </router-link>
-          <router-link to="/resume" @click.native="close">
-            <img src="@/assets/img/personal-desktop-icon.svg" alt="Personal" style="width: 16px; height: 16px; margin-right: 8px;"> PERSONAL
-          </router-link>
           <router-link to="/closeds" @click.native="close">
             <img src="@/assets/img/closures-desktop-icon.svg" alt="Cierres" style="width: 16px; height: 16px; margin-right: 8px;"> CIERRES
           </router-link>
@@ -467,10 +464,6 @@
             <router-link to="/bonuses" v-if="affiliated" @click.native="handleNavigationClickAndClose" class="mobile-submenu-item">
               <img src="@/assets/img/bonuses-desktop-icon.svg" alt="Bonificaciones" style="width: 16px; height: 16px; margin-right: 12px;">
               <span>BONIFICACIONES</span>
-            </router-link>
-            <router-link to="/resume" @click.native="handleNavigationClickAndClose" class="mobile-submenu-item">
-              <img src="@/assets/img/personal-desktop-icon.svg" alt="Personal" style="width: 16px; height: 16px; margin-right: 12px;">
-              <span>PERSONAL</span>
             </router-link>
             <router-link to="/closeds" @click.native="handleNavigationClickAndClose" class="mobile-submenu-item">
               <img src="@/assets/img/closures-desktop-icon.svg" alt="Cierres" style="width: 16px; height: 16px; margin-right: 12px;">

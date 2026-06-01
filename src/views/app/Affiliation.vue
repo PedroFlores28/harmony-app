@@ -720,7 +720,7 @@ import App from "@/views/layouts/App";
 import api from "@/api";
 import lib from "@/lib";
 import Spinner from "@/components/Spinner.vue";
-import vipTrophyImage from "@/assets/img/vip-harmony.png";
+import vipTrophyImage from "@/assets/img/copa harmony.svg";
 
 const INVOICE_ROOT = process.env.VUE_APP_INVOICE_ROOT;
 

@@ -138,20 +138,45 @@
               <h3><i class="fas fa-list"></i> MI ACTIVIDAD</h3>
 
               <div class="activity-summary-grid">
-                <div class="activity-box">
-                  <span class="activity-box-label">PUNTOS PERSONALES</span>
-                  <div class="activity-main-value">
-                    <i class="fas fa-user"></i>
-                    <strong>{{ points || 0 }}</strong>
-                    <small>pts</small>
+                <div class="activity-box activity-points-box">
+                  <div class="activity-points-header">
+                    <span class="activity-box-label">TUS PUNTOS</span>
+                  </div>
+                  <div class="activity-points-split">
+                    <div class="points-col">
+                      <span class="points-label">PTS. MENSUALES</span>
+                      <div class="points-icon-value">
+                        <div class="points-icon monthly-icon">
+                          <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="points-amount">
+                          <strong>{{ points || 0 }}</strong>
+                          <small>pts</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="points-divider"></div>
+                    <div class="points-col">
+                      <span class="points-label">PTS. AFILIACIÓN</span>
+                      <div class="points-icon-value">
+                        <div class="points-icon affiliation-icon">
+                          <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="points-amount">
+                          <strong>{{ affiliation_points || 0 }}</strong>
+                          <small>pts</small>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <span
-                    class="activity-status-pill"
+                    class="activity-status-pill full-width-pill"
                     :class="{ inactive: !activated }"
                   >
+                    <i class="fas fa-check-circle" v-if="activated"></i>
+                    <i class="fas fa-times-circle" v-else></i>
                     {{ activityStatusText }}
                   </span>
-                  <p>Estado actual</p>
                 </div>
 
                 <div class="activity-box">
@@ -294,6 +319,7 @@ export default {
       rank: "",
       maxRank: "",
       points: null,
+      affiliation_points: null,
       directs: [],
       frontals: [],
       n_affiliates: 0,
@@ -633,6 +659,7 @@ export default {
     this.rank = payload.rank || "";
     this.maxRank = payload.maxRank || payload.rank || "";
     this.points = payload.points;
+    this.affiliation_points = payload.affiliation_points;
     this.node = payload.node || {};
     this.n_affiliates = payload.n_affiliates;
     this.directs = payload.directs || [];

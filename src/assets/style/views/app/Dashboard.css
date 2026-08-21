@@ -502,7 +502,6 @@
 }
 
 .activity-status-pill.full-width-pill {
-  position: absolute;
   bottom: -15px;
   width: 160px;
   border-radius: 20px;
@@ -799,7 +798,7 @@
 
   .dashboard-overview-grid .activity-main-value,
   .dashboard-overview-grid .activity-status-pill {
-    transform: translateY(24px);
+
   }
 
   .dashboard-overview-grid .activity-status-pill {
@@ -818,7 +817,6 @@
 
   .dashboard-overview-grid .activity-box p {
     font-size: 15px;
-    transform: translateY(24px);
   }
 
   .bonus-access-card {

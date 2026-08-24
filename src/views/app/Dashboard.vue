@@ -132,39 +132,41 @@
             </div>
           </div>
 
-          <!-- Mi Actividad -->
+          <!-- Tus Puntos -->
           <div class="dashboard-row activity-summary-row">
-            <div class="activity-summary-card">
-              <h3><i class="fas fa-list"></i> MI ACTIVIDAD</h3>
+            <div class="tus-puntos-card">
+              <h3>TUS PUNTOS</h3>
+              <div class="tus-puntos-underline"></div>
 
-              <div class="activity-summary-grid">
-                <div class="activity-box">
-                  <span class="activity-box-label">PUNTOS PERSONALES</span>
-                  <div class="activity-main-value">
-                    <i class="fas fa-user"></i>
-                    <strong>{{ points || 0 }}</strong>
-                    <small>pts</small>
+              <div class="tus-puntos-grid">
+                <div class="tus-puntos-col">
+                  <span class="tus-puntos-label">PTS. MENSUALES</span>
+                  <div class="tus-puntos-icon" aria-hidden="true">
+                    <i class="fas fa-calendar-check"></i>
                   </div>
-                  <span
-                    class="activity-status-pill"
-                    :class="{ inactive: !activated }"
-                  >
-                    {{ activityStatusText }}
-                  </span>
-                  <p>Estado actual</p>
+                  <strong>{{ points || 0 }}</strong>
+                  <small>pts</small>
                 </div>
 
-                <div class="activity-box">
-                  <span class="activity-box-label">MEMBRESÍA ACTUAL</span>
-                  <div class="activity-membership-icon">
-                    <i class="fas fa-crown"></i>
+                <div class="tus-puntos-divider"></div>
+
+                <div class="tus-puntos-col">
+                  <span class="tus-puntos-label">PTS. AFILIACIÓN</span>
+                  <div class="tus-puntos-icon" aria-hidden="true">
+                    <i class="fas fa-handshake"></i>
                   </div>
-                  <strong class="activity-membership-name">
-                    {{ membershipDisplayName }}
-                  </strong>
-                  <p>{{ membershipSubtitle }}</p>
+                  <strong>{{ affiliationPoints || 0 }}</strong>
+                  <small>pts</small>
                 </div>
               </div>
+
+              <span
+                class="tus-puntos-status"
+                :class="{ inactive: !activated }"
+              >
+                <i class="fas fa-check-circle"></i>
+                {{ activityStatusText }}
+              </span>
             </div>
           </div>
 
@@ -294,6 +296,7 @@ export default {
       rank: "",
       maxRank: "",
       points: null,
+      affiliationPoints: 0,
       directs: [],
       frontals: [],
       n_affiliates: 0,
@@ -633,6 +636,7 @@ export default {
     this.rank = payload.rank || "";
     this.maxRank = payload.maxRank || payload.rank || "";
     this.points = payload.points;
+    this.affiliationPoints = Number(payload.affiliation_points) || 0;
     this.node = payload.node || {};
     this.n_affiliates = payload.n_affiliates;
     this.directs = payload.directs || [];

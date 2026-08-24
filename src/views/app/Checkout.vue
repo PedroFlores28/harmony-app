@@ -463,13 +463,13 @@
                       @click="togglePaymentMethod('bank')"
                     />
                     <label for="bank">
-                      <i class="fas fa-university"></i>
-                      <span>{{ selectedBank ? getBankDisplayName(selectedBank) : 'Pago con Comprobante' }}</span>
+                      <i :class="selectedBankMethod && selectedBankMethod.requiresVoucher === false ? 'fas fa-money-bill-wave' : 'fas fa-university'"></i>
+                      <span>{{ selectedBank ? getBankDisplayName(selectedBank) : 'Métodos de Pago' }}</span>
                       <i class="fas fa-chevron-down dropdown-arrow" :class="{ 'rotated': showBankOptions }"></i>
                     </label>
                   </div>
                   
-                  <!-- Opciones desplegables para Pago con Comprobante -->
+                  <!-- Opciones desplegables para Métodos de Pago -->
                   <div v-if="pay_method === 'bank' && showBankOptions" class="bank-options">
                     <div v-if="loadingPaymentMethods" class="loading-methods">
                       <span>Cargando métodos de pago...</span>
@@ -528,10 +528,10 @@
                 
                 
                 <!-- Campos de Pago con Comprobante - Fuera del contenedor de métodos -->
-                <div v-if="pay_method === 'bank'" class="voucher-payment-fields">
+                <div v-if="pay_method === 'bank' && requiresVoucherForSelectedBank" class="voucher-payment-fields">
                   <div class="form-field-simple">
                     <label>Número de Operación/Voucher</label>
-                    <input v-model="voucherNumber" type="text" placeholder="Número de Operación/Voucher" @input="onlyNumbers($event, 'voucherNumber')" required />
+                    <input v-model="voucherNumber" type="text" placeholder="Número de Operación/Voucher" @input="onlyNumbers($event, 'voucherNumber')" :required="requiresVoucherForSelectedBank" />
                   </div>
                   
                   <div class="form-field-simple">
@@ -812,6 +812,16 @@ export default {
       return this.cartItems && Array.isArray(this.cartItems) && this.cartItems.length > 0 && ((this.check && this.remaining === 0) || this.pay_method);
     },
     
+    selectedBankMethod() {
+      if (!this.selectedBank || !Array.isArray(this.paymentMethods)) return null;
+      return this.paymentMethods.find(m => m.id === this.selectedBank) || null;
+    },
+
+    requiresVoucherForSelectedBank() {
+      if (!this.selectedBankMethod) return true;
+      return this.selectedBankMethod.requiresVoucher !== false;
+    },
+    
     selectedOffice() {
       if (!this.selectedPickupPoint) return null;
       return this.offices.find(office => office.id == this.selectedPickupPoint);
@@ -913,7 +923,8 @@ export default {
     
     getBankDisplayName(bankId) {
       const method = this.paymentMethods.find(m => m.id === bankId);
-      return method ? method.name : 'Pago con Comprobante';
+      if (!method) return 'Método de Pago';
+      return method.name + (method.type ? ` - ${method.type}` : '');
     },
     
     getBankInfo(bankId) {
@@ -924,7 +935,8 @@ export default {
           account: method.account,
           cci: method.cci || "",
           holder: method.holder,
-          type: method.type
+          type: method.type,
+          requiresVoucher: method.requiresVoucher !== false
         };
       }
       return {};
@@ -1519,7 +1531,7 @@ export default {
         
         let voucherUrl = null;
         let voucherUrl2 = null;
-        if (this.pay_method === 'bank') {
+        if (this.pay_method === 'bank' && this.requiresVoucherForSelectedBank) {
           if (this.voucherFile) {
             voucherUrl = await lib.upload(this.voucherFile, this.voucherFile.name, uploadDir);
           }
@@ -1560,7 +1572,7 @@ export default {
           voucher: voucherUrl,
           bank: this.selectedBank ? this.getBankInfo(this.selectedBank).name : null,
           bank_info: this.selectedBank ? this.getBankInfo(this.selectedBank) : null,
-          voucher_number: this.voucherNumber,
+          voucher_number: this.requiresVoucherForSelectedBank ? this.voucherNumber : null,
         };
         
         // Solo agregar voucher2 si existe

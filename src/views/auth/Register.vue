@@ -225,28 +225,47 @@
         </div>
         </div>
 
-        <!-- Código de patrocinador -->
+        <!-- Código o DNI de patrocinador -->
         <div class="form-field">
-        <div class="input-container">
-          <input
-            id="sponsorCode"
-            class="input-register-new"
-            placeholder="Código de patrocinador"
-            v-model="sponsorCode"
-            :class="{ error: error.sponsorCode }"
-            @keydown="reset('sponsorCode')"
-          />
-          <svg 
-            class="overflow-icon" 
-            width="20" 
-            height="20" 
-            viewBox="0 0 19 19" 
-            fill="none" 
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M17.3658 4.09291L14.967 15.3227C14.7881 16.1136 14.329 16.2917 13.6655 15.9347L10.0674 13.281L8.30596 14.9649C8.12784 15.1438 7.94892 15.3227 7.54042 15.3227L7.82147 11.6217L14.5332 5.52266C14.8135 5.24162 14.4564 5.1395 14.0994 5.36987L5.75442 10.6265L2.15551 9.52929C1.36463 9.27437 1.36463 8.73762 2.33442 8.38137L16.3192 2.945C17.008 2.74075 17.5954 3.09858 17.3658 4.09291Z" fill="currentColor"/>
-          </svg>
-        </div>
+          <div class="input-container">
+            <input
+              id="sponsorCode"
+              class="input-register-new"
+              placeholder="DNI o código de patrocinador"
+              v-model="sponsorCode"
+              :class="{ error: error.sponsorCode, valid: sponsorInfo && sponsorInfo.found }"
+              @keydown="reset('sponsorCode')"
+              @input="onSponsorInput"
+            />
+            <svg 
+              class="overflow-icon" 
+              width="20" 
+              height="20" 
+              viewBox="0 0 19 19" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M17.3658 4.09291L14.967 15.3227C14.7881 16.1136 14.329 16.2917 13.6655 15.9347L10.0674 13.281L8.30596 14.9649C8.12784 15.1438 7.94892 15.3227 7.54042 15.3227L7.82147 11.6217L14.5332 5.52266C14.8135 5.24162 14.4564 5.1395 14.0994 5.36987L5.75442 10.6265L2.15551 9.52929C1.36463 9.27437 1.36463 8.73762 2.33442 8.38137L16.3192 2.945C17.008 2.74075 17.5954 3.09858 17.3658 4.09291Z" fill="currentColor"/>
+            </svg>
+          </div>
+
+          <!-- Confirmación visual del patrocinador -->
+          <div v-if="sponsorInfo && sponsorInfo.found" class="sponsor-found-card">
+            <i class="fas fa-check-circle sponsor-icon-check"></i>
+            <div class="sponsor-found-details">
+              <span class="sponsor-label">Patrocinador:</span>
+              <strong class="sponsor-name">{{ sponsorInfo.name }} {{ sponsorInfo.lastName }}</strong>
+              <small v-if="sponsorInfo.dni" class="sponsor-sub">DNI: {{ sponsorInfo.dni }}</small>
+            </div>
+          </div>
+          <div v-else-if="sponsorSearched && sponsorCode && !sponsorLoading" class="sponsor-not-found-hint">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>No se encontró ningún patrocinador con este DNI o código</span>
+          </div>
+          <div v-else-if="sponsorLoading" class="sponsor-loading-hint">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>Buscando patrocinador...</span>
+          </div>
         </div>
 
         <!-- Mensaje de alerta -->
@@ -336,6 +355,10 @@ export default {
       phone: null,
       password: "",
       sponsorCode: null,
+      sponsorInfo: null,
+      sponsorSearched: false,
+      sponsorLoading: false,
+      sponsorDebounce: null,
       acceptTerms: false,
       showPassword: false,
       passwordEdited: false,
@@ -787,8 +810,8 @@ export default {
       alert(msg) {
         if (msg === "dni already use") return "El documento ya existe";
         if (msg === "email already use") return "El correo electrónico ya está en uso";
-        if (msg === "code not found") return "El código de invitación no existe";
-        if (msg === "code required") return "El código de patrocinador es requerido";
+        if (msg === "code not found") return "El patrocinador no existe (verifica el DNI o código)";
+        if (msg === "code required") return "El DNI o código de patrocinador es requerido";
         return msg;
       },
     },
@@ -829,6 +852,7 @@ export default {
     if (this.code) {
       this.sponsorCode = this.code;
       this.disabled = true;
+      this.lookupSponsor(this.code);
     }
 
     setTimeout(() => {
@@ -939,7 +963,7 @@ export default {
       }
       if (!sponsorCode) {
         this.error.sponsorCode = true;
-        this.alert = "El código de patrocinador es requerido";
+        this.alert = "El DNI o código de patrocinador es requerido";
         return;
       }
       if(!phone) {
@@ -1070,6 +1094,42 @@ export default {
       const dateInput = document.getElementById('birthDate');
       if (dateInput) {
         dateInput.showPicker();
+      }
+    },
+
+    onSponsorInput() {
+      this.reset('sponsorCode');
+      this.sponsorInfo = null;
+      this.sponsorSearched = false;
+      if (this.sponsorDebounce) clearTimeout(this.sponsorDebounce);
+      const query = (this.sponsorCode || '').trim();
+      if (!query || query.length < 3) {
+        this.sponsorLoading = false;
+        return;
+      }
+      this.sponsorLoading = true;
+      this.sponsorDebounce = setTimeout(async () => {
+        await this.lookupSponsor(query);
+      }, 350);
+    },
+
+    async lookupSponsor(query) {
+      if (!query) return;
+      this.sponsorLoading = true;
+      try {
+        const { data } = await api.lookupSponsor(query);
+        this.sponsorLoading = false;
+        this.sponsorSearched = true;
+        if (data && data.found) {
+          this.sponsorInfo = data;
+          this.error.sponsorCode = false;
+        } else {
+          this.sponsorInfo = null;
+        }
+      } catch (err) {
+        this.sponsorLoading = false;
+        this.sponsorSearched = true;
+        this.sponsorInfo = null;
       }
     },
   },

@@ -64,6 +64,9 @@ class API {
   register(data) {
     return axios.post("/auth/register", data);
   }
+  lookupSponsor(query) {
+    return axios.get(`/auth/sponsor-lookup?query=${encodeURIComponent(query)}`);
+  }
   login(data) {
     return axios.post("/auth/login", data);
   }

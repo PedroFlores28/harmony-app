@@ -27,10 +27,14 @@ jobs:
       run: npm ci
 
     - name: Build project
-      run: npm run build
+      run: |
+        if [ "${{ matrix.node-version }}" = "16.x" ]; then
+          npm run build
+        else
+          NODE_OPTIONS="--openssl-legacy-provider" npm run build
+        fi
       env:
         CI: true
-        NODE_OPTIONS: "--openssl-legacy-provider"
 
   security:
     runs-on: ubuntu-latest

@@ -128,10 +128,16 @@
 
 .earnings-breakdown {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   padding: 16px;
   background: #fff;
+}
+
+@media (max-width: 991px) {
+  .earnings-breakdown {
+    grid-template-columns: 1fr;
+  }
 }
 
 .earnings-balance-card {
@@ -154,6 +160,34 @@
   background: #fff8fa;
   border-color: #faeef2;
   color: #c31952;
+}
+
+.earnings-balance-card.estimated-residual {
+  background: #f4f8fe;
+  border-color: #e2edfd;
+  color: #1a56db;
+}
+
+.earnings-balance-card.estimated-residual strong {
+  color: #1a56db;
+}
+
+.earnings-balance-card.estimated-residual p {
+  color: #5171a5;
+}
+
+.provisional-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(26, 86, 219, 0.12);
+  color: #1a56db;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 6px;
+  vertical-align: middle;
 }
 
 .earnings-balance-icon {

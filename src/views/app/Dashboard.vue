@@ -88,6 +88,20 @@
                   <p>Bonos retenidos por inactividad</p>
                 </div>
               </div>
+
+              <div class="earnings-balance-card estimated-residual">
+                <div class="earnings-balance-icon">
+                  <i class="fas fa-chart-line"></i>
+                </div>
+                <div>
+                  <span class="earnings-balance-label">
+                    RESIDUALES ESTIMADOS
+                    <span class="provisional-pill">Provisional</span>
+                  </span>
+                  <strong>{{ estimatedResidualDisplay }}</strong>
+                  <p>Acumulado provisional del período actual</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -314,6 +328,7 @@ export default {
       outs: null,
       balance: null,
       _balance: null,
+      estimatedResidual: null,
       team: null,
       activated: false,
       rank: "",
@@ -419,6 +434,9 @@ export default {
     },
     unavailableBalanceDisplay() {
       return this.formatCurrency(this._balance);
+    },
+    estimatedResidualDisplay() {
+      return this.formatCurrency(this.estimatedResidual || 0);
     },
     totalEarnedDisplay() {
       return this.formatCurrency(
@@ -654,6 +672,10 @@ export default {
     this.outs = payload.outs ? payload.outs.toFixed(2) : "0.00";
     this.balance = payload.balance ? payload.balance.toFixed(2) : "0.00";
     this._balance = payload._balance ? payload._balance.toFixed(2) : "0.00";
+    this.estimatedResidual =
+      payload.estimatedResidual !== undefined && payload.estimatedResidual !== null
+        ? payload.estimatedResidual
+        : 0;
     this.team = payload.team;
     this.activated = Boolean(payload.activated);
     this.rank = payload.rank || "";

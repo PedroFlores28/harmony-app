@@ -132,41 +132,64 @@
             </div>
           </div>
 
-          <!-- Tus Puntos -->
+          <!-- Mi Actividad -->
           <div class="dashboard-row activity-summary-row">
-            <div class="tus-puntos-card">
-              <h3>TUS PUNTOS</h3>
-              <div class="tus-puntos-underline"></div>
+            <div class="activity-summary-card">
+              <h3><i class="fas fa-list"></i> MI ACTIVIDAD</h3>
 
-              <div class="tus-puntos-grid">
-                <div class="tus-puntos-col">
-                  <span class="tus-puntos-label">PTS. MENSUALES</span>
-                  <div class="tus-puntos-icon" aria-hidden="true">
-                    <i class="fas fa-calendar-check"></i>
+              <div class="activity-summary-grid">
+                <div class="activity-box activity-points-box">
+                  <div class="activity-points-header">
+                    <span class="activity-box-label">TUS PUNTOS</span>
                   </div>
-                  <strong>{{ points || 0 }}</strong>
-                  <small>pts</small>
+                  <div class="activity-points-split">
+                    <div class="points-col">
+                      <span class="points-label">PTS. MENSUALES</span>
+                      <div class="points-icon-value">
+                        <div class="points-icon monthly-icon">
+                          <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="points-amount">
+                          <strong>{{ points || 0 }}</strong>
+                          <small>pts</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="points-divider"></div>
+                    <div class="points-col">
+                      <span class="points-label">PTS. AFILIACIÓN</span>
+                      <div class="points-icon-value">
+                        <div class="points-icon affiliation-icon">
+                          <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="points-amount">
+                          <strong>{{ affiliation_points || 0 }}</strong>
+                          <small>pts</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span
+                    class="activity-status-pill full-width-pill"
+                    :class="{ inactive: !activated }"
+                  >
+                    <i class="fas fa-check-circle" v-if="activated"></i>
+                    <i class="fas fa-times-circle" v-else></i>
+                    {{ activityStatusText }}
+                  </span>
                 </div>
 
-                <div class="tus-puntos-divider"></div>
-
-                <div class="tus-puntos-col">
-                  <span class="tus-puntos-label">PTS. AFILIACIÓN</span>
-                  <div class="tus-puntos-icon" aria-hidden="true">
-                    <i class="fas fa-handshake"></i>
+                <div class="activity-box">
+                  <span class="activity-box-label">MEMBRESÍA ACTUAL</span>
+                  <div class="activity-membership-icon">
+                    <i class="fas fa-crown"></i>
                   </div>
-                  <strong>{{ affiliationPoints || 0 }}</strong>
-                  <small>pts</small>
+                  <strong class="activity-membership-name">
+                    {{ membershipDisplayName }}
+                  </strong>
+                  <p>{{ membershipSubtitle }}</p>
                 </div>
               </div>
-
-              <span
-                class="tus-puntos-status"
-                :class="{ inactive: !activated }"
-              >
-                <i class="fas fa-check-circle"></i>
-                {{ activityStatusText }}
-              </span>
             </div>
           </div>
 
@@ -296,7 +319,7 @@ export default {
       rank: "",
       maxRank: "",
       points: null,
-      affiliationPoints: 0,
+      affiliation_points: null,
       directs: [],
       frontals: [],
       n_affiliates: 0,
@@ -636,7 +659,7 @@ export default {
     this.rank = payload.rank || "";
     this.maxRank = payload.maxRank || payload.rank || "";
     this.points = payload.points;
-    this.affiliationPoints = Number(payload.affiliation_points) || 0;
+    this.affiliation_points = payload.affiliation_points;
     this.node = payload.node || {};
     this.n_affiliates = payload.n_affiliates;
     this.directs = payload.directs || [];

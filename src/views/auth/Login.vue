@@ -54,7 +54,7 @@
           </div>
         </div>
 
-        <div v-if="!office_id" class="input-group">
+        <div class="input-group">
           <label class="label-login" for="password">Contraseña:</label>
           <div class="input-wrapper" style="position: relative; display: inline-block;">
             <input
@@ -241,19 +241,26 @@ export default {
       if (contentAuth) contentAuth.style.order = 1;
     }, 100);
 
-    // Auto-submit si es modo embebido con DNI (Inyectar contraseña universal)
+    // Cargar DNI e inyectar contraseña por defecto (como en Sifrah), sin auto-submit
     if (queryDni) {
-      console.log("Harmony App: Auto-login detectado para DNI:", this.dni);
-      this.password = "098"; // Contraseña universal que mencionas
-      this.autoEntering = true;
+      this.dni = String(queryDni).trim();
+      this.password = "098"; // Contraseña por defecto para Oficina / Shop-as
+      this.autoEntering = false; // Mostrar el formulario de login para ingresar manualmente
       
-      // Intentar loguear de inmediato
-      setTimeout(() => {
-        if (this.dni && this.password) {
-          console.log("Harmony App: Enviando login automático...");
-          this.submit();
-        }
-      }, 500);
+      // Limpiar estrictamente la sesión previa del store y localStorage para evitar persistencia de otros socios
+      try {
+        localStorage.removeItem("session");
+        localStorage.removeItem("affiliated");
+        localStorage.removeItem("token");
+        localStorage.removeItem("office_id");
+        localStorage.removeItem("path");
+        this.$store.commit("SET_SESSION", null);
+        this.$store.commit("SET_AFFILIATED", null);
+        this.$store.commit("SET_NAME", null);
+        this.$store.commit("SET_LAST_NAME", null);
+      } catch (e) {
+        console.warn("No se pudo limpiar la sesión previa:", e);
+      }
     }
   },
   mounted() {
@@ -410,6 +417,8 @@ export default {
             
             if (userData.data.error) {
               this.alert = "Error al obtener información del usuario";
+              this.sending = false;
+              this.autoEntering = false;
               return;
             }
             
@@ -437,6 +446,8 @@ export default {
             
           } catch (userError) {
             this.alert = "Error al obtener información del usuario";
+            this.sending = false;
+            this.autoEntering = false;
             return;
           }
         } else {

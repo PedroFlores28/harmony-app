@@ -271,6 +271,25 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
+  // SI LA RUTA TIENE UN PARÁMETRO DNI, significa que el administrador quiere
+  // ingresar a otra cuenta. Limpiamos la sesión anterior inmediatamente
+  // para evitar que el guard lo redirija automáticamente al dashboard anterior.
+  if (to.query.dni) {
+    console.log("🔐 Router: Nueva consulta de DNI detectada, limpiando sesión previa...");
+    store.commit('SET_SESSION', null);
+    store.commit('SET_AFFILIATED', null);
+    store.commit('SET_NAME', null);
+    store.commit('SET_LAST_NAME', null);
+    store.commit('SET_DNI', null);
+    try {
+      localStorage.removeItem('session');
+      localStorage.removeItem('affiliated');
+      localStorage.removeItem('token');
+      localStorage.removeItem('office_id');
+      localStorage.removeItem('path');
+    } catch(e) {}
+  }
+
   // ============================================================
   // SUDO LOGIN INTERCEPTOR — Inyección directa en el router
   // Si la URL contiene ?session=..., es una sesión administrativa

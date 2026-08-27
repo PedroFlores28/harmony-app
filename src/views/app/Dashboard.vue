@@ -142,6 +142,22 @@
                   <strong>{{ maxRankDisplayName }}</strong>
                   <p>Mayor rango alcanzado</p>
                 </div>
+
+                <div class="rank-summary-divider"></div>
+
+                <div class="rank-summary-item">
+                  <span class="rank-summary-label">RANGO EN VIVO</span>
+                  <div class="rank-summary-badge live">
+                    <img
+                      v-if="liveRankImage"
+                      :src="liveRankImage"
+                      alt="Rango en vivo"
+                    />
+                    <i v-else class="fas fa-bolt"></i>
+                  </div>
+                  <strong>{{ liveRankDisplayName }}</strong>
+                  <p>Rango estimado actual</p>
+                </div>
               </div>
             </div>
           </div>
@@ -333,6 +349,7 @@ export default {
       activated: false,
       rank: "",
       maxRank: "",
+      liveRank: "",
       points: null,
       affiliation_points: null,
       directs: [],
@@ -423,11 +440,19 @@ export default {
       const rankKey = this.rankImageKey(this.rank);
       return this.rankImages[rankKey] || null;
     },
+    liveRankImage() {
+      if (!this.rankImages || !this.liveRank) return null;
+      const rankKey = this.rankImageKey(this.liveRank);
+      return this.rankImages[rankKey] || null;
+    },
     maxRankDisplayName() {
       return this.formatRankName(this.maxRank).toUpperCase();
     },
     currentRankDisplayName() {
       return this.formatRankName(this.rank).toUpperCase();
+    },
+    liveRankDisplayName() {
+      return this.formatRankName(this.liveRank).toUpperCase();
     },
     availableBalanceDisplay() {
       return this.formatCurrency(this.balance);
@@ -680,6 +705,7 @@ export default {
     this.activated = Boolean(payload.activated);
     this.rank = payload.rank || "";
     this.maxRank = payload.maxRank || payload.rank || "";
+    this.liveRank = payload.liveRank || payload.rank || "";
     this.points = payload.points;
     this.affiliation_points = payload.affiliation_points;
     this.node = payload.node || {};

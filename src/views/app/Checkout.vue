@@ -811,15 +811,14 @@ export default {
     canProcessOrder() {
       return this.cartItems && Array.isArray(this.cartItems) && this.cartItems.length > 0 && ((this.check && this.remaining === 0) || this.pay_method);
     },
-    
+
     selectedBankMethod() {
       if (!this.selectedBank || !Array.isArray(this.paymentMethods)) return null;
       return this.paymentMethods.find(m => m.id === this.selectedBank) || null;
     },
 
     requiresVoucherForSelectedBank() {
-      if (!this.selectedBankMethod) return true;
-      return this.selectedBankMethod.requiresVoucher !== false;
+      return this.paymentMethodRequiresVoucher(this.selectedBankMethod);
     },
     
     selectedOffice() {
@@ -940,6 +939,15 @@ export default {
         };
       }
       return {};
+    },
+
+    paymentMethodRequiresVoucher(method) {
+      if (!method) return true;
+      if (method.requiresVoucher === false) return false;
+      const name = String(method.name || '').toLowerCase();
+      const type = String(method.type || '').toLowerCase();
+      const account = String(method.account || '').toLowerCase();
+      return !(name.includes('efectivo') || type.includes('efectivo') || account.includes('pago en oficina'));
     },
     
     getAgencyName() {
@@ -1659,10 +1667,17 @@ export default {
           }
         }
 
-        if (payload.pay_method === 'bank' && (!payload.bank || !payload.voucher_number || !payload.voucher)) {
-          this.activationError = 'Para transferencia, selecciona un banco, ingresa el número de operación y sube el voucher.';
-          this.sending = false;
-          return;
+        if (payload.pay_method === 'bank') {
+          if (!payload.bank) {
+            this.activationError = 'Por favor, selecciona un método de pago.';
+            this.sending = false;
+            return;
+          }
+          if (this.requiresVoucherForSelectedBank && (!payload.voucher_number || !payload.voucher)) {
+            this.activationError = 'Para transferencia, selecciona un banco, ingresa el número de operación y sube el voucher.';
+            this.sending = false;
+            return;
+          }
         }
 
         // Si es checkout de afiliación, usar el endpoint de afiliación

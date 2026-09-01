@@ -238,10 +238,23 @@ input[type="checkbox"]:checked
   border-radius 10px
   padding 8px 14px
   margin 6px auto 0
-  width 100%
+  width 80%
+  max-width 509px
   box-sizing border-box
   text-align center
   animation fadeIn 0.3s ease
+
+  @media (max-width: 768px)
+    width 90%
+    max-width 400px
+
+  @media (max-width: 480px)
+    width 95%
+    max-width 350px
+
+  @media (max-width: 375px)
+    width 95%
+    max-width 320px
 
 .sponsor-icon-check
   color #16a34a
@@ -276,11 +289,26 @@ input[type="checkbox"]:checked
   gap 6px
   color #dc2626
   font-size 12px
-  margin-top 5px
+  margin 5px auto 0
   padding 4px 8px
   background #fef2f2
   border-radius 6px
   border 1px solid #fecaca
+  width 80%
+  max-width 509px
+  box-sizing border-box
+
+  @media (max-width: 768px)
+    width 90%
+    max-width 400px
+
+  @media (max-width: 480px)
+    width 95%
+    max-width 350px
+
+  @media (max-width: 375px)
+    width 95%
+    max-width 320px
 
 .sponsor-loading-hint
   display flex
@@ -288,8 +316,23 @@ input[type="checkbox"]:checked
   gap 6px
   color #450B2B
   font-size 12px
-  margin-top 5px
+  margin 5px auto 0
   padding 4px 8px
+  width 80%
+  max-width 509px
+  box-sizing border-box
+
+  @media (max-width: 768px)
+    width 90%
+    max-width 400px
+
+  @media (max-width: 480px)
+    width 95%
+    max-width 350px
+
+  @media (max-width: 375px)
+    width 95%
+    max-width 320px
 
 @keyframes fadeIn
   from

@@ -52,264 +52,207 @@
 
       <!-- Nuevo Dashboard Design -->
       <div v-else class="dashboard-container">
-        <!-- Ganancias -->
-        <div class="dashboard-row earnings-row">
-          <div class="earnings-card">
-            <div class="earnings-total">
-              <div class="earnings-total-icon">
-                <i class="fas fa-wallet"></i>
-              </div>
-              <div class="earnings-total-content">
-                <span class="earnings-total-label">TOTAL GANADO</span>
-                <strong>{{ totalEarnedDisplay }}</strong>
-                <span class="earnings-total-subtitle">Ganancias acumuladas</span>
-              </div>
+        <!-- Hero: Total ganado + Mayor rango -->
+        <div class="dash-hero">
+          <div class="dash-hero-card total-earned">
+            <div class="dash-hero-icon">
+              <i class="fas fa-wallet"></i>
             </div>
+            <div class="dash-hero-text">
+              <span class="dash-hero-label">TOTAL GANADO</span>
+              <strong class="dash-hero-value">{{ totalEarnedDisplay }}</strong>
+            </div>
+          </div>
 
-            <div class="earnings-breakdown">
-              <div class="earnings-balance-card available">
-                <div class="earnings-balance-icon">
-                  <i class="fas fa-wallet"></i>
-                </div>
-                <div>
-                  <span class="earnings-balance-label">SALDO DISPONIBLE</span>
-                  <strong>{{ availableBalanceDisplay }}</strong>
-                  <p>Disponible para retiro</p>
-                </div>
-              </div>
-
-              <div class="earnings-balance-card unavailable">
-                <div class="earnings-balance-icon">
-                  <i class="fas fa-lock"></i>
-                </div>
-                <div>
-                  <span class="earnings-balance-label">SALDO NO DISPONIBLE</span>
-                  <strong>{{ unavailableBalanceDisplay }}</strong>
-                  <p>Bonos retenidos por inactividad</p>
-                </div>
-              </div>
-
-              <div class="earnings-balance-card estimated-residual">
-                <div class="earnings-balance-icon">
-                  <i class="fas fa-chart-line"></i>
-                </div>
-                <div>
-                  <span class="earnings-balance-label">
-                    RESIDUALES ESTIMADOS
-                    <span class="provisional-pill">Provisional</span>
-                  </span>
-                  <strong>{{ estimatedResidualDisplay }}</strong>
-                  <p>Acumulado provisional del período actual</p>
-                </div>
-              </div>
+          <div class="dash-hero-card max-rank">
+            <div class="dash-hero-icon rank">
+              <img
+                v-if="maxRankImage"
+                :src="maxRankImage"
+                alt="Mayor rango"
+              />
+              <i v-else class="fas fa-gem"></i>
+            </div>
+            <div class="dash-hero-text">
+              <span class="dash-hero-label">MAYOR RANGO ALCANZADO</span>
+              <strong class="dash-hero-value">{{ maxRankDisplayName }}</strong>
             </div>
           </div>
         </div>
 
-        <div class="dashboard-overview-grid">
-          <!-- Rangos -->
-          <div class="dashboard-row ranks-summary-row">
-            <div class="ranks-summary-card">
-              <h3>RANGOS</h3>
-
-              <div class="ranks-summary-inner">
-                <div class="rank-summary-item">
-                  <span class="rank-summary-label">RANGO ACTUAL</span>
-                  <div class="rank-summary-badge current">
-                    <img
-                      v-if="currentRankImage"
-                      :src="currentRankImage"
-                      alt="Rango actual"
-                    />
-                    <i v-else class="fas fa-star"></i>
-                  </div>
-                  <strong>{{ currentRankDisplayName }}</strong>
-                  <p>Rango del periodo actual</p>
-                </div>
-
-                <div class="rank-summary-divider"></div>
-
-                <div class="rank-summary-item">
-                  <span class="rank-summary-label">RANGO MÁXIMO HISTÓRICO</span>
-                  <div class="rank-summary-badge historic">
-                    <img
-                      v-if="maxRankImage"
-                      :src="maxRankImage"
-                      alt="Rango máximo histórico"
-                    />
-                    <i v-else class="fas fa-gem"></i>
-                  </div>
-                  <strong>{{ maxRankDisplayName }}</strong>
-                  <p>Mayor rango alcanzado</p>
-                </div>
-
-                <div class="rank-summary-divider"></div>
-
-                <div class="rank-summary-item">
-                  <span class="rank-summary-label">RANGO EN VIVO</span>
-                  <div class="rank-summary-badge live">
-                    <img
-                      v-if="liveRankImage"
-                      :src="liveRankImage"
-                      alt="Rango en vivo"
-                    />
-                    <i v-else class="fas fa-bolt"></i>
-                  </div>
-                  <strong>{{ liveRankDisplayName }}</strong>
-                  <p>Rango estimado actual</p>
-                </div>
+        <!-- Saldos -->
+        <section class="dash-section dash-balances-section">
+          <div class="dash-balances">
+            <div class="dash-balance-card available">
+              <span class="dash-tile-icon"><i class="fas fa-wallet"></i></span>
+              <div class="dash-balance-text">
+                <span class="dash-card-label">SALDO DISPONIBLE</span>
+                <strong>{{ availableBalanceDisplay }}</strong>
+              </div>
+            </div>
+            <div class="dash-balance-card unavailable">
+              <span class="dash-tile-icon"><i class="fas fa-lock"></i></span>
+              <div class="dash-balance-text">
+                <span class="dash-card-label">SALDO NO DISPONIBLE</span>
+                <strong>{{ unavailableBalanceDisplay }}</strong>
               </div>
             </div>
           </div>
+        </section>
 
-          <!-- Mi Actividad -->
-          <div class="dashboard-row activity-summary-row">
-            <div class="activity-summary-card">
-              <h3><i class="fas fa-list"></i> MI ACTIVIDAD</h3>
-
-              <div class="activity-summary-grid">
-                <div class="activity-box activity-points-box">
-                  <div class="activity-points-header">
-                    <span class="activity-box-label">TUS PUNTOS</span>
-                  </div>
-                  <div class="activity-points-split">
-                    <div class="points-col">
-                      <span class="points-label">PTS. MENSUALES</span>
-                      <div class="points-icon-value">
-                        <div class="points-icon monthly-icon">
-                          <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <div class="points-amount">
-                          <strong>{{ points || 0 }}</strong>
-                          <small>pts</small>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="points-divider"></div>
-                    <div class="points-col">
-                      <span class="points-label">PTS. AFILIACIÓN</span>
-                      <div class="points-icon-value">
-                        <div class="points-icon affiliation-icon">
-                          <i class="fas fa-handshake"></i>
-                        </div>
-                        <div class="points-amount">
-                          <strong>{{ affiliation_points || 0 }}</strong>
-                          <small>pts</small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <span
-                    class="activity-status-pill full-width-pill"
-                    :class="{ inactive: !activated }"
-                  >
-                    <i class="fas fa-check-circle" v-if="activated"></i>
-                    <i class="fas fa-times-circle" v-else></i>
-                    {{ activityStatusText }}
-                  </span>
-                </div>
-
-                <div class="activity-box">
-                  <span class="activity-box-label">MEMBRESÍA ACTUAL</span>
-                  <div class="activity-membership-icon">
-                    <i class="fas fa-crown"></i>
-                  </div>
-                  <strong class="activity-membership-name">
-                    {{ membershipDisplayName }}
-                  </strong>
-                  <p>{{ membershipSubtitle }}</p>
-                </div>
+        <!-- Este periodo -->
+        <section class="dash-section">
+          <h3 class="dash-section-title">ESTE PERIODO</h3>
+          <div class="dash-period-grid">
+            <div class="dash-period-card live-rank">
+              <span class="dash-tile-icon"><i class="fas fa-bolt"></i></span>
+              <div class="dash-period-text">
+                <span class="dash-card-label">RANGO EN VIVO</span>
+                <strong>{{ liveRankDisplayName }}</strong>
+              </div>
+            </div>
+            <div class="dash-period-card residual">
+              <span class="dash-tile-icon"><i class="fas fa-chart-line"></i></span>
+              <div class="dash-period-text">
+                <span class="dash-card-label">RESIDUAL ESTIMADO</span>
+                <strong>{{ estimatedResidualDisplay }}</strong>
+                <span class="dash-pill provisional">PROVISIONAL</span>
+              </div>
+            </div>
+            <div class="dash-period-card monthly-pts">
+              <span class="dash-tile-icon"><i class="fas fa-calendar-check"></i></span>
+              <div class="dash-period-text">
+                <span class="dash-card-label">PUNTOS MENSUALES</span>
+                <strong>{{ points || 0 }} <small>pts</small></strong>
+                <span
+                  class="dash-pill"
+                  :class="activated ? 'active' : 'inactive'"
+                >{{ activityStatusText }}</span>
+              </div>
+            </div>
+            <div class="dash-period-card affiliation-pts">
+              <span class="dash-tile-icon"><i class="fas fa-handshake"></i></span>
+              <div class="dash-period-text">
+                <span class="dash-card-label">PUNTOS AFILIACIÓN</span>
+                <strong>{{ affiliation_points || 0 }} <small>pts</small></strong>
               </div>
             </div>
           </div>
+        </section>
 
-          <!-- Mi Red -->
-          <div class="dashboard-row network-summary-row">
-            <div class="network-summary-card">
-              <h3><i class="fas fa-user-friends"></i> MI RED</h3>
-
-              <div class="network-summary-grid">
-                <div class="network-box directos">
-                  <i class="fas fa-user-friends"></i>
-                  <div>
-                    <span class="network-box-label">DIRECTOS</span>
-                    <strong>{{ directsCount }}</strong>
-                    <p>Total de directos</p>
-                  </div>
-                </div>
-
-                <div class="network-box activos">
-                  <i class="fas fa-user-friends"></i>
-                  <div>
-                    <span class="network-box-label">DIRECTOS ACTIVOS</span>
-                    <strong>{{ activeDirectsCount }}</strong>
-                    <p>Directos activos</p>
-                  </div>
-                </div>
-
-                <div class="network-box grupales" @click="$router.push('/tree')" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-                  <i class="fas fa-network-wired"></i>
-                  <div>
-                    <span class="network-box-label">PUNTOS GRUPALES</span>
-                    <strong>{{ groupPointsDisplay }} <small>pts</small></strong>
-                    <p>Total de puntos grupales</p>
-                  </div>
-                </div>
-
-                <div class="network-box organizacion">
-                  <i class="fas fa-sitemap"></i>
-                  <div>
-                    <span class="network-box-label">MI ORGANIZACIÓN</span>
-                    <strong>{{ n_affiliates || 0 }}</strong>
-                    <p>Total de usuarios dentro de tu red</p>
-                  </div>
-                </div>
-              </div>
+        <!-- Rango cierre + Membresía -->
+        <div class="dash-status-panel">
+          <div class="dash-status-item closing-rank">
+            <div class="dash-status-icon">
+              <img
+                v-if="currentRankImage"
+                :src="currentRankImage"
+                alt="Rango último cierre"
+              />
+              <i v-else class="fas fa-star"></i>
+            </div>
+            <div class="dash-status-text">
+              <span class="dash-card-label">RANGO DEL ÚLTIMO CIERRE</span>
+              <strong>{{ currentRankDisplayName }}</strong>
             </div>
           </div>
-
-          <!-- Acceso rápido a bonos -->
-          <div class="dashboard-row bonus-access-row">
-            <div class="bonus-access-card">
-              <h3><i class="fas fa-user-friends"></i> ACCESO RÁPIDO A BONOS</h3>
-
-              <div class="bonus-access-grid">
-                <button class="bonus-access-item" type="button">
-                  <span class="bonus-access-icon">
-                    <i class="fas fa-medal"></i>
-                  </span>
-                  <strong>Rango</strong>
-                </button>
-
-                <button class="bonus-access-item" type="button">
-                  <span class="bonus-access-icon">
-                    <i class="fas fa-plane"></i>
-                  </span>
-                  <strong>Viaje</strong>
-                </button>
-
-                <button class="bonus-access-item" type="button">
-                  <span class="bonus-access-icon">
-                    <i class="fas fa-car"></i>
-                  </span>
-                  <strong>Auto</strong>
-                </button>
-
-                <button class="bonus-access-item" type="button">
-                  <span class="bonus-access-icon">
-                    <i class="fas fa-home"></i>
-                  </span>
-                  <strong>Casa</strong>
-                </button>
-              </div>
-
-              <button class="bonus-access-all" type="button">
-                Ver todos los bonos
-                <i class="fas fa-arrow-right"></i>
-              </button>
+          <div class="dash-status-item membership">
+            <div class="dash-status-icon crown">
+              <i class="fas fa-crown"></i>
+            </div>
+            <div class="dash-status-text">
+              <span class="dash-card-label">MEMBRESÍA</span>
+              <strong>{{ membershipDisplayName }}</strong>
             </div>
           </div>
         </div>
+
+        <!-- Mi Red -->
+        <section class="dash-section">
+          <h3 class="dash-section-title">MI RED</h3>
+          <div class="dash-network-grid">
+            <div class="dash-network-card directs">
+              <span class="dash-network-icon"><i class="fas fa-users"></i></span>
+              <div class="dash-network-text">
+                <span class="dash-card-label">DIRECTOS</span>
+                <strong>{{ directsCount }}</strong>
+              </div>
+            </div>
+            <div class="dash-network-card activos">
+              <span class="dash-network-icon"><i class="fas fa-users"></i></span>
+              <div class="dash-network-text">
+                <span class="dash-card-label">DIRECTOS ACTIVOS</span>
+                <strong>{{ activeDirectsCount }}</strong>
+              </div>
+            </div>
+            <div
+              class="dash-network-card grupales"
+              @click="$router.push('/tree')"
+            >
+              <span class="dash-network-icon"><i class="fas fa-sitemap"></i></span>
+              <div class="dash-network-text">
+                <span class="dash-card-label">PUNTOS GRUPALES</span>
+                <strong>{{ groupPointsDisplay }} <small>pts</small></strong>
+              </div>
+            </div>
+            <div class="dash-network-card organizacion">
+              <span class="dash-network-icon"><i class="fas fa-sitemap"></i></span>
+              <div class="dash-network-text">
+                <span class="dash-card-label">MI ORGANIZACIÓN</span>
+                <strong>{{ n_affiliates || 0 }}</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Acceso rápido a bonos -->
+        <section class="dash-section bonus-section">
+          <h3 class="dash-section-title">
+            <i class="fas fa-gift"></i> ACCESO RÁPIDO A BONOS
+          </h3>
+          <div class="dash-bonus-grid">
+            <button
+              class="dash-bonus-item"
+              type="button"
+              @click="$router.push('/bonuses')"
+            >
+              <span class="dash-bonus-icon"><i class="fas fa-medal"></i></span>
+              <strong>Rango</strong>
+            </button>
+            <button
+              class="dash-bonus-item"
+              type="button"
+              @click="$router.push('/bonuses')"
+            >
+              <span class="dash-bonus-icon"><i class="fas fa-plane"></i></span>
+              <strong>Viaje</strong>
+            </button>
+            <button
+              class="dash-bonus-item"
+              type="button"
+              @click="$router.push('/bonuses')"
+            >
+              <span class="dash-bonus-icon"><i class="fas fa-car"></i></span>
+              <strong>Auto</strong>
+            </button>
+            <button
+              class="dash-bonus-item"
+              type="button"
+              @click="$router.push('/bonuses')"
+            >
+              <span class="dash-bonus-icon"><i class="fas fa-home"></i></span>
+              <strong>Casa</strong>
+            </button>
+          </div>
+          <button
+            class="dash-bonus-all"
+            type="button"
+            @click="$router.push('/bonuses')"
+          >
+            Ver todos los bonos
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </section>
       </div>
     </div>
   </App>
@@ -464,6 +407,10 @@ export default {
       return this.formatCurrency(this.estimatedResidual || 0);
     },
     totalEarnedDisplay() {
+      // Total histórico de ingresos; si no hay dato, fallback a saldos actuales
+      if (this.ins !== null && this.ins !== undefined && this.ins !== "") {
+        return this.formatCurrency(this.ins);
+      }
       return this.formatCurrency(
         this.numberValue(this.balance) + this.numberValue(this._balance)
       );
@@ -728,4 +675,4 @@ export default {
 };
 </script>
 
-<style scoped src="../../assets/style/views/app/Dashboard.css"></style>
+<style src="../../assets/style/views/app/Dashboard.css"></style>

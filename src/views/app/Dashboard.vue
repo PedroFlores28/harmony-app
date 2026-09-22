@@ -140,15 +140,6 @@
           </div>
         </section>
 
-        <!-- Puntaje por rango (indicador visual del periodo) -->
-        <div class="dash-rank-points-card">
-          <span class="dash-tile-icon"><i class="fas fa-layer-group"></i></span>
-          <div class="dash-rank-points-text">
-            <span class="dash-card-label">PUNTAJE POR RANGO</span>
-            <strong>{{ rankPointsDisplay }} <small>pts</small></strong>
-          </div>
-        </div>
-
         <!-- Rango cierre + Membresía -->
         <div class="dash-status-panel">
           <div class="dash-status-item closing-rank">
@@ -194,14 +185,11 @@
                 <strong>{{ activeDirectsCount }}</strong>
               </div>
             </div>
-            <div
-              class="dash-network-card grupales"
-              @click="$router.push('/tree')"
-            >
-              <span class="dash-network-icon"><i class="fas fa-sitemap"></i></span>
+            <div class="dash-network-card rank-points">
+              <span class="dash-network-icon"><i class="fas fa-layer-group"></i></span>
               <div class="dash-network-text">
-                <span class="dash-card-label">PUNTOS GRUPALES</span>
-                <strong>{{ groupPointsDisplay }} <small>pts</small></strong>
+                <span class="dash-card-label">PUNTAJE POR RANGO</span>
+                <strong>{{ rankPointsDisplay }} <small>pts</small></strong>
               </div>
             </div>
             <div class="dash-network-card organizacion">
@@ -437,11 +425,6 @@ export default {
       return this.directs.filter((direct) => {
         return Boolean(direct.activated) || this.numberValue(direct.points) >= 180;
       }).length;
-    },
-    groupPointsDisplay() {
-      return this.numberValue(this.total_points).toLocaleString("en-US", {
-        maximumFractionDigits: 0,
-      });
     },
     rankPointsDisplay() {
       return this.numberValue(this.rankPoints).toLocaleString("en-US", {

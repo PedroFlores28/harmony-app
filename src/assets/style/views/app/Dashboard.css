@@ -430,56 +430,6 @@
   color: #4a0e2e;
 }
 
-/* ---------- Puntaje por rango ---------- */
-.dash-rank-points-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #fffaf3;
-  border: 1px solid #f3e6d0;
-  border-radius: 14px;
-  padding: 14px 12px;
-  margin-bottom: var(--dash-gap);
-  box-shadow: 0 2px 8px rgba(69, 11, 43, 0.06);
-  box-sizing: border-box;
-  min-height: 78px;
-}
-
-.dash-rank-points-card .dash-tile-icon {
-  background: #ffe082;
-  color: #8d6e00;
-  flex: 0 0 42px;
-  width: 42px;
-  height: 42px;
-}
-
-.dash-rank-points-text {
-  min-width: 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.dash-rank-points-card .dash-card-label {
-  margin-bottom: 2px;
-  font-size: 9px;
-  color: #580e28;
-}
-
-.dash-rank-points-card strong {
-  font-size: 20px;
-  font-weight: 800;
-  line-height: 1.15;
-  color: #a67c00;
-}
-
-.dash-rank-points-card strong small {
-  font-size: 12px;
-  font-weight: 700;
-  opacity: 0.8;
-}
-
 /* ---------- Mi Red (layout horizontal como mockup) ---------- */
 .dash-network-grid {
   display: grid;
@@ -574,30 +524,21 @@
   color: #1b5e40;
 }
 
-.dash-network-card.grupales,
+.dash-network-card.rank-points,
 .dash-network-card.organizacion {
   background: #e3f2fd;
   color: #1565c0;
 }
 
-.dash-network-card.grupales .dash-network-icon,
+.dash-network-card.rank-points .dash-network-icon,
 .dash-network-card.organizacion .dash-network-icon {
   background: #bbdefb;
   color: #0d47a1;
 }
 
-.dash-network-card.grupales strong,
+.dash-network-card.rank-points strong,
 .dash-network-card.organizacion strong {
   color: #0d47a1;
-}
-
-.dash-network-card.grupales {
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.dash-network-card.grupales:active {
-  transform: scale(0.98);
 }
 
 /* ---------- Status: dos tarjetas separadas ---------- */
@@ -919,27 +860,6 @@
     font-size: 12px;
   }
 
-  .dash-rank-points-card {
-    padding: 18px 20px;
-    min-height: 96px;
-    gap: 14px;
-    border-radius: 16px;
-  }
-
-  .dash-rank-points-card .dash-tile-icon {
-    width: 48px;
-    height: 48px;
-    flex-basis: 48px;
-  }
-
-  .dash-rank-points-card .dash-card-label {
-    font-size: 12px;
-  }
-
-  .dash-rank-points-card strong {
-    font-size: 26px;
-  }
-
   .dash-status-panel {
     gap: 14px;
     padding: 0;
@@ -1015,11 +935,6 @@
     font-size: 15px;
     border-radius: 14px;
   }
-
-  .dash-network-card.grupales:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(43, 108, 176, 0.15);
-  }
 }
 
 /* Pantallas amplias: Este periodo y Mi red lado a lado */
@@ -1043,7 +958,6 @@
   .loading-container,
   .dash-hero,
   .dash-balances-section,
-  .dash-rank-points-card,
   .dash-status-panel,
   .bonus-section {
     grid-column: 1 / -1;
@@ -1059,16 +973,12 @@
     grid-row: 3;
   }
 
-  .dash-rank-points-card {
+  .dash-status-panel {
     grid-row: 4;
   }
 
-  .dash-status-panel {
-    grid-row: 5;
-  }
-
   .bonus-section {
-    grid-row: 6;
+    grid-row: 5;
   }
 
   .dash-period-grid,

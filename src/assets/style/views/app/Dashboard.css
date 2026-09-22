@@ -480,16 +480,6 @@
   opacity: 0.8;
 }
 
-.dash-rank-points-legend {
-  display: block;
-  margin-top: 4px;
-  font-size: 10px;
-  font-weight: 600;
-  line-height: 1.3;
-  color: #7a5a2e;
-  opacity: 0.9;
-}
-
 /* ---------- Mi Red (layout horizontal como mockup) ---------- */
 .dash-network-grid {
   display: grid;
@@ -948,10 +938,6 @@
 
   .dash-rank-points-card strong {
     font-size: 26px;
-  }
-
-  .dash-rank-points-legend {
-    font-size: 12px;
   }
 
   .dash-status-panel {

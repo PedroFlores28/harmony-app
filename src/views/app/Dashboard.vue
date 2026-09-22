@@ -146,7 +146,6 @@
           <div class="dash-rank-points-text">
             <span class="dash-card-label">PUNTAJE POR RANGO</span>
             <strong>{{ rankPointsDisplay }} <small>pts</small></strong>
-            <span class="dash-rank-points-legend">{{ rankPointsLegend }}</span>
           </div>
         </div>
 
@@ -448,22 +447,6 @@ export default {
       return this.numberValue(this.rankPoints).toLocaleString("en-US", {
         maximumFractionDigits: 0,
       });
-    },
-    rankPointsLegend() {
-      const depth = this.numberValue(this.rankPointsDepth);
-      const key = normalizeRankKey(this.liveRank);
-      const hasNamedRank =
-        key &&
-        key !== "SIN_RANGO" &&
-        key !== "NONE" &&
-        String(this.liveRank).trim().toLowerCase() !== "none";
-
-      if (hasNamedRank) {
-        const rankName = this.formatRankName(this.liveRank);
-        return `Según tu rango ${rankName} en vivo · hasta el nivel ${depth}`;
-      }
-
-      return `Según tu rango en vivo · hasta el nivel ${depth}`;
     },
     depthLevels() {
       const levels = {

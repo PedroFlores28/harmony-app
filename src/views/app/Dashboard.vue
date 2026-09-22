@@ -140,6 +140,16 @@
           </div>
         </section>
 
+        <!-- Puntaje por rango (indicador visual del periodo) -->
+        <div class="dash-rank-points-card">
+          <span class="dash-tile-icon"><i class="fas fa-layer-group"></i></span>
+          <div class="dash-rank-points-text">
+            <span class="dash-card-label">PUNTAJE POR RANGO</span>
+            <strong>{{ rankPointsDisplay }} <small>pts</small></strong>
+            <span class="dash-rank-points-legend">{{ rankPointsLegend }}</span>
+          </div>
+        </div>
+
         <!-- Rango cierre + Membresía -->
         <div class="dash-status-panel">
           <div class="dash-status-item closing-rank">
@@ -288,6 +298,8 @@ export default {
       balance: null,
       _balance: null,
       estimatedResidual: null,
+      rankPoints: 0,
+      rankPointsDepth: 0,
       team: null,
       activated: false,
       rank: "",
@@ -431,6 +443,27 @@ export default {
       return this.numberValue(this.total_points).toLocaleString("en-US", {
         maximumFractionDigits: 0,
       });
+    },
+    rankPointsDisplay() {
+      return this.numberValue(this.rankPoints).toLocaleString("en-US", {
+        maximumFractionDigits: 0,
+      });
+    },
+    rankPointsLegend() {
+      const depth = this.numberValue(this.rankPointsDepth);
+      const key = normalizeRankKey(this.liveRank);
+      const hasNamedRank =
+        key &&
+        key !== "SIN_RANGO" &&
+        key !== "NONE" &&
+        String(this.liveRank).trim().toLowerCase() !== "none";
+
+      if (hasNamedRank) {
+        const rankName = this.formatRankName(this.liveRank);
+        return `Según tu rango ${rankName} en vivo · hasta el nivel ${depth}`;
+      }
+
+      return `Según tu rango en vivo · hasta el nivel ${depth}`;
     },
     depthLevels() {
       const levels = {
@@ -647,6 +680,14 @@ export default {
     this.estimatedResidual =
       payload.estimatedResidual !== undefined && payload.estimatedResidual !== null
         ? payload.estimatedResidual
+        : 0;
+    this.rankPoints =
+      payload.rankPoints !== undefined && payload.rankPoints !== null
+        ? payload.rankPoints
+        : 0;
+    this.rankPointsDepth =
+      payload.rankPointsDepth !== undefined && payload.rankPointsDepth !== null
+        ? payload.rankPointsDepth
         : 0;
     this.team = payload.team;
     this.activated = Boolean(payload.activated);

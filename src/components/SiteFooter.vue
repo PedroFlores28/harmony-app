@@ -137,7 +137,7 @@ export default {
 .site-footer {
   width: 100%;
   margin-top: 40px;
-  background: #5c0f39;
+  background: #510d34; /* mismo color sólido que el menú lateral */
   color: #fff;
   box-sizing: border-box;
 }

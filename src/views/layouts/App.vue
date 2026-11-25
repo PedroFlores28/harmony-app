@@ -360,6 +360,7 @@
           @touchend="endTouch"
         >
           <slot />
+          <SiteFooter />
         </section>
       </div>
     </section>
@@ -532,12 +533,13 @@
 <script>
 import api from "@/api";
 import lib from "@/lib";
+import SiteFooter from "@/components/SiteFooter.vue";
 
 // const ROOT = process.env.VUE_APP_ROOT;
 // console.log({ ROOT });
 
 export default {
-  components: { },
+  components: { SiteFooter },
   props: {
     session: String,
     office_id: String,

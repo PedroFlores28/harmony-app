@@ -37,7 +37,8 @@
           <li>
             <a :href="catalogLink || '#'" :target="catalogLink ? '_blank' : null" rel="noopener noreferrer"
                :class="{ disabled: !catalogLink }" @click="!catalogLink && $event.preventDefault()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+              <img v-if="catalogIcon" :src="catalogIcon" class="site-footer__custom-icon" alt="" />
+              <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
                 <path d="M12 6.5C10 5 7 4.5 3 5v13c4-.5 7 0 9 1.5 2-1.5 5-2 9-1.5V5c-4-.5-7 0-9 1.5z" />
                 <path d="M12 6.5v13" />
               </svg>
@@ -47,7 +48,8 @@
           <li>
             <a :href="presentationLink || '#'" :target="presentationLink ? '_blank' : null" rel="noopener noreferrer"
                :class="{ disabled: !presentationLink }" @click="!presentationLink && $event.preventDefault()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <img v-if="presentationIcon" :src="presentationIcon" class="site-footer__custom-icon" alt="" />
+              <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 4h18M4 4v11h16V4M12 15v3M8 21l4-3 4 3" />
               </svg>
               Hoja de presentación
@@ -88,11 +90,21 @@ export default {
         { key: "tk", url: st.tk || "https://www.tiktok.com", icon: "fab fa-tiktok", label: "TikTok" },
       ];
     },
+    footerMaterials() {
+      return this.$store.state.footerMaterials || {};
+    },
+    // PDF cargado desde la pestaña «Footer» del admin; si no hay, el material antiguo por título
     catalogLink() {
-      return this.findLink("catalogo");
+      return (this.footerMaterials.catalog || {}).pdf || this.findLink("catalogo");
     },
     presentationLink() {
-      return this.findLink("presentacion");
+      return (this.footerMaterials.presentation || {}).pdf || this.findLink("presentacion");
+    },
+    catalogIcon() {
+      return (this.footerMaterials.catalog || {}).icon || "";
+    },
+    presentationIcon() {
+      return (this.footerMaterials.presentation || {}).icon || "";
     },
   },
   async created() {
@@ -223,6 +235,12 @@ export default {
 .site-footer__links a.disabled {
   opacity: 0.6;
   cursor: default;
+}
+.site-footer__custom-icon {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 .site-footer__links svg {
   width: 34px;

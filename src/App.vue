@@ -8,11 +8,18 @@
 
 <script>
 import AppInitializer from '@/components/AppInitializer.vue'
+import api from '@/api'
 
 export default {
   name: 'App',
   components: {
     AppInitializer
+  },
+  created() {
+    // WhatsApp, redes y materiales administrados desde el admin (pestaña Footer)
+    api.footerConfig()
+      .then(res => this.$store.commit('SET_FOOTER_CONFIG', res.data && res.data.footer))
+      .catch(() => {})
   }
 };
 </script>

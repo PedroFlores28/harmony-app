@@ -103,6 +103,9 @@ class API {
   tools(session) {
     return axios.get(`/app/tools?session=${session}`);
   }
+  footerConfig() {
+    return axios.get(`/app/footer-config`);
+  }
   materials(session) {
     return axios.get(`/app/materials?session=${session}`);
   }

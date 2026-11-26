@@ -30,14 +30,18 @@ export default new Vuex.Store({
     affiliationPlan: null,
     isAffiliationCheckout: false,
 
-    fb: '',
-    is: '',
-    tk: '',
-    yt: '',
+    fb: 'https://www.facebook.com',
+    is: 'https://www.instagram.com',
+    tk: 'https://www.tiktok.com',
+    yt: 'https://www.youtube.com',
     wsp_pe: 'https://api.whatsapp.com/send?phone=51977206522&text=Hola',
     wsp_bo: 'https://api.whatsapp.com/send?phone=51977206522&text=Hola',
     wsp_ec: 'https://api.whatsapp.com/send?phone=51977206522&text=Hola',
     site: '',
+    footerMaterials: {
+      catalog: { pdf: '', icon: '' },
+      presentation: { pdf: '', icon: '' },
+    },
 
     open: false,
     resume: false,
@@ -47,6 +51,25 @@ export default new Vuex.Store({
     education: false,
   },
   mutations: {
+    // Configuración administrada desde la pestaña «Footer» del admin
+    SET_FOOTER_CONFIG: (state, footer) => {
+      if (!footer) return
+      const w = footer.whatsapp || {}
+      const phone = `${w.countryCode || ''}${w.number || ''}`.replace(/D/g, '')
+      if (phone) {
+        const link = `https://api.whatsapp.com/send?phone=${phone}&text=Hola`
+        state.wsp_pe = link
+        state.wsp_bo = link
+        state.wsp_ec = link
+      }
+      const s = footer.socials || {}
+      ;['fb', 'is', 'yt', 'tk'].forEach(k => { if (s[k]) state[k] = s[k] })
+      const m = footer.materials || {}
+      state.footerMaterials = {
+        catalog: { pdf: '', icon: '', ...(m.catalog || {}) },
+        presentation: { pdf: '', icon: '', ...(m.presentation || {}) },
+      }
+    },
     SET_SESSION: (state, session) => {
       state.session = session
       if (session) {
